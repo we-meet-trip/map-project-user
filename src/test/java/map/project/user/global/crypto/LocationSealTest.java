@@ -113,9 +113,9 @@ class LocationSealTest {
         // agent 는 파이썬이라 같은 검사 틀 안에서 감쌀 수 없다. 그쪽 코드로
         // 만든 값을 그대로 적어 두고 연다 — 형식이 어긋나면 배포한 뒤
         // 추천 결과가 통째로 버려지는데, 화면에는 사유 없는 실패로만 보인다.
-        String fromPython = "v1.ZY_2texCti0TBsTN.kd_O9djLyHAEflRzyFv49iLe3dJyjUWU2RMEdC"
-                + "KJqhAGErzTEz9o0B2ftCuveF0lrJI6TC_ECTqU4z_Tv3MWt5x4qXX2WHoK_iT2DVlYNFt"
-                + "m7j8O8EkmdFI5SVsssP08JGRCXQzv2QFTPoyacsMq9YpX67SUBQ";
+        String fromPython = "v1.PjN-jibW372bazdx.xKpUL0xU1QQaSI3zfT-nlOj0_f6X3PQn2mLsA"
+                + "kvGoUopMpQ1hsgIwfr-a8jhKdY7A_simkayrQFzZT-4PtwUs3inZu64p0EZ5rMHre6-Jg"
+                + "JR4mhN1WdY9KcamolBEyeMg9nIjtop-PPyOuOKuhDekBFrUIXfYQ";
 
         // 굳혀 둔 봉투라 만든 시각이 과거에 멈춰 있다. 여기서 보려는 것은
         // 형식 호환뿐이므로 나이 검사를 끈다.
