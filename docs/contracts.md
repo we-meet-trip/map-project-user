@@ -5,6 +5,7 @@
 ## 1. 앱 ↔ user (HTTP, `/api/v1/**`)
 
 - 포트 `8080`(`src/main/resources/application.yml` 의 `server.port`). JSON, 응답 키는 대부분 스네이크 케이스다.
+- **인증 경로의 요청 본문은 카멜 케이스다**(`domain/auth/dto/request/*`, `domain/auth/apple/AppleController.java`): 로그인 `{email, password, deviceType?}`, 가입 `{email, password, nickname, birthDate, gender, deviceType?}`, 카카오 `{accessToken, deviceToken?, deviceType?}`, 갱신 `{refreshToken}`, Apple `{identityToken, authorizationCode, …}`. 프로필 수정(`PATCH /users/me`)의 생년월일도 `birthDate`(`YYYY-MM-DD`).
 - 인증: `Authorization: Bearer <access token>`(RS256 JWT). access 기본 1시간, refresh 기본 30일(`USER_JWT_ACCESS_TTL`·`USER_JWT_REFRESH_TTL`).
 - 인가: `USER_AUTH_ENFORCED=false`(기본)이면 아래 '항상 인증' 경로 말고는 토큰 없이도 열린다. `true` 이면 인증 경로를 뺀 전부가 인증 필수다(`global/config/SecurityConfig.java`). 소유자 확인·서비스 약관 동의·18세 이상 확인은 이 값과 무관하게 서비스 계층에서 한다.
 
@@ -54,7 +55,7 @@
 | 인증 경로 | 로그인 10·가입 5·갱신 20·카카오 10·Apple nonce 10·Apple 콜백 10 회 / 60초, 발신 주소별 | `global/ratelimit/RateLimitFilter.java` |
 | 재탐색 | 계정당 하루 3회(KST 자정 초기화) | `USER_RESEARCH_DAILY_LIMIT` |
 | 리뷰 요약 명시 요청 | 사용자당 60초에 6건, 같은 요청 ID 의 결과는 30분 재사용 | `places/ReviewSummaryGenerationService.java` |
-| 채팅 전송 | 10초에 20건, 메시지 2000자, 방 10명 | `USER_CHAT_*` |
+| 채팅 전송 | 10초에 20건, 메시지 2000자(Java `String.length()` — UTF-16 코드 단위, `chat/service/ChatMessageService.java:173`), 방 10명 | `USER_CHAT_*` |
 | 비전 허가 | 사용자당 하루 60(기본, 개발·시험용으로 낮게 둔 값) | `USER_VISION_DAILY_LIMIT` |
 - 주소 헤더(`X-Real-IP`)는 직전 발신자가 신뢰 프록시 대역(`USER_RATELIMIT_TRUSTED_PROXIES`)일 때만 믿는다.
 
