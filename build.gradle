@@ -34,11 +34,6 @@ ext['postgresql.version'] = '42.7.12' // CVE-2026-54291
 // ---- java 툴체인 ----
 // 컴파일 / 실행 시 사용할 JDK 언어 레벨을 고정한다.
 
-// Windows: 한글 경로에서 Gradle 테스트 워커가 classpath를 읽지 못하는 문제 우회
-if (System.getProperty('os.name').toLowerCase().contains('windows')) {
-    layout.buildDirectory = file("C:/tmp/map-service-user-build")
-}
-
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
@@ -110,18 +105,10 @@ dependencies {
 }
 
 // ---- test : JUnit Platform 사용 ----
-// 동기화 도구가 ' 2' 를 붙인 사본을 빌드 산출물 안에 만들어 둔다. 클래스 이름에 빈칸이
-// 들어간 그 사본을 JUnit 이 불러들이려다 실패하면, 정작 바뀐 것이 없는데도 전체 실행이
-// 멈춘다. 실행 직전에 치워 둔다.
 tasks.named('test') {
     useJUnitPlatform()
     jvmArgs '-Dfile.encoding=UTF-8', '-Dsun.stdout.encoding=UTF-8', '-Dsun.stderr.encoding=UTF-8'
     systemProperty 'file.encoding', 'UTF-8'
-    doFirst {
-        layout.buildDirectory.get().asFile.traverse { entry ->
-            if (entry.name ==~ /.* \d+\.(class|jar)$/) entry.delete()
-        }
-    }
 }
 
 // ---- jar : plain jar 비활성화 ----
