@@ -65,9 +65,9 @@ public class ReviewSummaryGenerationService {
         var permit = ai.open(userId, "review_summary");
         String fingerprint = hash(request.query().strip().toLowerCase(Locale.ROOT));
         String owner = hash(userId + ":" + request.clientRequestId());
-        String receiptKey = "reviews:explicit:v1:request:" + owner;
-        String placeKey = "reviews:explicit:v1:place:" + fingerprint;
-        String rateKey = "reviews:explicit:v1:rate:" + hash(userId.toString());
+        String receiptKey = "reviews:explicit:request:" + owner;
+        String placeKey = "reviews:explicit:place:" + fingerprint;
+        String rateKey = "reviews:explicit:rate:" + hash(userId.toString());
         try {
             String pending = mapper.writeValueAsString(new Receipt(fingerprint, false, List.of(), 0, permit.revision()));
             String claim = redis.execute(CLAIM, List.of(receiptKey, placeKey, rateKey), pending, owner);

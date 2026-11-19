@@ -46,7 +46,7 @@ public class ReviewSummaryService {
             LoggerFactory.getLogger(ReviewSummaryService.class);
 
     /** 캐시 키 접두사. 형식이 바뀌면 뒤의 판을 올려 옛 값과 섞이지 않게 한다. */
-    private static final String KEY_PREFIX = "reviews:summary:v1:";
+    private static final String KEY_PREFIX = "reviews:summary:";
 
     /** 요약 근거로 모을 블로그 글 수. agent 요청 상한과 맞춘다. */
     private static final int SOURCE_COUNT = 7;
