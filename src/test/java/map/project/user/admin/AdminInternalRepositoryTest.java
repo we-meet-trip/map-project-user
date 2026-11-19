@@ -41,7 +41,7 @@ class AdminInternalRepositoryTest {
                 .email("alice@example.com").nickname("앨리스")
                 .authProvider(AuthProvider.EMAIL).emailVerified(true).build());
         userRepository.save(User.builder()
-                .email("bob@test.org").nickname("Bobby")
+                .email("bob@example.org").nickname("Bobby")
                 .authProvider(AuthProvider.EMAIL).emailVerified(false).build());
 
         Page<User> byEmail = userRepository

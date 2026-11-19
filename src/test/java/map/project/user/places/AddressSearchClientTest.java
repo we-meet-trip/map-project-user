@@ -43,9 +43,9 @@ class AddressSearchClientTest {
     void searchAddressParsesResponse() {
         String json = """
                 {"addresses":[
-                  {"address":"서울 강남구 역삼동 823",
+                  {"address":"서울 강남구 역삼동",
                    "road_address":"서울 강남구 테헤란로 1"},
-                  {"address":"서울 종로구 청운동 1","road_address":""}
+                  {"address":"서울 종로구 청운동","road_address":""}
                 ],"count":2}""";
         // 주소는 거의 한글이라 질의는 인코딩되어 나간다. 날것으로 견주면
         // 통과하지 않는 것이 정상이므로 인코딩된 모습으로 못박는다.

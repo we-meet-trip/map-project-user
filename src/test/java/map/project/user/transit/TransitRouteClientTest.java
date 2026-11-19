@@ -55,7 +55,7 @@ class TransitRouteClientTest {
                      {"type":"subway","line_name":"수도권 9호선",
                       "start_name":"언주","end_name":"신논현",
                       "section_time_min":2,"station_count":1,
-                      "geometry":[[37.507323,127.033909],[37.504454,127.024504]]}
+                      "geometry":[[37.5070,127.0330],[37.5040,127.0240]]}
                    ]},
                   {"total_time_min":44,"fare":1750,
                    "transfer_count":2,"total_walk_m":314,
@@ -80,8 +80,8 @@ class TransitRouteClientTest {
         assertThat(response.routes().get(0).modes()).containsExactly("subway");
         assertThat(response.routes().get(0).legs().get(0).geometry()).isEmpty();
         assertThat(response.routes().get(0).legs().get(1).geometry())
-                .containsExactly(java.util.List.of(37.507323, 127.033909),
-                        java.util.List.of(37.504454, 127.024504));
+                .containsExactly(java.util.List.of(37.5070, 127.0330),
+                        java.util.List.of(37.5040, 127.0240));
         assertThat(response.routes().get(1).modes())
                 .containsExactly("subway", "bus");
         assertThat(response.routes().get(1).legs().get(0).type()).isEqualTo("bus");
@@ -98,7 +98,7 @@ class TransitRouteClientTest {
                    "map_obj":"18:2:132:136@204:2:917:915",
                    "legs":[
                      {"type":"subway","start_name":"언주","end_name":"신논현",
-                      "section_time_min":2,"geometry":[[37.507323,127.033909]]}
+                      "section_time_min":2,"geometry":[[37.5070,127.0330]]}
                    ]},
                   {"total_time_min":190,"fare":23000,
                    "transfer_count":0,"total_walk_m":300,

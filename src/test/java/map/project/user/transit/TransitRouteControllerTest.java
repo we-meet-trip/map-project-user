@@ -75,7 +75,7 @@ class TransitRouteControllerTest {
                                 List.of(new TransitRouteLeg(
                                         "subway", "수도권 9호선", "언주", "신논현",
                                         2, 1, 1200,
-                                        List.of(List.of(37.507323, 127.033909)),
+                                        List.of(List.of(37.5070, 127.0330)),
                                         List.of("언주", "신논현"))),
                                 "18:2:132:136@204:2:917:915"),
                         new TransitRouteOption(44, 1750, 2, 314, 1200, 8300, 0.874,

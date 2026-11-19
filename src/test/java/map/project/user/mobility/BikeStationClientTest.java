@@ -43,9 +43,9 @@ class BikeStationClientTest {
     void fetchParsesStations() {
         String json = """
                 {"status":"ok","stations":[
-                  {"station_id":"ST-4","name":"102. 망원역 1번출구 앞",
+                  {"station_id":"ST-4","name":"101. 시험역 1번출구 앞",
                    "rack_total":15,"parking_bike_total":5,
-                   "lat":37.5556488,"lng":126.91062927}
+                   "lat":37.5550,"lng":126.9100}
                 ],"count":1}""";
         server.expect(requestTo(
                         startsWith("http://hub:8000/v1/mobility/bike-stations")))

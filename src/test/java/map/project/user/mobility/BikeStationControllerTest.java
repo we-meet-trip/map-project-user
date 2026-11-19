@@ -51,8 +51,8 @@ class BikeStationControllerTest {
         BikeStationsResponse response = new BikeStationsResponse(
                 "ok",
                 List.of(new BikeStation(
-                        "ST-4", "102. 망원역 1번출구 앞",
-                        15, 5, 37.5556488, 126.91062927)),
+                        "ST-4", "101. 시험역 1번출구 앞",
+                        15, 5, 37.5550, 126.9100)),
                 1);
         when(client.fetch(anyDouble(), anyDouble(), anyInt()))
                 .thenReturn(response);
