@@ -71,18 +71,18 @@ public class LocationSeal {
         String raw = properties.getKey();
         if (raw == null || raw.isBlank()) {
             throw new IllegalStateException(
-                    "location.wire.key is required (32 random bytes, base64; e.g. openssl rand -base64 32)");
+                    "MAP_PROJECT_LOCATION_WIRE_KEY (location.wire.key) is required: 32 random bytes, base64 (e.g. openssl rand -base64 32), the same value as hub and agent");
         }
         byte[] decoded;
         try {
             decoded = Base64.getDecoder().decode(raw.trim());
         } catch (IllegalArgumentException e) {
-            throw new IllegalStateException("location.wire.key is not base64");
+            throw new IllegalStateException("MAP_PROJECT_LOCATION_WIRE_KEY (location.wire.key) is not base64");
         }
         if (decoded.length != KEY_BYTES) {
             // 32글자 문자열을 그대로 붙여 넣는 실수가 흔하다. 24바이트로 풀린다.
             throw new IllegalStateException(
-                    "location.wire.key must decode to " + KEY_BYTES
+                    "MAP_PROJECT_LOCATION_WIRE_KEY (location.wire.key) must decode to " + KEY_BYTES
                             + " bytes, got " + decoded.length);
         }
         key = new SecretKeySpec(decoded, "AES");
