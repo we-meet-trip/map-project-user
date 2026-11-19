@@ -14,7 +14,7 @@ java = parser.parse_args().java
 root = Path(__file__).resolve().parents[1]
 jar = next((root / "build/libs").glob("*-training-export.jar"))
 h2 = next(path for path in (Path.home() / ".gradle/caches/modules-2/files-2.1/com.h2database/h2").glob("*/*/h2-*.jar") if not path.name.endswith(("-sources.jar", "-javadoc.jar")))
-private = Path(tempfile.mkdtemp(prefix="map-export-jar-smoke-20260906-"))
+private = Path(tempfile.mkdtemp(prefix="map-export-jar-smoke-"))
 output = private / "output"
 output.mkdir(mode=0o700)
 url = "jdbc:h2:" + str(private / "source") + ";MODE=PostgreSQL"
@@ -51,7 +51,7 @@ if files:
 hold_env = {**env, "TRAINING_EXPORT_APPROVED":"false", "SPRING_DATASOURCE_URL":"jdbc:postgresql://127.0.0.1:1/never-connect", "SPRING_DATASOURCE_DRIVER_CLASS_NAME":"org.postgresql.Driver"}
 hold = run(command, env=hold_env)
 checks["hold_rejects_before_source_pool"] = hold.returncode != 0 and "training export approval HOLD" in hold.stdout + hold.stderr and "HikariPool" not in hold.stdout + hold.stderr
-report = {"scope":"local exact exporter JAR; synthetic read-only H2; no GCP/user data", "jar":jar.name,
+report = {"scope":"local exact exporter JAR; synthetic read-only H2; no cloud or user data", "jar":jar.name,
           "sha256":hashlib.sha256(jar.read_bytes()).hexdigest(), "checks":checks, "overall":all(checks.values())}
 print(json.dumps(report, indent=2))
 if not report["overall"]:

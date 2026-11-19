@@ -2,7 +2,7 @@
 """Hosted-only synthetic bootstrap proof.
 
 Only this harness's marked new databases/roles are removed, after evidence is captured.
-On failure leave them for runner-scoped diagnosis; never point this at GCP/local PG.
+On failure leave them for runner-scoped diagnosis; never point this at an existing or local PostgreSQL.
 """
 import datetime as dt
 import hashlib
@@ -25,7 +25,7 @@ os.chmod(PRIVATE, 0o700)
 os.umask(0o077)
 ROLES = ('map_user_bootstrap', 'map_user_runtime', 'map_user_migrator', 'map_user_owner')
 checks = []
-report = {'scope': 'GitHub hosted disposable PG17; genuine bootstrap and subsequent normal migration; no GCP',
+report = {'scope': 'GitHub hosted disposable PG17; genuine bootstrap and subsequent normal migration; no cloud',
           'source': os.environ.get('GITHUB_SHA'), 'started_utc': dt.datetime.now(dt.timezone.utc).isoformat(),
           'checks': checks, 'success': False}
 phase = 'environment_gate'

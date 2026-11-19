@@ -1,4 +1,4 @@
--- NEW EMPTY HOST ONLY. Separate operator; never run against existing GCP.
+-- NEW EMPTY HOST ONLY. Separate operator; never run against an existing database.
 -- psql -X -v ON_ERROR_STOP=1; supply variables through private stdin, not process args.
 -- expected_database, marker (64 lowercase hex), bootstrap_password are required.
 -- The database was created from template0 and independently marked by the operator.

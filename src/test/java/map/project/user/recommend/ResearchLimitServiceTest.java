@@ -95,7 +95,7 @@ class ResearchLimitServiceTest {
     @Test
     @DisplayName("nextKstMidnightEpoch — 오후 시각의 다음 KST 자정 계산")
     void nextKstMidnightFromAfternoon() {
-        // 2026-07-07T14:00 KST (=05:00Z) → 다음 자정 2026-07-08T00:00 KST
+        // 오후 2시 KST(=05:00Z) → 다음 날 0시 KST 에 만료
         Clock fixed = Clock.fixed(Instant.parse("2026-07-07T05:00:00Z"), KST);
         long expected = ZonedDateTime.of(2026, 7, 8, 0, 0, 0, 0, KST).toEpochSecond();
         assertThat(service.nextKstMidnightEpoch(fixed)).isEqualTo(expected);
@@ -104,7 +104,7 @@ class ResearchLimitServiceTest {
     @Test
     @DisplayName("nextKstMidnightEpoch — 자정 직전 시각도 당일 다음 자정")
     void nextKstMidnightJustBeforeMidnight() {
-        // 2026-07-07T23:59 KST (=14:59Z) → 다음 자정 2026-07-08T00:00 KST
+        // 밤 11시 59분 KST(=14:59Z) → 1분 뒤 0시 KST 에 만료
         Clock fixed = Clock.fixed(Instant.parse("2026-07-07T14:59:00Z"), KST);
         long expected = ZonedDateTime.of(2026, 7, 8, 0, 0, 0, 0, KST).toEpochSecond();
         assertThat(service.nextKstMidnightEpoch(fixed)).isEqualTo(expected);

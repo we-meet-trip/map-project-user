@@ -32,8 +32,8 @@ public final class TripMapping {
      * 그대로 일치한다(예: 제주는 client 도 이미 '제주특별자치도' 사용). hub 의
      * lookup_region_by_name 은 lv1 불일치 시에만 404 를 내므로, lv1 정규화만으로
      * 모든 시/도 선택이 404 없이 해석된다(시/군/구 불일치는 광역 대표 grid 로 fallback).
-     *   - 강원도   → 강원특별자치도 (2023-06-11 개편)
-     *   - 전라북도 → 전북특별자치도 (2024-01-18 개편)
+     *   - 강원도   → 강원특별자치도 (특별자치도 출범으로 명칭 변경)
+     *   - 전라북도 → 전북특별자치도 (특별자치도 출범으로 명칭 변경)
      */
     private static final Map<String, String> PROVINCE_ALIAS = Map.of(
             "강원도", "강원특별자치도",
