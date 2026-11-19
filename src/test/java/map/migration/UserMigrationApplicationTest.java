@@ -28,7 +28,9 @@ class UserMigrationApplicationTest {
     @ParameterizedTest
     @ValueSource(strings = {"SPRING_DATASOURCE_URL", "REDIS_PASSWORD", "POSTGRES_PASSWORD", "JWT_PRIVATE_KEY",
             "USER_DATABASE_PASSWORD", "LOCATION_CRYPTO_KEYS", "TRAINING_EXPORT_ENABLED", "TESTER_SEED_ENABLED",
-            "HUB_BASE_URL", "GEMINI_API_KEY", "USER_MIGRATION_OPTIONS", "JAVA_TOOL_OPTIONS", "USER_ADMIN_INTERNAL_TOKEN"})
+            "HUB_BASE_URL", "GEMINI_API_KEY", "USER_MIGRATION_OPTIONS", "JAVA_TOOL_OPTIONS", "USER_ADMIN_INTERNAL_TOKEN",
+            "USER_JWT_PRIVATE_KEY", "USER_REDIS_HOST", "MAP_PROJECT_INTERNAL_SERVICE_TOKEN", "MAP_PROJECT_LOCATION_WIRE_KEY",
+            "MAP_PROJECT_POSTGRES_PASSWORD", "ADMIN_SESSION_SECRET"})
     void servingSecretsOrFlagsRejectBeforeAnyDatabaseCall(String name) {
         var environment = new HashMap<>(safeEnvironment());
         environment.put(name, "synthetic-value-must-not-appear");

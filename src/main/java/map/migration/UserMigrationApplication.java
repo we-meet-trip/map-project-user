@@ -31,8 +31,11 @@ public final class UserMigrationApplication {
             Set<String> allowed = Set.of("USER_MIGRATION_URL", "USER_MIGRATION_USERNAME", "USER_MIGRATION_PASSWORD");
             for (String key : environment.keySet()) {
                 String name = key.toUpperCase(java.util.Locale.ROOT);
+                // 서비스 설정은 서비스 접두(USER_·AGENT_·HUB_·YOLO_·ADMIN_·CLIENT_)와 공용 접두
+                // (MAP_PROJECT_)로 들어온다. 이 진입점이 받는 이름은 위의 셋뿐이다.
                 boolean sensitive = name.startsWith("SPRING_") || name.startsWith("POSTGRES_")
-                        || name.startsWith("USER_DATABASE_") || name.startsWith("USER_MIGRATION_")
+                        || name.startsWith("USER_") || name.startsWith("MAP_PROJECT_")
+                        || name.startsWith("ADMIN_") || name.startsWith("CLIENT_")
                         || name.startsWith("REDIS_") || name.startsWith("JWT_") || name.startsWith("LOCATION_")
                         || name.startsWith("TRAINING_") || name.startsWith("TESTER_") || name.startsWith("HUB_")
                         || name.startsWith("AGENT_") || name.startsWith("YOLO_") || name.startsWith("KAKAO_")

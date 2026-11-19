@@ -36,7 +36,8 @@ exit_code, stdout, stderr = launch(["check-config"], environment)
 checks["exact_main_config_only_no_database"] = (exit_code, stdout, stderr) == (
     0, '{"status":"configuration_valid","database_connected":false}', "")
 for flag in ("TRAINING_EXPORT_ENABLED", "REDIS_HOST", "LOCATION_CRYPTO_KEYS", "SPRING_DATASOURCE_PASSWORD",
-             "USER_DATABASE_PASSWORD", "USER_ADMIN_INTERNAL_TOKEN", "TESTER_SEED_ENABLED"):
+             "USER_DATABASE_PASSWORD", "USER_ADMIN_INTERNAL_TOKEN", "TESTER_SEED_ENABLED",
+             "USER_JWT_PRIVATE_KEY", "MAP_PROJECT_INTERNAL_SERVICE_TOKEN"):
     exit_code, stdout, stderr = launch(["migrate"], {**environment, flag: "synthetic-do-not-echo"})
     checks["reject_leak_" + flag.lower()] = (exit_code, stdout, stderr) == (2, '{"status":"configuration_rejected"}', "")
 for operation in ("clean", "repair", "baseline"):

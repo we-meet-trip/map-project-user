@@ -35,7 +35,7 @@ public class KakaoProperties implements InitializingBean {
     public void afterPropertiesSet() {
         // 꺼진 제공자가 다른 로그인 수단까지 막아서는 안 된다.
         if (appId == null) return;
-        require(appId > 0, "KAKAO_APP_ID must be a positive application identifier");
+        require(appId > 0, "USER_KAKAO_APP_ID must be a positive application identifier");
         // 조회 주소가 바뀌면 토큰이 어디로 나가는지가 바뀐다. 값으로 열어 두지 않고 고정한다.
         require(fixed(tokenInfoUri, "https://kapi.kakao.com/v1/user/access_token_info")
                 && fixed(userInfoUri, "https://kapi.kakao.com/v2/user/me"),

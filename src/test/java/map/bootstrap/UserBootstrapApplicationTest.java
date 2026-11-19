@@ -25,7 +25,7 @@ class UserBootstrapApplicationTest {
 
     @Test void refusesUnknownEnvironmentAndSpringAliasesBeforeConnection() {
         for (String key : new String[]{"SPRING_DATASOURCE_URL", "spring.datasource.url", "SPRING.DATASOURCE.URL",
-                "spring_datasource_url", "REDIS_HOST", "GEMINI_API_KEY", "USER_MIGRATION_PASSWORD", "JAVA_TOOL_OPTIONS",
+                "spring_datasource_url", "REDIS_HOST", "USER_REDIS_HOST", "GEMINI_API_KEY", "MAP_PROJECT_GEMINI_API_KEY", "USER_MIGRATION_PASSWORD", "JAVA_TOOL_OPTIONS",
                 "JDK_JAVA_OPTIONS", "_JAVA_OPTIONS", "USER_BOOTSTRAP_TARGET", "AWS_ACCESS_KEY_ID", "USER_ADMIN_INTERNAL_TOKEN"}) {
             var env = environment(); env.put(key, "do-not-echo");
             assertThat(UserBootstrapApplication.run(new String[]{"bootstrap"}, env,

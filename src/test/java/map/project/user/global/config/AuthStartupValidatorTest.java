@@ -37,7 +37,7 @@ class AuthStartupValidatorTest {
 
         assertThatThrownBy(validator::validate)
                 .isInstanceOf(IllegalStateException.class)
-                .hasMessageContaining("JWT_PRIVATE_KEY/JWT_PUBLIC_KEY");
+                .hasMessageContaining("USER_JWT_PRIVATE_KEY/USER_JWT_PUBLIC_KEY");
     }
 
     @Test
@@ -48,7 +48,7 @@ class AuthStartupValidatorTest {
 
         assertThatThrownBy(validator::validate)
                 .isInstanceOf(IllegalStateException.class)
-                .hasMessageContaining("JWT_PRIVATE_KEY/JWT_PUBLIC_KEY");
+                .hasMessageContaining("USER_JWT_PRIVATE_KEY/USER_JWT_PUBLIC_KEY");
     }
 
     @Test
@@ -82,7 +82,7 @@ class AuthStartupValidatorTest {
 
         assertThatThrownBy(validator::validate)
                 .isInstanceOf(IllegalStateException.class)
-                .hasMessageContaining("INTERNAL_SERVICE_TOKEN");
+                .hasMessageContaining("MAP_PROJECT_INTERNAL_SERVICE_TOKEN");
     }
 
     @Test
@@ -94,7 +94,7 @@ class AuthStartupValidatorTest {
 
         assertThatThrownBy(validator::validate)
                 .isInstanceOf(IllegalStateException.class)
-                .hasMessageContaining("INTERNAL_SERVICE_TOKEN");
+                .hasMessageContaining("MAP_PROJECT_INTERNAL_SERVICE_TOKEN");
     }
 
     @Test

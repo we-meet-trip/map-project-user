@@ -16,7 +16,7 @@ import java.util.Base64;
 /**
  * RS256 JWT 서명에 사용할 RSA KeyPair를 제공한다.
  *
- * - 운영: JWT_PRIVATE_KEY / JWT_PUBLIC_KEY 환경변수에 Base64-encoded PEM 설정
+ * - 운영: USER_JWT_PRIVATE_KEY / USER_JWT_PUBLIC_KEY 환경변수에 Base64-encoded PEM 설정
  * - 개발/테스트: 키 미설정 시 임시 2048-bit RSA 키 쌍 자동 생성 (경고 로그 출력)
  */
 @Slf4j
@@ -28,7 +28,7 @@ public class JwtConfig {
         if (hasText(props.getPrivateKey()) && hasText(props.getPublicKey())) {
             return loadKeyPairFromConfig(props);
         }
-        log.warn("JWT RSA 키가 설정되지 않아 임시 키 쌍을 생성합니다. 운영 환경에서는 반드시 JWT_PRIVATE_KEY / JWT_PUBLIC_KEY 를 설정하세요.");
+        log.warn("JWT RSA 키가 설정되지 않아 임시 키 쌍을 생성합니다. 운영 환경에서는 반드시 USER_JWT_PRIVATE_KEY / USER_JWT_PUBLIC_KEY 를 설정하세요.");
         return generateEphemeralKeyPair();
     }
 

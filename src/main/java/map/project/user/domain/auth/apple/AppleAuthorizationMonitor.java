@@ -20,7 +20,7 @@ public class AppleAuthorizationMonitor {
         var scheduler=new ThreadPoolTaskScheduler();scheduler.setPoolSize(1);
         scheduler.setThreadNamePrefix("apple-authorization-");return scheduler;
     }
-    @Scheduled(scheduler="appleAuthorizationScheduler", fixedDelayString="${APPLE_VALIDATION_DELAY_MS:3600000}", initialDelayString="${APPLE_VALIDATION_DELAY_MS:3600000}")
+    @Scheduled(scheduler="appleAuthorizationScheduler", fixedDelayString="${USER_APPLE_VALIDATION_DELAY_MS:3600000}", initialDelayString="${USER_APPLE_VALIDATION_DELAY_MS:3600000}")
     public void validate() {
         if (!settings.enabled()) return;
         for (var link:links.findTop100ByRefreshTokenCiphertextIsNotNullAndCheckedAtBeforeOrderByCheckedAtAsc(OffsetDateTime.now().minusDays(1))) {

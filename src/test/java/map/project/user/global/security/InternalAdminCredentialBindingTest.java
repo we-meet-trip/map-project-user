@@ -38,20 +38,20 @@ class InternalAdminCredentialBindingTest {
     }
 
     @Test void actualConfigurationNeverFallsBackToServingCredential() throws Exception {
-        var props=bind(Map.of("INTERNAL_SERVICE_TOKEN","synthetic-serving"));
+        var props=bind(Map.of("MAP_PROJECT_INTERNAL_SERVICE_TOKEN","synthetic-serving"));
         assertEquals("",props.getToken());
         request(props,"synthetic-serving",false);
     }
 
     @Test void distinctDedicatedCredentialAuthorizesAndServingCredentialDoesNot() throws Exception {
-        var props=bind(Map.of("INTERNAL_SERVICE_TOKEN","synthetic-serving","USER_ADMIN_INTERNAL_TOKEN","synthetic-admin"));
+        var props=bind(Map.of("MAP_PROJECT_INTERNAL_SERVICE_TOKEN","synthetic-serving","MAP_PROJECT_USER_ADMIN_INTERNAL_TOKEN","synthetic-admin"));
         request(props,"synthetic-serving",false);
         request(props,"synthetic-admin",true);
     }
 
     @Test void ReusedOrBlankDedicatedCredentialFailsClosed() throws Exception {
         for(String token : new String[]{"synthetic-serving"," ",""}) {
-            request(bind(Map.of("INTERNAL_SERVICE_TOKEN","synthetic-serving","USER_ADMIN_INTERNAL_TOKEN",token)),token,false);
+            request(bind(Map.of("MAP_PROJECT_INTERNAL_SERVICE_TOKEN","synthetic-serving","MAP_PROJECT_USER_ADMIN_INTERNAL_TOKEN",token)),token,false);
         }
     }
 }

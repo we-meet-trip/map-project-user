@@ -21,7 +21,8 @@ def launch(operation, env):
     return result.returncode, result.stdout.strip(), result.stderr.strip()
 checks['config_only'] = launch('check-config', environment) == (0, '{"status":"configuration_valid","database_connected":false}', '')
 for key in ('spring.datasource.url', 'SPRING.DATASOURCE.URL', 'spring_datasource_url', 'SPRING_DATASOURCE_URL',
-            'USER_MIGRATION_PASSWORD', 'REDIS_HOST', 'GEMINI_API_KEY', 'USER_BOOTSTRAP_TARGET'):
+            'USER_MIGRATION_PASSWORD', 'REDIS_HOST', 'USER_REDIS_HOST', 'GEMINI_API_KEY',
+            'MAP_PROJECT_GEMINI_API_KEY', 'USER_BOOTSTRAP_TARGET'):
     checks['reject_' + key] = launch('bootstrap', {**environment, key: 'must-not-echo'}) == (2, '{"status":"configuration_rejected"}', '')
 for operation in ('migrate', 'clean', 'repair', 'baseline'):
     checks['reject_' + operation] = launch(operation, environment) == (2, '{"status":"configuration_rejected"}', '')

@@ -33,7 +33,8 @@ public final class RuntimeDatabaseGuard {
         UserDatabaseContract.require("validate".equals(environment.getProperty("spring.jpa.hibernate.ddl-auto")), "serving_ddl_forbidden");
         UserDatabaseContract.require(UserDatabaseContract.RUNTIME.equals(environment.getProperty("spring.datasource.username")), "runtime_role_required");
         UserDatabaseContract.require(environment.getProperty("USER_MIGRATION_PASSWORD", "").isEmpty(), "migration_secret_in_serving");
-        UserDatabaseContract.require(environment.getProperty("POSTGRES_PASSWORD", "").isEmpty(), "shared_database_secret_in_serving");
+        UserDatabaseContract.require(environment.getProperty("POSTGRES_PASSWORD", "").isEmpty()
+                && environment.getProperty("MAP_PROJECT_POSTGRES_PASSWORD", "").isEmpty(), "shared_database_secret_in_serving");
         UserDatabaseContract.validateUrl(url);
         try (var connection = UserDatabaseContract.connect(url, UserDatabaseContract.RUNTIME,
                 environment.getProperty("spring.datasource.password"))) {

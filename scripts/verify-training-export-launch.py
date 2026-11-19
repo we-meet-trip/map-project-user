@@ -32,9 +32,9 @@ env = {key:os.environ[key] for key in ("PATH", "JAVA_HOME") if key in os.environ
 env.update({"SPRING_DATASOURCE_URL":url + ";ACCESS_MODE_DATA=r;IFEXISTS=TRUE", "SPRING_DATASOURCE_USERNAME":"sa",
             "SPRING_DATASOURCE_PASSWORD":"", "SPRING_DATASOURCE_DRIVER_CLASS_NAME":"org.h2.Driver",
             "SPRING_JPA_HIBERNATE_DDL_AUTO":"none", "SPRING_JPA_DATABASE_PLATFORM":"org.hibernate.dialect.H2Dialect",
-            "LOCATION_CRYPTO_ENABLED":"false", "TRAINING_CAPTURE_ENABLED":"false", "TESTER_SEED_ENABLED":"false",
-            "TRAINING_EXPORT_ENABLED":"true", "TRAINING_EXPORT_APPROVED":"true",
-            "TRAINING_EXPORT_USER_REF_SALT":"synthetic-artifact-smoke", "TRAINING_EXPORT_OUTPUT_DIR":str(output)})
+            "LOCATION_CRYPTO_ENABLED":"false", "MAP_PROJECT_TRAINING_CAPTURE_ENABLED":"false", "USER_TESTER_SEED_ENABLED":"false",
+            "USER_TRAINING_EXPORT_ENABLED":"true", "USER_TRAINING_EXPORT_APPROVED":"true",
+            "USER_TRAINING_EXPORT_USER_REF_SALT":"synthetic-artifact-smoke", "USER_TRAINING_EXPORT_OUTPUT_DIR":str(output)})
 command = [java, "-Dloader.path=" + str(h2), "-cp", str(jar), "org.springframework.boot.loader.launch.PropertiesLauncher"]
 result = run(command, env=env)
 checks = {"exit_zero":result.returncode == 0, "no_http_server": "Tomcat started" not in result.stdout,
@@ -48,7 +48,7 @@ if files:
     checks["empty_synthetic_source"] = manifest["rows"] == 0
     checks["private_artifact"] = data.stat().st_mode & 0o777 == 0o600
     checks["private_manifest"] = files[0].stat().st_mode & 0o777 == 0o600
-hold_env = {**env, "TRAINING_EXPORT_APPROVED":"false", "SPRING_DATASOURCE_URL":"jdbc:postgresql://127.0.0.1:1/never-connect", "SPRING_DATASOURCE_DRIVER_CLASS_NAME":"org.postgresql.Driver"}
+hold_env = {**env, "USER_TRAINING_EXPORT_APPROVED":"false", "SPRING_DATASOURCE_URL":"jdbc:postgresql://127.0.0.1:1/never-connect", "SPRING_DATASOURCE_DRIVER_CLASS_NAME":"org.postgresql.Driver"}
 hold = run(command, env=hold_env)
 checks["hold_rejects_before_source_pool"] = hold.returncode != 0 and "training export approval HOLD" in hold.stdout + hold.stderr and "HikariPool" not in hold.stdout + hold.stderr
 report = {"scope":"local exact exporter JAR; synthetic read-only H2; no cloud or user data", "jar":jar.name,

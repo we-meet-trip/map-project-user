@@ -36,7 +36,7 @@ spring:
   # currentSchema=user_service 로 본 BFF 전용 스키마를 지정한다.
   # 호스트/포트/DB/계정/비밀번호는 모두 환경변수에서 주입한다.
   datasource:
-    url: jdbc:postgresql://${POSTGRES_HOST:postgres}:${POSTGRES_PORT:5432}/${POSTGRES_DB:map}?currentSchema=user_service
+    url: jdbc:postgresql://${MAP_PROJECT_POSTGRES_HOST:postgres}:${MAP_PROJECT_POSTGRES_PORT:5432}/${MAP_PROJECT_POSTGRES_DB:map}?currentSchema=user_service
     username: ${USER_DATABASE_USER:map_user_runtime}
     password: ${USER_DATABASE_PASSWORD:}
     driver-class-name: org.postgresql.Driver
@@ -60,11 +60,11 @@ spring:
   #    JPA Repository 와의 충돌을 두 단계로 회피한다.)
   data:
     redis:
-      host: ${REDIS_HOST:redis}
-      port: ${REDIS_PORT:6379}
+      host: ${USER_REDIS_HOST:redis}
+      port: ${USER_REDIS_PORT:6379}
       # password : Redis AUTH 비밀번호. 비우면 무인증(현행 동작). RedisConfig 가
       #            비어있지 않을 때만 모든 용도별 ConnectionFactory 에 적용한다.
-      password: ${REDIS_PASSWORD:}
+      password: ${MAP_PROJECT_REDIS_PASSWORD:}
       repositories:
         enabled: false
   # ---- spring.jackson : JSON 직렬화 정책 ----
@@ -83,11 +83,11 @@ spring:
 # - base-url        : agent 서비스 base URL
 # - timeout-seconds : RestClient 의 readTimeout (초)
 # - internal-token  : 에이전트 호출의 내부 서비스 인증 토큰. 비우면 헤더 미부착.
-#                     agent 의 INTERNAL_SERVICE_TOKEN 과 동일 값이어야 한다.
+#                     agent 와 같은 MAP_PROJECT_INTERNAL_SERVICE_TOKEN 값을 쓴다.
 agent:
-  base-url: ${AGENT_BASE_URL:http://agent:8000}
-  timeout-seconds: ${AGENT_TIMEOUT_SECONDS:60}
-  internal-token: ${INTERNAL_SERVICE_TOKEN:}
+  base-url: ${MAP_PROJECT_AGENT_BASE_URL:http://agent:8000}
+  timeout-seconds: ${USER_AGENT_TIMEOUT_SECONDS:60}
+  internal-token: ${MAP_PROJECT_INTERNAL_SERVICE_TOKEN:}
 
 # ---- hub : hub 게이트웨이 호출 설정 (BFF↔허브 경계) ----
 # HubClientConfig 가 본 섹션을 참조하여 RestClient 빈을 구성한다.
@@ -95,12 +95,12 @@ agent:
 # - base-url        : hub 서비스 base URL (도커: http://hub:8000, 로컬 BFF: http://localhost:8001)
 # - timeout-seconds : RestClient 의 readTimeout (초)
 # - internal-token  : 내부 서비스 인증 토큰. 비우면 헤더 미부착(현행). hub 의
-#                     INTERNAL_SERVICE_TOKEN 과 동일 값이어야 한다.
+#                     MAP_PROJECT_INTERNAL_SERVICE_TOKEN 값을 같이 쓴다.
 hub:
-  base-url: ${HUB_BASE_URL:http://hub:8000}
-  timeout-seconds: ${HUB_TIMEOUT_SECONDS:5}
-  directions-timeout-seconds: ${HUB_DIRECTIONS_TIMEOUT_SECONDS:20}
-  internal-token: ${INTERNAL_SERVICE_TOKEN:}
+  base-url: ${MAP_PROJECT_HUB_BASE_URL:http://hub:8000}
+  timeout-seconds: ${USER_HUB_TIMEOUT_SECONDS:5}
+  directions-timeout-seconds: ${USER_HUB_DIRECTIONS_TIMEOUT_SECONDS:20}
+  internal-token: ${MAP_PROJECT_INTERNAL_SERVICE_TOKEN:}
 
 # ---- internal.admin : /internal/admin/** 위임 가드 (관리 콘솔 내부 API) ----
 # InternalAdminGuardFilter / InternalAdminSecurityConfig 가 본 섹션을 참조한다.
@@ -111,9 +111,9 @@ hub:
 #                   비우면 fail-closed(헤더가 있어도 일치 불가 → 접근 차단).
 internal:
   admin:
-    service-token: ${INTERNAL_SERVICE_TOKEN:}
+    service-token: ${MAP_PROJECT_INTERNAL_SERVICE_TOKEN:}
     trusted-cidrs: ${USER_INTERNAL_TRUSTED_CIDRS:172.16.0.0/12,10.0.0.0/8,192.168.0.0/16}
-    token: ${USER_ADMIN_INTERNAL_TOKEN:}
+    token: ${MAP_PROJECT_USER_ADMIN_INTERNAL_TOKEN:}
 
 # ---- ratelimit : 인증 라우트 호출 한도의 클라이언트 식별 ----
 # RateLimitFilter 가 본 섹션을 참조한다.
@@ -139,8 +139,8 @@ ratelimit:
 #                          그보다 먼저 포기하게 한다.
 # - poll-interval-ms     : draft 폴링 간격(ms).
 trip:
-  poll-timeout-seconds: ${TRIP_POLL_TIMEOUT_SECONDS:110}
-  poll-interval-ms: ${TRIP_POLL_INTERVAL_MS:700}
+  poll-timeout-seconds: ${USER_TRIP_POLL_TIMEOUT_SECONDS:110}
+  poll-interval-ms: ${USER_TRIP_POLL_INTERVAL_MS:700}
 
 # ---- recommend : 추천 도메인 설정 ----
 # ResearchLimitService / RecommendCacheKey / RecommendService / RecommendCacheConfig 가
@@ -167,19 +167,19 @@ trip:
 # - prewarm-batch-size     : 모델 호출 1회에 묶어 보낼 장소 수. agent 요청
 #                            스키마의 상한을 넘기면 요청 전체가 거절된다.
 reviews:
-  summary-ttl-seconds: ${REVIEWS_SUMMARY_TTL_SECONDS:86400}
-  prewarm-enabled: ${REVIEWS_PREWARM_ENABLED:false}
-  prewarm-pool-size: ${REVIEWS_PREWARM_POOL_SIZE:1}
-  prewarm-queue-capacity: ${REVIEWS_PREWARM_QUEUE_CAPACITY:50}
-  prewarm-max-places: ${REVIEWS_PREWARM_MAX_PLACES:7}
-  prewarm-batch-size: ${REVIEWS_PREWARM_BATCH_SIZE:7}
+  summary-ttl-seconds: ${USER_REVIEWS_SUMMARY_TTL_SECONDS:86400}
+  prewarm-enabled: ${USER_REVIEWS_PREWARM_ENABLED:false}
+  prewarm-pool-size: ${USER_REVIEWS_PREWARM_POOL_SIZE:1}
+  prewarm-queue-capacity: ${USER_REVIEWS_PREWARM_QUEUE_CAPACITY:50}
+  prewarm-max-places: ${USER_REVIEWS_PREWARM_MAX_PLACES:7}
+  prewarm-batch-size: ${USER_REVIEWS_PREWARM_BATCH_SIZE:7}
 
 recommend:
-  research-daily-limit: ${RESEARCH_DAILY_LIMIT:3}
-  cache-budget-round-step: ${RECOMMEND_CACHE_BUDGET_ROUND_STEP:50000}
-  cache-time-round-step-minutes: ${RECOMMEND_CACHE_TIME_ROUND_STEP_MINUTES:60}
-  cache-refresh-every-hits: ${RECOMMEND_CACHE_REFRESH_EVERY_HITS:3}
-  cache-refresh-queue-capacity: ${RECOMMEND_CACHE_REFRESH_QUEUE_CAPACITY:100}
+  research-daily-limit: ${USER_RESEARCH_DAILY_LIMIT:3}
+  cache-budget-round-step: ${USER_RECOMMEND_CACHE_BUDGET_ROUND_STEP:50000}
+  cache-time-round-step-minutes: ${USER_RECOMMEND_CACHE_TIME_ROUND_STEP_MINUTES:60}
+  cache-refresh-every-hits: ${USER_RECOMMEND_CACHE_REFRESH_EVERY_HITS:3}
+  cache-refresh-queue-capacity: ${USER_RECOMMEND_CACHE_REFRESH_QUEUE_CAPACITY:100}
 
 # ---- transit-walk : 대중교통 구간 사이 도보 연결선 (미완성 실험 기능) ----
 # TransitRouteController(POST /api/v1/transit/routes/walk) 가 본 섹션을 참조한다.
@@ -188,7 +188,7 @@ recommend:
 # 부르지 않고 "unavailable" 을 답해, 앱은 지금처럼 직선을 그린다.
 # - enabled : 조회 사용 여부
 transit-walk:
-  enabled: ${TRANSIT_WALK_ENABLED:false}
+  enabled: ${USER_TRANSIT_WALK_ENABLED:false}
 
 # ---- weather-watch : 저장된 일정의 날씨 변화 감시 ----
 # ScheduleWeatherWatcher 가 본 섹션을 참조한다.
@@ -198,9 +198,9 @@ transit-walk:
 # - interval-ms      : 순회 주기(ms). 발급처 호출량이 걱정되면 늘린다
 # - initial-delay-ms : 기동 후 첫 순회까지 대기(ms). 기동 직후 부하와 겹치지 않게 둔다
 weather-watch:
-  enabled: ${WEATHER_WATCH_ENABLED:true}
-  interval-ms: ${WEATHER_WATCH_INTERVAL_MS:1800000}
-  initial-delay-ms: ${WEATHER_WATCH_INITIAL_DELAY_MS:60000}
+  enabled: ${USER_WEATHER_WATCH_ENABLED:true}
+  interval-ms: ${USER_WEATHER_WATCH_INTERVAL_MS:1800000}
+  initial-delay-ms: ${USER_WEATHER_WATCH_INITIAL_DELAY_MS:60000}
 
 # ---- streams : Redis Streams 컨슈머 설정 ----
 # StreamsConsumerConfig / RecommendJobsConsumer 가 본 섹션을 참조한다.
@@ -217,17 +217,17 @@ weather-watch:
 #                                  여유를 두어 일시적 지연 시 폴 태스크 사망을 줄인다.
 # - watchdog-interval-ms         : 구독 비활성 감지 시 재구독하는 워치독 주기(ms)
 streams:
-  recommend-stream: ${STREAM_NAME:agent:jobs:done}
-  recommend-group: ${STREAM_GROUP:bff-result}
-  recommend-consumer: ${STREAM_CONSUMER:user-1}
-  recommend-dlq-stream: ${STREAM_DLQ:agent:jobs:done:dlq}
-  recommend-max-retry: ${STREAM_MAX_RETRY:3}
-  recommend-dlq-maxlen: ${STREAM_MAXLEN:2000}
-  recommend-min-idle-ms: ${STREAM_MIN_IDLE_MS:60000}
-  recommend-reclaim-interval-ms: ${STREAM_RECLAIM_INTERVAL_MS:30000}
-  recommend-reclaim-batch: ${STREAM_RECLAIM_BATCH:64}
-  command-timeout-sec: ${STREAMS_COMMAND_TIMEOUT_SEC:6}
-  watchdog-interval-ms: ${STREAMS_WATCHDOG_INTERVAL_MS:10000}
+  recommend-stream: ${MAP_PROJECT_STREAM_NAME:agent:jobs:done}
+  recommend-group: ${MAP_PROJECT_STREAM_GROUP:bff-result}
+  recommend-consumer: ${USER_STREAM_CONSUMER:user-1}
+  recommend-dlq-stream: ${MAP_PROJECT_STREAM_DLQ:agent:jobs:done:dlq}
+  recommend-max-retry: ${USER_STREAM_MAX_RETRY:3}
+  recommend-dlq-maxlen: ${MAP_PROJECT_STREAM_MAXLEN:2000}
+  recommend-min-idle-ms: ${USER_STREAM_MIN_IDLE_MS:60000}
+  recommend-reclaim-interval-ms: ${USER_STREAM_RECLAIM_INTERVAL_MS:30000}
+  recommend-reclaim-batch: ${USER_STREAM_RECLAIM_BATCH:64}
+  command-timeout-sec: ${USER_STREAMS_COMMAND_TIMEOUT_SEC:6}
+  watchdog-interval-ms: ${USER_STREAMS_WATCHDOG_INTERVAL_MS:10000}
 
 # ---- redis : 용도별 Redis 논리 DB 번호 매핑 ----
 # RedisConfig 가 본 섹션을 참조하여 용도별 ConnectionFactory 의 DB 번호를 결정한다.
@@ -244,17 +244,17 @@ streams:
 # - cache-ttl-seconds       : 재사용 캐시 본체/히트카운터 TTL (초, 기본 7일)
 # - cache-link-ttl-seconds  : job_id→hash 연결고리 TTL (초, draft TTL과 동일)
 redis:
-  db-default: ${REDIS_DB_DEFAULT:0}
-  db-blacklist: ${REDIS_DB_BLACKLIST:1}
-  db-streams: ${REDIS_DB_STREAMS:2}
-  db-counters: ${REDIS_DB_COUNTERS:3}
-  db-ratelimit: ${REDIS_DB_RATELIMIT:3}
-  db-drafts: ${REDIS_DB_DRAFTS:4}
-  db-chat: ${REDIS_DB_CHAT:5}
-  db-cache: ${REDIS_DB_CACHE:6}
-  draft-ttl-seconds: ${REDIS_DRAFT_TTL_SECONDS:3600}
-  cache-ttl-seconds: ${REDIS_CACHE_TTL_SECONDS:604800}
-  cache-link-ttl-seconds: ${REDIS_CACHE_LINK_TTL_SECONDS:3600}
+  db-default: ${USER_REDIS_DB_DEFAULT:0}
+  db-blacklist: ${USER_REDIS_DB_BLACKLIST:1}
+  db-streams: ${MAP_PROJECT_REDIS_DB_STREAMS:2}
+  db-counters: ${USER_REDIS_DB_COUNTERS:3}
+  db-ratelimit: ${MAP_PROJECT_REDIS_DB_RATELIMIT:3}
+  db-drafts: ${USER_REDIS_DB_DRAFTS:4}
+  db-chat: ${USER_REDIS_DB_CHAT:5}
+  db-cache: ${USER_REDIS_DB_CACHE:6}
+  draft-ttl-seconds: ${USER_REDIS_DRAFT_TTL_SECONDS:3600}
+  cache-ttl-seconds: ${USER_REDIS_CACHE_TTL_SECONDS:604800}
+  cache-link-ttl-seconds: ${USER_REDIS_CACHE_LINK_TTL_SECONDS:3600}
 
 # (재사용 캐시 매칭/갱신 정책은 위 recommend 블록으로 통합했다 — 최상위 키 중복 금지)
 
@@ -271,21 +271,21 @@ redis:
 # - broadcast-channel       : 인스턴스 간 팬아웃용 Redis 발행/구독 채널명
 # - ws-endpoint             : WebSocket 핸드셰이크 경로
 chat:
-  max-participants: ${CHAT_MAX_PARTICIPANTS:10}
-  expiry-grace-days: ${CHAT_EXPIRY_GRACE_DAYS:7}
-  history-page-size: ${CHAT_HISTORY_PAGE_SIZE:50}
-  invite-base-url: ${CHAT_INVITE_BASE_URL:}
-  max-message-length: ${CHAT_MAX_MESSAGE_LENGTH:2000}
-  send-rate-limit: ${CHAT_SEND_RATE_LIMIT:20}
-  send-rate-window-seconds: ${CHAT_SEND_RATE_WINDOW_SECONDS:10}
-  invite-rate-limit: ${CHAT_INVITE_RATE_LIMIT:10}
-  invite-rate-window-seconds: ${CHAT_INVITE_RATE_WINDOW_SECONDS:60}
-  invite-ttl-days: ${CHAT_INVITE_TTL_DAYS:7}
-  invite-preview-rate-limit: ${CHAT_INVITE_PREVIEW_RATE_LIMIT:30}
-  invite-preview-rate-window-seconds: ${CHAT_INVITE_PREVIEW_RATE_WINDOW_SECONDS:60}
-  broadcast-channel: ${CHAT_BROADCAST_CHANNEL:chat:broadcast}
-  ws-endpoint: ${CHAT_WS_ENDPOINT:/ws/chat}
-  expiry-sweep-interval-ms: ${CHAT_EXPIRY_SWEEP_INTERVAL_MS:60000}
+  max-participants: ${USER_CHAT_MAX_PARTICIPANTS:10}
+  expiry-grace-days: ${USER_CHAT_EXPIRY_GRACE_DAYS:7}
+  history-page-size: ${USER_CHAT_HISTORY_PAGE_SIZE:50}
+  invite-base-url: ${USER_CHAT_INVITE_BASE_URL:}
+  max-message-length: ${USER_CHAT_MAX_MESSAGE_LENGTH:2000}
+  send-rate-limit: ${USER_CHAT_SEND_RATE_LIMIT:20}
+  send-rate-window-seconds: ${USER_CHAT_SEND_RATE_WINDOW_SECONDS:10}
+  invite-rate-limit: ${USER_CHAT_INVITE_RATE_LIMIT:10}
+  invite-rate-window-seconds: ${USER_CHAT_INVITE_RATE_WINDOW_SECONDS:60}
+  invite-ttl-days: ${USER_CHAT_INVITE_TTL_DAYS:7}
+  invite-preview-rate-limit: ${USER_CHAT_INVITE_PREVIEW_RATE_LIMIT:30}
+  invite-preview-rate-window-seconds: ${USER_CHAT_INVITE_PREVIEW_RATE_WINDOW_SECONDS:60}
+  broadcast-channel: ${USER_CHAT_BROADCAST_CHANNEL:chat:broadcast}
+  ws-endpoint: ${USER_CHAT_WS_ENDPOINT:/ws/chat}
+  expiry-sweep-interval-ms: ${USER_CHAT_EXPIRY_SWEEP_INTERVAL_MS:60000}
 
 # ---- server : 서블릿 컨테이너 포트 ----
 # Dockerfile 의 EXPOSE 및 HEALTHCHECK 가 동일 포트를 가정한다.
@@ -320,10 +320,10 @@ management:
 # - access-token-expiry-seconds : Access 토큰 유효기간 (초)
 # - refresh-token-expiry-seconds: Refresh 토큰 유효기간 (초)
 jwt:
-  private-key: ${JWT_PRIVATE_KEY:}
-  public-key: ${JWT_PUBLIC_KEY:}
-  access-token-expiry-seconds: ${JWT_ACCESS_TTL:3600}
-  refresh-token-expiry-seconds: ${JWT_REFRESH_TTL:2592000}
+  private-key: ${USER_JWT_PRIVATE_KEY:}
+  public-key: ${USER_JWT_PUBLIC_KEY:}
+  access-token-expiry-seconds: ${USER_JWT_ACCESS_TTL:3600}
+  refresh-token-expiry-seconds: ${USER_JWT_REFRESH_TTL:2592000}
 
 # ---- kakao : Kakao OAuth 클라이언트 설정 ----
 # KakaoProperties / KakaoOAuthService 가 본 섹션을 참조한다.
@@ -338,22 +338,22 @@ kakao:
   # app-id 는 Kakao 개발자 콘솔의 앱 번호다. 비우면(기본) 카카오 로그인이 꺼지고 이메일
   # 로그인만 쓴다. 켜려면 배포하는 사람이 자기 앱 번호를 준다 — 서버는 받은 액세스 토큰이
   # 이 앱에서 발급된 것인지 확인한다.
-  app-id: ${KAKAO_APP_ID:}
-  token-info-uri: ${KAKAO_TOKEN_INFO_URI:https://kapi.kakao.com/v1/user/access_token_info}
-  user-info-uri: ${KAKAO_USER_INFO_URI:https://kapi.kakao.com/v2/user/me}
+  app-id: ${USER_KAKAO_APP_ID:}
+  token-info-uri: ${USER_KAKAO_TOKEN_INFO_URI:https://kapi.kakao.com/v1/user/access_token_info}
+  user-info-uri: ${USER_KAKAO_USER_INFO_URI:https://kapi.kakao.com/v2/user/me}
 
 # ---- cors : 교차 출처 허용 정책 ----
 # CorsProperties / SecurityConfig 가 본 섹션을 참조한다.
 # - allowed-origins : 허용 출처 목록. 와일드카드(*)는 자격증명 비포함 모드로 동작
 cors:
-  allowed-origins: ${CORS_ALLOWED_ORIGINS:*}
+  allowed-origins: ${USER_CORS_ALLOWED_ORIGINS:*}
 
 # ---- auth : 인가 시행 플래그 ----
 # SecurityConfig / AuthStartupValidator 가 본 섹션을 참조한다.
 # - enforced=false(기본): 전 엔드포인트 공개(현행 동작 보존). 클라이언트 호환 유지.
 # - enforced=true       : 도메인 엔드포인트 인증 필수. 부팅 시 JWT 키/CORS 전제 검증.
 auth:
-  enforced: ${AUTH_ENFORCED:false}
+  enforced: ${USER_AUTH_ENFORCED:false}
 
 # ---- location.crypto : 저장 본문 암호화 ----
 # PayloadCipher 가 본 섹션을 참조한다. 일정·추천 결과 본문에는 사용자가 어디를
@@ -379,19 +379,19 @@ auth:
 #   뒤늦게 오는 값을 살려야 하므로 느슨하게 둔다. 0 이면 나이를 보지 않는다.
 location:
   crypto:
-    enabled: ${LOCATION_ENC_ENABLED:true}
-    active-kid: ${LOCATION_ENC_ACTIVE_KID:}
-    keys: ${LOCATION_ENC_KEYS:}
+    enabled: ${USER_LOCATION_ENC_ENABLED:true}
+    active-kid: ${USER_LOCATION_ENC_ACTIVE_KID:}
+    keys: ${USER_LOCATION_ENC_KEYS:}
   wire:
-    key: ${LOCATION_WIRE_KEY:}
-    max-age-seconds: ${LOCATION_WIRE_MAX_AGE_SECONDS:3600}
+    key: ${MAP_PROJECT_LOCATION_WIRE_KEY:}
+    max-age-seconds: ${USER_LOCATION_WIRE_MAX_AGE_SECONDS:3600}
 # ---- nearby : 일정 방문지 주변 장소 ----
 # NearbyService 가 본 섹션을 참조한다.
 # - radius-meters : 방문지에서 몇 미터까지 볼지. 걸어서 닿는 거리로 잡았다.
 # - size          : 한 번에 보여 줄 최대 개수. 늘리면 발급처 호출량이 함께 는다.
 nearby:
-  radius-meters: ${NEARBY_RADIUS_METERS:1000}
-  size: ${NEARBY_SIZE:10}
+  radius-meters: ${USER_NEARBY_RADIUS_METERS:1000}
+  size: ${USER_NEARBY_SIZE:10}
 
 # ---- training.export : 학습 자료 내보내기 (사람이 필요할 때 켜서 한 번 돌린다) ----
 # TrainingExportRunner / TrainingExportService 가 본 섹션을 참조한다.
@@ -406,15 +406,15 @@ nearby:
 # - batch-size           : 한 번에 훑는 일정 수.
 training:
   capture:
-    enabled: ${TRAINING_CAPTURE_ENABLED:false}
+    enabled: ${MAP_PROJECT_TRAINING_CAPTURE_ENABLED:false}
   export:
-    approved: ${TRAINING_EXPORT_APPROVED:false}
-    enabled: ${TRAINING_EXPORT_ENABLED:false}
-    user-ref-salt: ${TRAINING_EXPORT_USER_REF_SALT:}
-    exclude-test-accounts: ${TRAINING_EXPORT_EXCLUDE_TEST_ACCOUNTS:true}
-    test-email-domains: ${TRAINING_EXPORT_TEST_EMAIL_DOMAINS:example.com,test.com,map.test}
-    output-dir: ${TRAINING_EXPORT_OUTPUT_DIR:}
-    batch-size: ${TRAINING_EXPORT_BATCH_SIZE:500}
+    approved: ${USER_TRAINING_EXPORT_APPROVED:false}
+    enabled: ${USER_TRAINING_EXPORT_ENABLED:false}
+    user-ref-salt: ${USER_TRAINING_EXPORT_USER_REF_SALT:}
+    exclude-test-accounts: ${USER_TRAINING_EXPORT_EXCLUDE_TEST_ACCOUNTS:true}
+    test-email-domains: ${USER_TRAINING_EXPORT_TEST_EMAIL_DOMAINS:example.com,test.com,map.test}
+    output-dir: ${USER_TRAINING_EXPORT_OUTPUT_DIR:}
+    batch-size: ${USER_TRAINING_EXPORT_BATCH_SIZE:500}
 
 # ---- tester : 테스터 계정 시더 ----
 # TesterAccountSeedRunner / TesterAccountSeeder 가 본 섹션을 참조한다.
@@ -429,10 +429,10 @@ training:
 # 계정 수·이메일·닉네임은 코드 상수다. 팀이 외우고 쓰는 값이라 환경마다 달라지면 안 된다.
 tester:
   seed:
-    enabled: ${TESTER_SEED_ENABLED:false}
-    password: ${TESTER_SEED_PASSWORD:}
+    enabled: ${USER_TESTER_SEED_ENABLED:false}
+    password: ${USER_TESTER_SEED_PASSWORD:}
 
 # 사용자당 하루 이미지 분석 호출 상한. 기본 60 은 개발·시험용으로 낮게 둔 값이다.
 vision:
-  internal-token: ${VISION_INTERNAL_TOKEN:}
-  daily-limit: ${VISION_DAILY_LIMIT:60}
+  internal-token: ${MAP_PROJECT_VISION_INTERNAL_TOKEN:}
+  daily-limit: ${USER_VISION_DAILY_LIMIT:60}

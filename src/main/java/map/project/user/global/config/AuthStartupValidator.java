@@ -61,15 +61,15 @@ public class AuthStartupValidator {
         }
         if (isBlank(jwtProperties.getPrivateKey()) || isBlank(jwtProperties.getPublicKey())) {
             throw new IllegalStateException(
-                    "AUTH_ENFORCED=true requires JWT_PRIVATE_KEY/JWT_PUBLIC_KEY");
+                    "USER_AUTH_ENFORCED=true requires USER_JWT_PRIVATE_KEY/USER_JWT_PUBLIC_KEY");
         }
         if (isWildcardOrigin(corsProperties.getAllowedOrigins())) {
             throw new IllegalStateException(
-                    "AUTH_ENFORCED=true forbids CORS wildcard");
+                    "USER_AUTH_ENFORCED=true forbids CORS wildcard");
         }
         if (isBlank(hubInternalToken) || isBlank(agentInternalToken)) {
             throw new IllegalStateException(
-                    "AUTH_ENFORCED=true requires INTERNAL_SERVICE_TOKEN");
+                    "USER_AUTH_ENFORCED=true requires MAP_PROJECT_INTERNAL_SERVICE_TOKEN");
         }
     }
 

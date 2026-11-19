@@ -15,7 +15,7 @@ import java.util.List;
  *
  * - trustedCidrs : 호출을 허용할 사설 CIDR 목록(기본 사설 대역). map-net 컨테이너
  *                  네트워크 내부 호출만 통과시킨다.
- * - token        : X-Internal-Token 기대값. USER_ADMIN_INTERNAL_TOKEN 을 사용한다. 일반 서비스 토큰과
+ * - token        : X-Internal-Token 기대값. MAP_PROJECT_USER_ADMIN_INTERNAL_TOKEN 을 사용한다. 일반 서비스 토큰과
  *                  동일하거나 비어 있으면 헤더가 있어도
  *                  일치할 수 없어 사실상 접근이 차단된다(fail-closed).
  */
@@ -28,7 +28,7 @@ public class InternalAdminProperties {
     private List<String> trustedCidrs = List.of(
             "172.16.0.0/12", "10.0.0.0/8", "192.168.0.0/16");
 
-    /** X-Internal-Token 기대값(USER_ADMIN_INTERNAL_TOKEN, 일반 서비스 토큰과 달라야 함). */
+    /** X-Internal-Token 기대값(MAP_PROJECT_USER_ADMIN_INTERNAL_TOKEN, 일반 서비스 토큰과 달라야 함). */
     private String token = "";
 
     /** Misconfiguration check only; this value never authorizes admin requests. */

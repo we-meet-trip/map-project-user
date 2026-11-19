@@ -62,7 +62,7 @@ public class TesterAccountSeedRunner implements ApplicationRunner {
             return;
         }
         if (rawPassword == null || rawPassword.isBlank()) {
-            log.warn("tester seed skipped reason=password_not_set — TESTER_SEED_PASSWORD 를 채워야 한다");
+            log.warn("tester seed skipped reason=password_not_set — USER_TESTER_SEED_PASSWORD 를 채워야 한다");
             return;
         }
 
