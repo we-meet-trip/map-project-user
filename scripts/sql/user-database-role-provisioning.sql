@@ -1,4 +1,4 @@
--- R4 INFRA PROPOSAL, NOT EXECUTED. PostgreSQL 17, psql -X -v ON_ERROR_STOP=1.
+-- Converts an existing database to the owner/migrator/runtime role split. PostgreSQL 17, psql -X -v ON_ERROR_STOP=1.
 -- Requires reviewed backup/owner/ACL inventories and stopped User serving.
 -- Set expected_old_owner explicitly; never place passwords in command arguments.
 -- Does not globally revoke PUBLIC or change existing shared credentials.
@@ -122,8 +122,8 @@ END
 $verify$;
 COMMIT;
 
--- Still REQUIRED before starting R4 (not done by this proposal):
+-- Still REQUIRED before starting role-split serving (not done by this script):
 -- 1. Review existing DB PUBLIC TEMP / public CREATE and foreign service ACLs.
 -- 2. Provision secrets privately, enable LOGIN on runtime/migrator only.
 -- 3. Run exact-image migrator, runtime ACL guard and isolated PG17 semantic/deny probes.
--- Do not automatically revert to shared-superuser R3 serving on any failure.
+-- Do not automatically fall back to serving with a shared superuser on any failure.
