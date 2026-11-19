@@ -76,7 +76,7 @@ public class ReviewSummaryService {
             @Qualifier("cacheRedisTemplate") StringRedisTemplate redis,
             @Value("${reviews.summary-ttl-seconds:86400}") long ttlSeconds,
             @Qualifier("reviewSummaryPrewarmExecutor") Executor prewarmExecutor,
-            @Value("${reviews.prewarm-enabled:true}") boolean prewarmEnabled,
+            @Value("${reviews.prewarm-enabled:false}") boolean prewarmEnabled,
             @Value("${reviews.prewarm-max-places:7}") int prewarmMaxPlaces,
             @Value("${reviews.prewarm-batch-size:7}") int prewarmBatchSize
     ) {
