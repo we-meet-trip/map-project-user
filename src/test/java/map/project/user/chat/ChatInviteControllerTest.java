@@ -96,6 +96,20 @@ class ChatInviteControllerTest {
     }
 
     @Test
+    @DisplayName("발급 — 기준 주소가 없을 때 url 은 생략하지 않고 null 로 나간다")
+    void generate_nullUrlStaysInBody() throws Exception {
+        authenticated();
+        when(inviteService.generateOrRotate(1L, USER))
+                .thenReturn(new InviteResponse(TOKEN, null, 1, OffsetDateTime.now().plusDays(7)));
+
+        mockMvc.perform(post("/api/v1/chat/rooms/1/invite").header("Authorization", "Bearer tok"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.token").value(TOKEN))
+                .andExpect(jsonPath("$", org.hamcrest.Matchers.hasKey("url")))
+                .andExpect(jsonPath("$.url").value(org.hamcrest.Matchers.nullValue()));
+    }
+
+    @Test
     @DisplayName("발급 — 응답 키는 스네이크 케이스(expires_at)로 나간다")
     void generate_snakeCaseKeys() throws Exception {
         authenticated();

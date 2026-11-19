@@ -260,7 +260,8 @@ redis:
 # - max-participants        : 방당 ACTIVE 참가자 상한 (join 시 초과 차단)
 # - expiry-grace-days       : 여행 종료일 이후 전송 허용 일수 (방 생성 시 만료 시각 계산에 사용)
 # - history-page-size       : 메시지 히스토리 한 페이지 최대 건수
-# - invite-base-url         : 초대 링크 기준 주소 (배포 시 실제 딥링크 주소로 오버라이드 필수)
+# - invite-base-url         : 초대 링크 기준 주소. 비우면(기본) 응답 url 은 null 이고 앱이 토큰으로
+#                             앱 전용 주소를 만든다. https 링크를 쓰려면 앱의 초대 origin 과 같은 값을 준다
 # - max-message-length      : 텍스트 메시지 최대 글자 수 (초과 시 전송 거부)
 # - send-rate-limit         : send-rate-window-seconds 창당 사용자별 최대 전송 수
 # - send-rate-window-seconds: 전송 레이트리밋 시간 창(초)
@@ -270,7 +271,7 @@ chat:
   max-participants: ${CHAT_MAX_PARTICIPANTS:10}
   expiry-grace-days: ${CHAT_EXPIRY_GRACE_DAYS:7}
   history-page-size: ${CHAT_HISTORY_PAGE_SIZE:50}
-  invite-base-url: ${CHAT_INVITE_BASE_URL:https://app.example.com/invite/}
+  invite-base-url: ${CHAT_INVITE_BASE_URL:}
   max-message-length: ${CHAT_MAX_MESSAGE_LENGTH:2000}
   send-rate-limit: ${CHAT_SEND_RATE_LIMIT:20}
   send-rate-window-seconds: ${CHAT_SEND_RATE_WINDOW_SECONDS:10}

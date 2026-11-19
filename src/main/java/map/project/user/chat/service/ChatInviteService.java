@@ -64,7 +64,11 @@ public class ChatInviteService {
         OffsetDateTime inviteExpiresAt =
                 OffsetDateTime.now().plusDays(chatProperties.getInviteTtlDays());
         room.rotateInvite(tokenFactory.hash(rawToken), inviteExpiresAt);
-        String url = chatProperties.getInviteBaseUrl() + rawToken;
+        // 기준 주소를 주지 않은 배포에서는 링크를 만들지 않는다. 토큰만 돌려주고 url 은
+        // null 로 둔다 — 앱이 토큰으로 앱 전용 주소를 만든다. 빈 기준 주소에 토큰을 이어
+        // 붙이면 주소가 아닌 맨 토큰이 링크처럼 나간다.
+        String base = chatProperties.getInviteBaseUrl();
+        String url = base == null || base.isBlank() ? null : base + rawToken;
         return new InviteResponse(
                 rawToken, url, room.getInviteTokenVersion(), room.effectiveInviteExpiresAt());
     }

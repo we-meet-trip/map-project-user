@@ -218,6 +218,21 @@ class ChatServiceTest {
     }
 
     @Test
+    @DisplayName("초대 — 기준 주소가 비어 있으면 url 은 null, 있으면 기준 주소+토큰")
+    void invite_urlFollowsBaseUrl() {
+        long roomId = createRoomAsOwner(LocalDate.now().plusDays(3));
+
+        props.setInviteBaseUrl("");
+        InviteResponse bare = inviteService.generateOrRotate(roomId, OWNER);
+        assertThat(bare.token()).isNotBlank();
+        assertThat(bare.url()).isNull();
+
+        props.setInviteBaseUrl("https://example.invalid/invite/");
+        InviteResponse linked = inviteService.generateOrRotate(roomId, OWNER);
+        assertThat(linked.url()).isEqualTo("https://example.invalid/invite/" + linked.token());
+    }
+
+    @Test
     @DisplayName("초대 — 발급은 소유자만(참가한 MEMBER 여도 비소유자면 CHAT_NOT_OWNER)")
     void invite_generate_nonOwner() {
         long roomId = createRoomAsOwner(LocalDate.now().plusDays(3));

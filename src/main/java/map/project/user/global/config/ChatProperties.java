@@ -45,7 +45,7 @@ public class ChatProperties {
 
     private int historyPageSize = 50;
 
-    private String inviteBaseUrl = "https://example.invalid/chat/invite/";
+    private String inviteBaseUrl = "";
 
     private int maxMessageLength = 2000;
 
