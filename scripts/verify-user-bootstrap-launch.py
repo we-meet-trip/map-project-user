@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 jar = next(path for path in (ROOT / 'build/libs').glob('*.jar') if not path.name.endswith('-training-export.jar'))
 with zipfile.ZipFile(jar) as archive:
     checks = {'bootstrap_main_packaged': 'BOOT-INF/classes/map/bootstrap/UserBootstrapApplication.class' in archive.namelist(),
-              'serving_main_preserved': 'Start-Class: map.project.user.ServiceUserApplication' in archive.read('META-INF/MANIFEST.MF').decode()}
+              'serving_main_preserved': 'Start-Class: map.project.user.UserApplication' in archive.read('META-INF/MANIFEST.MF').decode()}
 environment = {key: os.environ[key] for key in ('PATH', 'HOME', 'JAVA_HOME') if key in os.environ}
 environment.update(USER_BOOTSTRAP_URL='jdbc:postgresql://127.0.0.1:1/synthetic', USER_BOOTSTRAP_USERNAME='map_user_bootstrap',
                    USER_BOOTSTRAP_PASSWORD='synthetic-unused', USER_BOOTSTRAP_EXPECTED_DATABASE='synthetic', USER_BOOTSTRAP_MARKER='a'*64)

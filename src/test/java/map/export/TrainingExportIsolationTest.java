@@ -6,7 +6,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.DriverManager;
-import map.project.user.ServiceUserApplication;
+import map.project.user.UserApplication;
 import map.project.user.recommend.TrainingExportRunner;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -66,7 +66,7 @@ class TrainingExportIsolationTest {
 
     @Test
     void servingRejectsExportBeforeDataSourcesStart() {
-        SpringApplication serving = new SpringApplication(ServiceUserApplication.class);
+        SpringApplication serving = new SpringApplication(UserApplication.class);
         serving.setWebApplicationType(WebApplicationType.NONE);
         assertThatThrownBy(() -> serving.run("--training.export.enabled=true",
                 "--spring.datasource.url=jdbc:postgresql://127.0.0.1:1/never_connect"))

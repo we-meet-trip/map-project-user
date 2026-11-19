@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.data.redis.RedisRepositoriesAutoCo
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 
 /**
- * ServiceUserApplication — user-BFF 서비스의 부트 진입점
+ * UserApplication — user-BFF 서비스의 부트 진입점
  *
  * 본 클래스는 Spring Boot 애플리케이션의 메인 클래스이며,
  * 컴포넌트 스캔의 기준 패키지(map.project.user)를 결정한다.
@@ -32,7 +32,7 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 @SpringBootApplication(exclude = {RedisRepositoriesAutoConfiguration.class,
         org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration.class})
 @ConfigurationPropertiesScan("map.project.user.global.config")
-public class ServiceUserApplication {
+public class UserApplication {
 
     @org.springframework.context.annotation.Bean
     static org.springframework.beans.factory.config.BeanFactoryPostProcessor servingExportGuard(
@@ -52,6 +52,6 @@ public class ServiceUserApplication {
      * @param args  실행 시 전달된 커맨드라인 인자
      */
     public static void main(String[] args) {
-        SpringApplication.run(ServiceUserApplication.class, args);
+        SpringApplication.run(UserApplication.class, args);
     }
 }

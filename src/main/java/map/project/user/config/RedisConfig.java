@@ -40,7 +40,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
  * - cacheRedisTemplate        : cacheConnectionFactory 위에 얹는 StringRedisTemplate
  *
  * 참고:
- * - ServiceUserApplication 이 RedisRepositoriesAutoConfiguration 을 제외하므로
+ * - UserApplication 이 RedisRepositoriesAutoConfiguration 을 제외하므로
  *   Spring Data Redis Repository 자동 활성화는 비활성 상태이다.
  * - Stream 메시지 수신은 StreamsConsumerConfig 가 streamsConnectionFactory 를 받아
  *   StreamMessageListenerContainer 를 별도로 등록한다.

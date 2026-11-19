@@ -5,13 +5,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 /**
- * ServiceUserApplicationTests — 애플리케이션 컨텍스트 로딩 스모크 테스트
+ * UserApplicationTests — 애플리케이션 컨텍스트 로딩 스모크 테스트
  *
  * 본 테스트는 SpringBootTest 어노테이션으로 전체 컨텍스트를 띄워서
  * 빈 구성에 누락 / 충돌이 없는지를 검증한다.
  *
  * 검증 범위:
- * - ServiceUserApplication 의 컴포넌트 스캔 결과로 모든 Configuration / Component 가
+ * - UserApplication 의 컴포넌트 스캔 결과로 모든 Configuration / Component 가
  *   문제없이 등록되는가
  * - RedisConfig / AgentClientConfig / StreamsConsumerConfig 가 정상 초기화되는가
  *
@@ -20,7 +20,7 @@ import org.springframework.test.context.ActiveProfiles;
  */
 @SpringBootTest
 @ActiveProfiles("test")
-class ServiceUserApplicationTests {
+class UserApplicationTests {
 
     /**
      * Spring 컨텍스트 로딩 확인.
