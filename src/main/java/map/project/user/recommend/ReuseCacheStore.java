@@ -172,12 +172,9 @@ public class ReuseCacheStore {
 
     /** A waiter follows one execution, never a later request with the same conditions. */
     public void markWaiting(String jobId, String token) {
-        redis.opsForValue().set(waitKey(jobId), "v1:" + token, inflightTtl);
+        redis.opsForValue().set(waitKey(jobId), token, inflightTtl);
     }
 
-    public void markLegacyWaiting(String jobId, String hash) {
-        redis.opsForValue().set(waitKey(jobId), hash, inflightTtl);
-    }
 
     /** 이 job 이 기다리는 조건. 기다리는 중이 아니면 empty. */
     public Optional<String> waitingHash(String jobId) {

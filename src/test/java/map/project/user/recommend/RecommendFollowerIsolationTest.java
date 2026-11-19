@@ -233,7 +233,7 @@ class RecommendFollowerIsolationTest {
 
     @Test void generationBodyIsEncryptedAndBoundToTokenIncludingProducerIdentity() {
         String[] ids = pair(); complete(ids[0], payload(ids[0], "공통 원본 장소"));
-        String token = store.findWaiting(ids[1]).orElseThrow().key().substring(3);
+        String token = store.findWaiting(ids[1]).orElseThrow().key();
         String sealed = redis.values.get("recommend:completion:" + token);
         assertThat(sealed).doesNotContain("공통 원본 장소").doesNotContain(ids[0]);
         redis.values.put("recommend:completion:another-generation", sealed);

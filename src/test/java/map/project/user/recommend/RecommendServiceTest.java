@@ -849,13 +849,13 @@ class RecommendServiceTest {
         String jobId = joined.accepted().jobId();
 
         // 아직 안 나왔으면 진행 중이다.
-        when(reuseCacheStore.waitingHash(jobId)).thenReturn(Optional.of("hash-x"));
-        when(reuseCacheStore.find("hash-x")).thenReturn(Optional.empty());
+        when(reuseCacheStore.waitingHash(jobId)).thenReturn(Optional.of("existing-generation"));
+        when(reuseCacheStore.completion("existing-generation")).thenReturn(Optional.empty());
         assertThat(service.findDraft(jobId)).isEmpty();
 
         // 나오면 자기 job_id 로 바꿔 받는다.
-        when(reuseCacheStore.find("hash-x"))
-                .thenReturn(Optional.of("{\"job_id\":\"job-2\",\"places\":[]}"));
+        when(reuseCacheStore.completion("existing-generation")).thenReturn(Optional.of(
+                new ReuseCacheStore.Completion(null, "{\"job_id\":\"job-2\",\"places\":[]}")));
         Optional<String> resolved = service.findDraft(jobId);
 
         assertThat(resolved).isPresent();
@@ -874,7 +874,7 @@ class RecommendServiceTest {
 
     @Test
     void followerReceivesOnlyItsGenerationFailure() throws Exception {
-        when(reuseCacheStore.waitingHash("waiter")).thenReturn(Optional.of("v1:generation-one"));
+        when(reuseCacheStore.waitingHash("waiter")).thenReturn(Optional.of("generation-one"));
         when(reuseCacheStore.completion("generation-one")).thenReturn(Optional.of(new ReuseCacheStore.Completion("producer-one",
                 "{\"job_id\":\"producer-one\",\"status\":\"failed\",\"code\":\"no_matching_places\",\"retryable\":false}")));
         String payload = service.findDraft("waiter").orElseThrow();
@@ -887,7 +887,7 @@ class RecommendServiceTest {
 
     @Test
     void followerDoesNotConsumeAnOlderGenerationCache() {
-        when(reuseCacheStore.waitingHash("waiter")).thenReturn(Optional.of("v1:new-generation"));
+        when(reuseCacheStore.waitingHash("waiter")).thenReturn(Optional.of("new-generation"));
         when(reuseCacheStore.completion("new-generation")).thenReturn(Optional.empty());
         assertThat(service.findDraft("waiter")).isEmpty();
         verify(reuseCacheStore, never()).find(anyString());
@@ -902,7 +902,7 @@ class RecommendServiceTest {
 
     @Test
     void cancelledProducerCannotExposeItsDeletedResultToFollower() throws Exception {
-        when(reuseCacheStore.waitingHash("waiter")).thenReturn(Optional.of("v1:generation-one"));
+        when(reuseCacheStore.waitingHash("waiter")).thenReturn(Optional.of("generation-one"));
         when(reuseCacheStore.completion("generation-one")).thenReturn(Optional.of(new ReuseCacheStore.Completion("cancelled-job", "{\"status\":\"done\",\"places\":[]}")));
         when(jobStore.isCancelled("cancelled-job")).thenReturn(true);
         String payload = service.findDraft("waiter").orElseThrow();
@@ -920,11 +920,10 @@ class RecommendServiceTest {
     }
 
     @Test
-    void legacyInflightMarkerUsesLegacySuccessLookup() {
-        when(reuseCacheStore.claimProducer(anyString(), anyString())).thenReturn("1");
+    void followerWaitsOnProducerTokenAsIs() {
+        when(reuseCacheStore.claimProducer(anyString(), anyString())).thenReturn("generation-one");
         service.createRecommendationDetailed(cacheRequest, null);
-        verify(reuseCacheStore).markLegacyWaiting(anyString(), anyString());
-        verify(reuseCacheStore, never()).markWaiting(anyString(), anyString());
+        verify(reuseCacheStore).markWaiting(anyString(), eq("generation-one"));
     }
 
 }

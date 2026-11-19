@@ -452,14 +452,13 @@ public class RecommendService {
      */
     private RecommendationResult followProducer(RecommendRequest normalized, Long userId, map.project.user.policy.AiConsentService.Permit permit, String token) {
         String jobId = UUID.randomUUID().toString();
-        String waitingKey = "1".equals(token) ? cacheKeyBuilder.hash(normalized) : "v1:" + token;
+        String waitingKey = token;
         jobStore.insertWaiting(jobId, normalized.scheduleId(),
                 RecommendJobStore.JobOrigin.agent("init").ownedBy(userId)
                         .withSegment(segmentOf(userId, false)), normalized.province(), normalized.city(),
                 waitingKey, OffsetDateTime.now().plus(reuseCacheStore.waitingTtl()));
         try {
-            if ("1".equals(token)) reuseCacheStore.markLegacyWaiting(jobId, waitingKey);
-            else reuseCacheStore.markWaiting(jobId, token);
+            reuseCacheStore.markWaiting(jobId, token);
         } catch (RuntimeException ignored) { log.warn("recommendation wait cache unavailable"); }
         ai.bindJob(jobId, permit);
         log.info("joined in-flight recommendation job_id={}", jobId);
@@ -476,24 +475,15 @@ public class RecommendService {
      *
      * 아직 안 나왔으면 empty 를 돌려준다 — 조회하는 쪽은 진행 중으로 보고
      * 다시 물어본다. 실행 세대가 끝나면 성공·실패 모두 자기 job 의 완료로
-     * 복사한다. 이전 배포의 hash-only 표시는 기존 성공 캐시만 읽는다.
+     * 복사한다. key 는 붙은 실행 세대의 토큰이다.
      */
     private Optional<String> resolveWaiting(String jobId, String key) {
-        Optional<String> produced;
-        String producer = null;
-        if (key.startsWith("v1:")) {
-            Optional<ReuseCacheStore.Completion> terminal = reuseCacheStore.completion(key.substring(3));
-            if (terminal.isEmpty()) return Optional.empty();
-            producer = terminal.get().producerJobId();
-            produced = Optional.of(producer != null && jobStore.isCancelled(producer)
-                    ? ReuseCacheStore.FAILED_COMPLETION : terminal.get().payload());
-        } else {
-            // Pre-upgrade hash markers resolve only old success caches.
-            produced = reuseCacheStore.find(key);
-            producer = produced.map(this::originJobId).orElse(null);
-        }
-        if (produced.isEmpty()) return Optional.empty();
-        return finishWaiting(jobId, producer, safeResult(jobId, withJobId(produced.get(), jobId)));
+        Optional<ReuseCacheStore.Completion> terminal = reuseCacheStore.completion(key);
+        if (terminal.isEmpty()) return Optional.empty();
+        String producer = terminal.get().producerJobId();
+        String produced = producer != null && jobStore.isCancelled(producer)
+                ? ReuseCacheStore.FAILED_COMPLETION : terminal.get().payload();
+        return finishWaiting(jobId, producer, safeResult(jobId, withJobId(produced, jobId)));
     }
 
     private Optional<String> finishWaiting(String jobId, String producer, String payload) {
