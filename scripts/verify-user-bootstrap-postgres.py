@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Hosted-only synthetic bootstrap proof. Run BEFORE the legacy isolation fixture.
+"""Hosted-only synthetic bootstrap proof.
 
 Only this harness's marked new databases/roles are removed, after evidence is captured.
 On failure leave them for runner-scoped diagnosis; never point this at GCP/local PG.

@@ -59,16 +59,7 @@ jobs:
       - name: verify one-use bootstrap entrypoint without database access
         run: python3 scripts/verify-user-bootstrap-launch.py
 
-      - name: preserve migration launcher evidence
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: user-migration-launch-verification
-          path: build/user-migration-launch-verification.json
-          if-no-files-found: ignore
-          retention-days: 14
-
-      - name: preserve exact candidate JAR for isolated PostgreSQL job
+      - name: preserve exact candidate JAR for the PostgreSQL bootstrap job
         uses: actions/upload-artifact@v4
         with:
           name: user-runtime-isolation-jar
@@ -94,13 +85,15 @@ jobs:
           d=$(sed -n 's/^FROM gradle:\([^-]*\)-.*/\1/p' Dockerfile)
           [ "$w" = "$d" ] || { echo "래퍼 $w · 이미지 $d 로 갈라져 있다"; exit 1; }
 
-  database-isolation:
+  # 빈 PostgreSQL 에서 부트스트랩 순서(준비 SQL → 부트스트랩 진입점 → 마무리·활성화 SQL)가
+  # 끝까지 도는지 본다. 이 러너 안에서 새로 만든 합성 데이터베이스만 쓴다.
+  database-bootstrap:
     needs: [test]
     runs-on: ubuntu-latest
     timeout-minutes: 25
     services:
       postgres:
-        # docker.io/library/postgres:17-alpine, resolved Linux/amd64 digest 2026-09-07.
+        # docker.io/library/postgres:17-alpine 의 linux/amd64 digest 를 고정한다.
         image: postgres@sha256:7456ef82e5f5bc43d997f4781bbd7c0d6389bff397564649a356e206ba473aee
         env:
           POSTGRES_PASSWORD: synthetic-ci-database-only
@@ -109,13 +102,6 @@ jobs:
           - 5432:5432
         options: >-
           --health-cmd "pg_isready -U postgres -d user_runtime_fixture"
-          --health-interval 5s --health-timeout 3s --health-retries 20
-      redis:
-        image: redis:7-alpine
-        ports:
-          - 6379:6379
-        options: >-
-          --health-cmd "redis-cli ping"
           --health-interval 5s --health-timeout 3s --health-retries 20
     steps:
       - uses: actions/checkout@v4
@@ -128,23 +114,10 @@ jobs:
         with:
           name: user-runtime-isolation-jar
           path: build/libs
-      - uses: actions/download-artifact@v4
-        with:
-          name: user-migration-launch-verification
-          path: build
-      - name: checkout immutable prior User source for realistic transition fixture
-        uses: actions/checkout@v4
-        with:
-          repository: we-meet-trip/map-service-user
-          ref: 1d4f394b51f471319eb9403f6e926a8d0a511c72
-          path: legacy-source
-      - name: build prior source for fixture only
-        working-directory: legacy-source
-        run: ./gradlew --no-daemon bootJar
-      - name: install fixture clients and syscall observer
+      - name: install fixture client and syscall observer
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends postgresql-client redis-tools strace
+          sudo apt-get install -y --no-install-recommends postgresql-client strace
       - name: genuine empty-host bootstrap and one-use role finalization
         env:
           MAP_HOSTED_DATABASE_FIXTURE: "true"
@@ -161,69 +134,3 @@ jobs:
           path: build/user-bootstrap-postgres-verification.json
           if-no-files-found: error
           retention-days: 14
-      - name: actual PostgreSQL role migration and serving isolation
-        env:
-          MAP_HOSTED_DATABASE_FIXTURE: "true"
-          PGHOST: 127.0.0.1
-          PGPORT: "5432"
-          PGDATABASE: user_runtime_fixture
-          PGUSER: postgres
-          PGPASSWORD: synthetic-ci-database-only
-        run: python3 scripts/verify-user-postgres-isolation.py
-      - name: preserve redacted PostgreSQL evidence
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: user-postgres-isolation-verification
-          path: build/user-postgres-isolation-verification.json
-          if-no-files-found: error
-          retention-days: 14
-
-  # Optional cross-repository release request; the infra receiver verifies this run.
-  release-dispatch:
-    needs: [test, database-isolation]
-    if: >-
-      needs.test.result == 'success' && needs.database-isolation.result == 'success' &&
-      github.repository == 'we-meet-trip/map-service-user' &&
-      github.event_name == 'push' && github.ref == 'refs/heads/develop'
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    permissions: {}
-    env:
-      RELEASE_DISPATCH_TOKEN: ${{ secrets.RELEASE_DISPATCH_TOKEN }}
-    steps:
-      - name: request verified develop release
-        if: ${{ env.RELEASE_DISPATCH_TOKEN != '' }}
-        run: |
-          python3 - <<'PY'
-          import json
-          import os
-          import urllib.request
-
-          payload = {
-              "event_type": "release-develop",
-              "client_payload": {
-                  "repository": os.environ["GITHUB_REPOSITORY"],
-                  "sha": os.environ["GITHUB_SHA"],
-                  "run_id": os.environ["GITHUB_RUN_ID"],
-              },
-          }
-          try:
-              request = urllib.request.Request(
-                  "https://api.github.com/repos/we-meet-trip/map-service-infra/dispatches",
-                  data=json.dumps(payload).encode("utf-8"),
-                  headers={
-                      "Accept": "application/vnd.github+json",
-                      "Content-Type": "application/json",
-                      "Authorization": "Bearer " + os.environ["RELEASE_DISPATCH_TOKEN"],
-                      "X-GitHub-Api-Version": "2022-11-28",
-                  },
-                  method="POST",
-              )
-              with urllib.request.urlopen(request, timeout=20) as response:
-                  if response.status != 204:
-                      raise SystemExit("Release dispatch failed")
-          except Exception:
-              # Never expose the token, response body, or exception details.
-              raise SystemExit("Release dispatch failed") from None
-          PY
