@@ -19,7 +19,7 @@
 -- schedules 추가 컬럼(전부 nullable — 이전에 저장된 일정은 값이 없다):
 -- - province / city      : 추천 당시 지역. 없으면 날씨 감시 대상에서 빠진다
 -- - weather_baseline     : 저장 시점의 날짜별 예보(JSONB 배열).
---                          [{"date":"2026-09-01","pop":20,"sky":"sunny"}, ...]
+--                          [{"date":"YYYY-MM-DD","pop":20,"sky":"sunny"}, ...]
 -- - weather_alert        : 지금 걸려 있는 변화 알림(JSONB). 없으면 NULL.
 --                          {"kind":"rain_appeared","date":...,"pop_before":...}
 -- - weather_checked_at   : 마지막으로 예보를 다시 받아 견준 시각
