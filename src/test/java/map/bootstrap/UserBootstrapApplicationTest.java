@@ -23,6 +23,11 @@ class UserBootstrapApplicationTest {
         UserBootstrapApplication.verifyResources();
     }
 
+    @Test void acceptsTheEncodingVariableMacOsAddsToEveryJvm() {
+        var env = environment(); env.put("__CF_USER_TEXT_ENCODING", "0x1F5:0x3:0x33");
+        assertThat(UserBootstrapApplication.run(new String[]{"check-config"}, env, config -> 0, ignored -> {})).isZero();
+    }
+
     @Test void refusesUnknownEnvironmentAndSpringAliasesBeforeConnection() {
         for (String key : new String[]{"SPRING_DATASOURCE_URL", "spring.datasource.url", "SPRING.DATASOURCE.URL",
                 "spring_datasource_url", "REDIS_HOST", "USER_REDIS_HOST", "GEMINI_API_KEY", "MAP_PROJECT_GEMINI_API_KEY", "USER_MIGRATION_PASSWORD", "JAVA_TOOL_OPTIONS",

@@ -38,7 +38,9 @@ public final class UserBootstrapApplication {
             Set<String> allowed = Set.of("USER_BOOTSTRAP_URL", "USER_BOOTSTRAP_USERNAME", "USER_BOOTSTRAP_PASSWORD",
                     "USER_BOOTSTRAP_EXPECTED_DATABASE", "USER_BOOTSTRAP_MARKER");
             // An allowlist also rejects dotted/lowercase Spring aliases and every serving/provider secret.
-            Set<String> process = Set.of("PATH", "JAVA_HOME", "HOME", "LANG", "LC_ALL", "TZ", "TMPDIR");
+            // macOS 의 JVM 은 문자 인코딩 변수(__CF_USER_TEXT_ENCODING)를 스스로 넣는다. 비밀이 아니다.
+            Set<String> process = Set.of("PATH", "JAVA_HOME", "HOME", "LANG", "LC_ALL", "TZ", "TMPDIR",
+                    "__CF_USER_TEXT_ENCODING");
             for (String key : environment.keySet()) require(allowed.contains(key) || process.contains(key), "bootstrap_environment_forbidden");
             String url = environment.get("USER_BOOTSTRAP_URL");
             UserDatabaseContract.validateUrl(url);
