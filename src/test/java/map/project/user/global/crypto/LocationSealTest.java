@@ -18,7 +18,7 @@ import org.junit.jupiter.api.Test;
 
 class LocationSealTest {
 
-    /** 검사에서만 쓰는 고정 열쇠. hub 쪽 호환 검사에는 이 열쇠로 감싼 값을 옮겨 적는다. */
+    /** 검사에서만 쓰는 고정 열쇠. 서비스들이 실제로 함께 쓰는 열쇠는 배포 때 MAP_PROJECT_LOCATION_WIRE_KEY 로 준다. */
     static final String KEY = "IiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiI=";
 
     private static LocationSeal seal(String key) {
