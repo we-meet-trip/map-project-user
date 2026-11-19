@@ -20,8 +20,8 @@ import java.time.ZoneId;
 @Service
 @Transactional(readOnly = true)
 public class ServicePolicyService {
-    public static final String TERMS_VERSION = "2026-09-15";
-    public static final String PRIVACY_VERSION = "2026-09-15";
+    public static final String TERMS_VERSION = "1.0.0";
+    public static final String PRIVACY_VERSION = "1.0.0";
     private static final ZoneId KST = BirthDatePolicy.KST;
     private final UserRepository users;
     private final ServicePolicyAcceptanceRepository acceptances;

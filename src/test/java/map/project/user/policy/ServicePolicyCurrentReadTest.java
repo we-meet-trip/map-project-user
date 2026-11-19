@@ -86,14 +86,14 @@ class ServicePolicyCurrentReadTest {
     }
     @Test void existingAdultMustExplicitlyAcceptTheNewPrivacyRevision() {
         seed(LocalDate.of(2000, 1, 1));
-        jdbc.update("update service_policy_acceptances set privacy_version='2026-09-07' where user_id=?", ownUserId);
+        jdbc.update("update service_policy_acceptances set privacy_version='0.9.0' where user_id=?", ownUserId);
         assertThat(policy.status(ownUserId).accepted()).isFalse();
         rejected(ErrorCode.SERVICE_POLICY_REQUIRED);
         assertThatThrownBy(() -> policy.accept(ownUserId, new ServicePolicyService.AcceptRequest(
-                ServicePolicyService.TERMS_VERSION, "2026-09-07", true, true, true)))
+                ServicePolicyService.TERMS_VERSION, "0.9.0", true, true, true)))
                 .hasFieldOrPropertyWithValue("errorCode", ErrorCode.POLICY_VERSION_MISMATCH);
         assertThat(jdbc.queryForObject("select privacy_version from service_policy_acceptances where user_id=?",
-                String.class, ownUserId)).isEqualTo("2026-09-07");
+                String.class, ownUserId)).isEqualTo("0.9.0");
         assertThat(policy.accept(ownUserId, new ServicePolicyService.AcceptRequest(
                 ServicePolicyService.TERMS_VERSION, ServicePolicyService.PRIVACY_VERSION, true, true, true)).accepted()).isTrue();
         policy.requireCurrentEligible(ownUserId);
