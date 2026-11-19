@@ -54,8 +54,8 @@ class TrainingExportRunnerTest {
     }
 
     private TrainingExportRow row(Long sessionId, String userRef) {
-        return new TrainingExportRow(1, "2026-08-23T00:00:00Z", sessionId, userRef, true,
-                "job-1", "job-0", "parent", "init", "cache_hit", "refresh", "agent", 2,
+        return new TrainingExportRow("1.0.0", "2026-08-23T00:00:00Z", sessionId, userRef, true,
+                "job-1", "job-0", "parent", "init", "cache_hit", "refresh", "agent", "2",
                 "splitkey", "request", null, null, null,
                 new TrainingExportRow.Schedule("2026-09-05", "2026-09-05", "walk",
                         10, 18, null, null, 1, false),

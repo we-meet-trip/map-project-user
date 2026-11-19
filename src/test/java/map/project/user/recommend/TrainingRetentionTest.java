@@ -63,7 +63,7 @@ class TrainingRetentionTest {
     private UUID insertSignal() throws Exception {
         UUID id = UUID.randomUUID();
         trainingRepository.saveAndFlush(new RecommendTrainingEntity(
-                id, 1, objectMapper.readTree(SIGNAL)));
+                id, "1", objectMapper.readTree(SIGNAL)));
         return id;
     }
 

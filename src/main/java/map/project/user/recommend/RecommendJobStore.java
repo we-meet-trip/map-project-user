@@ -540,11 +540,10 @@ public class RecommendJobStore {
             return;
         }
         JsonNode signal;
-        Integer version;
+        String version;
         try {
             signal = objectMapper.readTree(trainingJson);
-            JsonNode v = signal.get("schema_version");
-            version = v != null && v.isInt() ? v.intValue() : null;
+            version = schemaVersion(signal.get("schema_version"));
         } catch (JsonProcessingException e) {
             log.warn("training signal unreadable job_id={} reason={}", uuid, e.getMessage());
             return;
@@ -564,6 +563,19 @@ public class RecommendJobStore {
             // 같은 잡을 두 소비자가 동시에 처리했다. 먼저 넣은 쪽 것을 쓴다.
             log.debug("training signal already stored job_id={}", uuid);
         }
+    }
+
+    /**
+     * 학습 신호의 판 표기를 저장할 문자열로 바꾼다. 정수(예전 표기)와 "1.0.0" 같은
+     * 문자열(지금 표기)을 모두 받는다. 둘 다 아니면 null 이라 그 신호는 걸러진다.
+     * 문자열은 판 표기 모양(영숫자·점·밑줄·하이픈, 32자 이하)일 때만 받는다 — 열은
+     * text 라 길이 제한이 없으므로 여기서 막는다.
+     */
+    static String schemaVersion(JsonNode v) {
+        if (v == null) return null;
+        if (v.isInt()) return String.valueOf(v.intValue());
+        if (v.isTextual() && v.asText().matches("[0-9A-Za-z._-]{1,32}")) return v.asText();
+        return null;
     }
 
     /** 완료 상태를 기록한다. 행이 있으면 갱신, 없으면 생성. */

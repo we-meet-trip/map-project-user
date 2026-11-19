@@ -35,7 +35,7 @@ public class RecommendTrainingEntity {
     private UUID jobId;
 
     @Column(name = "schema_version", nullable = false)
-    private Integer schemaVersion;
+    private String schemaVersion;
 
     @Column(name = "payload", columnDefinition = "jsonb", nullable = false)
     @JdbcTypeCode(SqlTypes.JSON)
@@ -50,7 +50,7 @@ public class RecommendTrainingEntity {
     }
 
     /** 도메인 생성자. createdAt 은 DB 기본값으로 채워지므로 인자에 없다. */
-    public RecommendTrainingEntity(UUID jobId, Integer schemaVersion, JsonNode payload) {
+    public RecommendTrainingEntity(UUID jobId, String schemaVersion, JsonNode payload) {
         this.jobId = jobId;
         this.schemaVersion = schemaVersion;
         this.payload = payload;
@@ -62,7 +62,7 @@ public class RecommendTrainingEntity {
     }
 
     /** 신호 계약의 판 반환. */
-    public Integer getSchemaVersion() {
+    public String getSchemaVersion() {
         return schemaVersion;
     }
 

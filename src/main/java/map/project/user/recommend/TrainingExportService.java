@@ -70,7 +70,7 @@ public class TrainingExportService {
     private static final Logger log = LoggerFactory.getLogger(TrainingExportService.class);
 
     /** 이 파일 형식의 판. 읽는 쪽이 보고 갈라 읽는다. */
-    static final int EXPORT_SCHEMA_VERSION = 1;
+    static final String EXPORT_SCHEMA_VERSION = "1.0.0";
 
     private static final String UNKNOWN = "unknown";
 
@@ -205,7 +205,7 @@ public class TrainingExportService {
     private record Session(ScheduleEntity schedule, RecommendJobEntity savedJob,
                            UUID originJobId, String originResolution,
                            RecommendJobEntity originJob, JsonNode trainingPayload,
-                           Integer trainingSchemaVersion, String savedSetKey) {
+                           String trainingSchemaVersion, String savedSetKey) {
     }
 
     private List<Session> chain(List<ScheduleEntity> schedules) {

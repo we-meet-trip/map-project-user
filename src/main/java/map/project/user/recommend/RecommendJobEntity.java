@@ -88,7 +88,7 @@ public class RecommendJobEntity {
 
     /** 함께 보관된 학습 신호의 계약 판. 신호가 없으면 비어 있다. */
     @Column(name = "schema_version")
-    private Integer schemaVersion;
+    private String schemaVersion;
 
     /**
      * 이 잡을 만든 사용자. 토큰 없이 들어온 요청과 이전 행은 비어 있다.
@@ -257,7 +257,7 @@ public class RecommendJobEntity {
     }
 
     /** 함께 보관된 학습 신호의 계약 판 반환. nullable. */
-    public Integer getSchemaVersion() {
+    public String getSchemaVersion() {
         return schemaVersion;
     }
 

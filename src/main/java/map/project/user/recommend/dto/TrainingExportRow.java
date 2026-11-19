@@ -26,7 +26,7 @@ import java.util.List;
  */
 @JsonInclude(JsonInclude.Include.ALWAYS)
 public record TrainingExportRow(
-        @JsonProperty("export_schema_version") int exportSchemaVersion,
+        @JsonProperty("export_schema_version") String exportSchemaVersion,
         @JsonProperty("exported_at") String exportedAt,
 
         @JsonProperty("session_id") Long sessionId,
@@ -46,7 +46,7 @@ public record TrainingExportRow(
         /** 후보가 나온 자리. 사용자 행동과 다를 수 있다(캐시·백그라운드 갱신). */
         @JsonProperty("origin_mode") String originMode,
         @JsonProperty("origin_source") String originSource,
-        @JsonProperty("training_schema_version") Integer trainingSchemaVersion,
+        @JsonProperty("training_schema_version") String trainingSchemaVersion,
 
         /**
          * 나누기 기준. 같은 조건으로 물은 세션은 한쪽으로 몰아야 한다.

@@ -102,7 +102,7 @@ class TrainingExportEncryptionTest {
             var candidates = signal.putArray("candidates");
             candidates.addObject().put("rank", 0).put("content_id", "place:a");
             candidates.addObject().put("rank", 1).put("content_id", "place:b");
-            when(training.findAllById(any())).thenReturn(List.of(new RecommendTrainingEntity(SAVED, 2, signal)));
+            when(training.findAllById(any())).thenReturn(List.of(new RecommendTrainingEntity(SAVED, "2", signal)));
             when(arrivals.findByScheduleIdIn(any())).thenReturn(List.of(new ScheduleArrivalEntity(
                     SCHEDULE, 1, 1, OffsetDateTime.parse("2026-09-06T10:00:00Z"), "ok")));
             when(impressions.findByScheduleIdIn(any())).thenReturn(List.of());

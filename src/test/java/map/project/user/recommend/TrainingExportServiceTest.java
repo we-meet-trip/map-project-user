@@ -135,7 +135,7 @@ class TrainingExportServiceTest {
         }
         p.putObject("scores_pre_cap").put("kakao:0", 1.0).put("kakao:1", 0.9);
         p.putArray("chosen_content_ids").add("kakao:0").add("kakao:1");
-        trainingRepository.saveAndFlush(new RecommendTrainingEntity(jobId, 2, p));
+        trainingRepository.saveAndFlush(new RecommendTrainingEntity(jobId, "2", p));
     }
 
     /** places 0·1 을 저장한 일정. visit_order 는 방문 순서다. */
