@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * InternalAdminProperties — /internal/admin/** 가드 설정
  *
- * map-service-admin(운영 콘솔)이 위임 호출하는 /internal/admin/** 엔드포인트를
+ * map-project-admin(운영 콘솔)이 위임 호출하는 /internal/admin/** 엔드포인트를
  * 보호하는 CIDR 화이트리스트 + 관리자 전용 토큰 설정을 담는다. hub 의 internal_guard
  * (CIDR + X-Internal-Token 상수시간 비교)를 Spring 으로 이식한 것이다.
  *

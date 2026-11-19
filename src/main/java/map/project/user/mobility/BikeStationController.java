@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * BikeStationController — 대여소 도메인 HTTP 진입점 (경계 B1)
+ * BikeStationController — 대여소 도메인 HTTP 진입점 (앱↔BFF 경계)
  *
  * client 가 좌표 주변의 따릉이 대여소를 조회하는 엔드포인트를 노출한다.
  * 실제 조회는 BikeStationClient 를 통해 hub 로 위임하고, 본 클래스는 요청

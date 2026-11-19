@@ -20,7 +20,7 @@ import java.util.Map;
 /**
  * AdminJobQueryService — 운영 콘솔 위임 추천 작업 조회
  *
- * map-service-admin 이 /internal/admin/recommend-jobs* 로 호출한다. 통계(상태별
+ * map-project-admin 이 /internal/admin/recommend-jobs* 로 호출한다. 통계(상태별
  * 건수 + 최근 24h 실패수)와 목록(대용량 payload 제외)을 제공한다.
  */
 @Service

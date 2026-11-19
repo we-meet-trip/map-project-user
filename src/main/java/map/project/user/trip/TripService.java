@@ -40,7 +40,8 @@ import org.springframework.stereotype.Service;
  *   6) 동기 200 TripGenerateResponse 반환.
  *
  * 기존 자산 재사용: RecommendService · RecommendRequest/RecommendResponse DTO.
- * (SoT D6/B7 의 long-poll 대신 사용자 결정 D-1 의 동기 facade — 위험 등록부 등재 대상.)
+ * 앱이 결과를 롱폴링하는 대신 이 요청 하나가 완료까지 기다린다. 그래서 대기 상한(trip.poll-timeout-seconds)이
+ * 앱·앞단 프록시의 상한보다 짧아야 하고, 기다리는 동안 요청 스레드를 하나 쓴다.
  */
 @Service
 public class TripService {

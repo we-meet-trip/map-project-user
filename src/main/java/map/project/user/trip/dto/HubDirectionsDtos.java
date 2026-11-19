@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * HubDirectionsDtos — hub POST /v1/directions/batch 요청/응답 DTO 모음 (경계 B3)
+ * HubDirectionsDtos — hub POST /v1/directions/batch 요청/응답 DTO 모음 (BFF↔허브 경계)
  *
  * BFF 가 stop 간 이동 구간의 도로 추종 경로를 hub 에 일괄 요청/수신하는
  * 계약. 한 곳에 모아 두어(중첩 record) 계약 변경을 한눈에 본다.

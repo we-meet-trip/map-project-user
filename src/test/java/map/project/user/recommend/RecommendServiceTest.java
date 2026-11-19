@@ -33,7 +33,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
 /**
- * RecommendServiceTest — B2 확장 계약(stage/exclude)과 재사용 캐시 분기 검증
+ * RecommendServiceTest — agent 추천 요청의 확장 필드(stage/exclude)과 재사용 캐시 분기 검증
  *
  * create: 클라이언트 stage/exclude 무시하고 init/[] 강제. 캐시 미스면 agent 호출 +
  *         job_id→hash 연결 + PG in_progress 기록, 히트면 캐시 draft 를 새 job_id 로
@@ -134,7 +134,7 @@ class RecommendServiceTest {
                 null);
     }
 
-    // ---- B2 계약: 서버측 stage/exclude 강제 ----
+    // ---- agent 추천 요청 계약: 서버측 stage/exclude 강제 ----
 
     @Test
     void createForcesInitStageAndEmptyExclude() {
@@ -163,7 +163,7 @@ class RecommendServiceTest {
                 RecommendJobStore.JobOrigin.agent("init"), "서울특별시", "강남구");
     }
 
-    // ---- research(Mode 1) ----
+    // ---- research(재탐색) ----
 
     @Test
     void researchCollectsContentIdsIntoExclude() {

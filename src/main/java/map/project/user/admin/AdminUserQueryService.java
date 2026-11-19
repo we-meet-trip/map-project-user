@@ -18,7 +18,7 @@ import java.util.Optional;
 /**
  * AdminUserQueryService — 운영 콘솔 위임 회원 조회
  *
- * map-service-admin 이 /internal/admin/users 로 호출한다. 목록은 이메일을
+ * map-project-admin 이 /internal/admin/users 로 호출한다. 목록은 이메일을
  * 마스킹하고, 상세는 원문 이메일을 노출한다. password_hash 등 인증 비밀은
  * 어떤 응답에도 담지 않는다(DTO 로만 반환, 엔티티 직렬화 금지).
  */

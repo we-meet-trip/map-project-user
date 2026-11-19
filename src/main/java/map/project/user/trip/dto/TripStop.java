@@ -18,7 +18,7 @@ import java.util.List;
  *      이 값으로 일차별 탭·지도 경로를 그린다.
  * name/address: places 의 name/address.
  * time: 방문 시각 "HH:mm". TripMapping 이 해당 day 안에서 활동 시간대
- *       기준으로 균등 계산(R-2, day 별로 독립 계산됨).
+ *       기준으로 균등 계산(day 별로 따로 계산한다).
  * latitude/longitude: places 의 lat/lng.
  * transportToNext: 다음 stop 으로의 이동. 마지막 stop 이거나 다음 stop 이
  *                  다른 day 인 경우 null 이며, null 인 경우 직렬화에서

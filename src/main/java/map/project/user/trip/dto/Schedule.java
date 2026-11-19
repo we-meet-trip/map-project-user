@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 /**
- * Schedule — trip 생성 요청의 일정/활동 시간대 (client Step 1)
+ * Schedule — trip 생성 요청의 일정/활동 시간대 (앱 입력의 일정 단계)
  *
  * TripGenerateRequest 의 schedule 필드로 중첩되어 사용된다.
  * client 가 보내는 JSON 키는 snake_case 이며 본 record 가 그대로 매핑한다.

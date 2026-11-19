@@ -171,7 +171,7 @@ public class RedisConfig {
      * 사용처: ReuseCacheStore 가 Qualifier("cacheRedisTemplate") 로 주입받는
      *        StringRedisTemplate 의 기반이 된다.
      *
-     * @param db  사용할 Redis DB 번호 (redis.db-cache, 기본 6 — DB5 는 채팅(경계 B8)이
+     * @param db  사용할 Redis DB 번호 (redis.db-cache, 기본 6 — DB5 는 실시간 채팅이
      *            선점했으므로 충돌을 피해 DB6 을 쓴다)
      */
     @Bean(name = "cacheConnectionFactory", destroyMethod = "destroy")

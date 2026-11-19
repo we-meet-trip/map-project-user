@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
 /**
- * HubWeatherNowClient — hub /v1/weather/now 호출 어댑터 (경계 B3)
+ * HubWeatherNowClient — hub /v1/weather/now 호출 어댑터 (BFF↔허브 경계)
  *
  * 홈 화면 날씨 카드가 필요로 하는 현재 날씨를 hub 에서 받아 온다.
  * 여기서는 실패를 흡수하지 않는다 — 카드의 본체인 지금 기온이 없으면 그릴

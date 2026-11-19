@@ -17,7 +17,7 @@ import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientResponseException;
 
 /**
- * HubDirectionsClient — hub POST /v1/directions/batch 호출 어댑터 (경계 B3)
+ * HubDirectionsClient — hub POST /v1/directions/batch 호출 어댑터 (BFF↔허브 경계)
  *
  * stop 간 이동 구간의 도로 추종 경로를 hub 에 일괄 요청한다. 경로는 추천의
  * 보조 시각화이므로 best-effort 다 — 호출이 실패(4xx/5xx/네트워크/타임아웃)하면

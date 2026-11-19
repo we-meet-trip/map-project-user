@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * WeatherController — 날씨 도메인 HTTP 진입점 (경계 B1)
+ * WeatherController — 날씨 도메인 HTTP 진입점 (앱↔BFF 경계)
  *
  * 홈 화면이 위치만 넘기면 카드에 필요한 값을 한 번에 받을 수 있게 한다.
  * 실제 조회는 WeatherHomeService 로 위임하고 본 클래스는 요청 매핑과 좌표

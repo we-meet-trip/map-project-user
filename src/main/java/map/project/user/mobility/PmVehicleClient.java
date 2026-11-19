@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
 /**
- * PmVehicleClient — hub /v1/mobility/pm-vehicles 호출 어댑터 (경계 B3)
+ * PmVehicleClient — hub /v1/mobility/pm-vehicles 호출 어댑터 (BFF↔허브 경계)
  *
  * client 의 킥보드 요청을 hub 의 조회 엔드포인트로 동기 전달한다. 장소·리뷰·
  * 사진 조회와 같은 RestClient 빈을 재사용한다.

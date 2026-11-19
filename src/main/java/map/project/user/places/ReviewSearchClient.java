@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
 /**
- * ReviewSearchClient — hub /v1/reviews 호출 어댑터 (경계 B3)
+ * ReviewSearchClient — hub /v1/reviews 호출 어댑터 (BFF↔허브 경계)
  *
  * client 의 리뷰 검색 요청을 hub 의 리뷰 조회 엔드포인트로 동기 전달한다.
  * 장소 검색과 같은 RestClient 빈을 재사용한다.

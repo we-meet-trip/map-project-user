@@ -169,7 +169,7 @@ public class ScheduleController {
      * 준다. 결과는 기존 GET /api/v1/recommend/{jobId} 로 받으므로 클라이언트가
      * 조회 코드를 새로 만들 필요가 없다.
      *
-     * 재탐색(mode1)이 아니라 일반 추천 경로라 1일 3회 한도를 깎지 않는다.
+     * 재탐색이 아니라 일반 추천 경로라 1일 3회 한도를 깎지 않는다.
      * 지역을 모르는 옛 일정이면 409(ScheduleReplanUnavailableException).
      * 소유자가 아니거나 없는 일정이면 404.
      */

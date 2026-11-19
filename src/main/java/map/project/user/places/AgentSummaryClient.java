@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
 /**
- * AgentSummaryClient — agent /v1/reviews/summary 호출 어댑터 (경계 B2)
+ * AgentSummaryClient — agent /v1/reviews/summary 호출 어댑터 (BFF↔에이전트 경계)
  *
  * 장소 한 곳의 블로그 후기를 두 줄로 요약받는다. 추천 작업 생성과 같은
  * RestClient 빈을 재사용하므로 base URL·타임아웃·내부 토큰 헤더가 이미

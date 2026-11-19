@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * SubwayRouteController — 지하철 경로 도메인 HTTP 진입점 (경계 B1)
+ * SubwayRouteController — 지하철 경로 도메인 HTTP 진입점 (앱↔BFF 경계)
  *
  * client 가 두 좌표로 지하철 경로를 조회하는 엔드포인트를 노출한다. 실제
  * 조회는 SubwayRouteClient 를 통해 hub 로 위임하고, 본 클래스는 요청 매핑만

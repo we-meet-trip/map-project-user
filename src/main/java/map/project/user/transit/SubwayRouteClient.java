@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
 /**
- * SubwayRouteClient — hub /v1/transit/subway 호출 어댑터 (경계 B3)
+ * SubwayRouteClient — hub /v1/transit/subway 호출 어댑터 (BFF↔허브 경계)
  *
  * client 의 지하철 경로 요청을 hub 의 경로 조회 엔드포인트로 동기 전달한다.
  * 장소·리뷰·사진 조회와 같은 RestClient 빈을 재사용한다.

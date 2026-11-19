@@ -12,7 +12,7 @@ import java.util.List;
  *
  * tripId: 추천 작업 식별자. JSON key "trip_id". agent job_id 를 그대로 사용.
  * totalDurationMinutes: 총 이동 시간(분). JSON key "total_duration_minutes".
- *                       legs.estimated_duration_min 의 합(R-1).
+ *                       legs.estimated_duration_min 의 합.
  * stops: 방문지 리스트(order 오름차순).
  * weatherForecast: 일자별 날씨. JSON key "weather_forecast". 데이터 없으면 빈 배열.
  * warnings: 추천 과정에서 반영하지 못한 조건 안내 문장 목록. draft 의 값을

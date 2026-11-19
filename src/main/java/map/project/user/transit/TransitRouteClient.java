@@ -14,7 +14,7 @@ import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientResponseException;
 
 /**
- * TransitRouteClient — hub /v1/transit/routes 호출 어댑터 (경계 B3)
+ * TransitRouteClient — hub /v1/transit/routes 호출 어댑터 (BFF↔허브 경계)
  *
  * client 의 통합 길찾기 요청을 hub 의 경로 조회 엔드포인트로 동기 전달한다.
  * SubwayRouteClient 와 같은 패턴이며, RestClient 빈도 그대로 재사용한다.

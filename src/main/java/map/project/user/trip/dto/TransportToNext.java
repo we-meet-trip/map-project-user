@@ -8,7 +8,7 @@ import java.util.List;
  * TransportToNext — 한 stop 에서 다음 stop 으로의 이동 카드
  *
  * TripStop.transportToNext 로 중첩되며, 마지막 stop 에서는 null 이다.
- * type/label 은 client 가 보낸 원본 transport 를 기준으로 표시한다(결정 D-7/D-8).
+ * type/label 은 client 가 보낸 원본 transport 를 기준으로 표시한다.
  * durationMinutes/distanceKm 는 hub 경로 조회가 성공하면 OSRM 실측값으로 대체되고,
  * 실패(또는 bus)면 agent LLM 추정값(legs)을 유지한다.
  *

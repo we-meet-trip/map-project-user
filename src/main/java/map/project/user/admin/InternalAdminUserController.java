@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
  * InternalAdminUserController — 운영 콘솔 위임 회원 조회 API
  *
  * 경로 /internal/admin/users 는 InternalAdminGuardFilter(CIDR + X-Internal-Token)
- * 뒤에서만 접근 가능하다(도메인 인증 체인과 분리). map-service-admin 이 유일 소비자.
+ * 뒤에서만 접근 가능하다(도메인 인증 체인과 분리). map-project-admin 이 유일 소비자.
  *
  *   GET /internal/admin/users?query=&page=&size=  — 회원 목록(이메일 마스킹)
  *   GET /internal/admin/users/{id}                — 회원 상세(원문 이메일)

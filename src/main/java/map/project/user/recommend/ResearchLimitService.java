@@ -13,7 +13,7 @@ import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Service;
 
 /**
- * ResearchLimitService — Mode1 재추천 일일 한도 카운터
+ * ResearchLimitService — 재탐색 일일 한도 카운터
  *
  * 일정(scheduleId) 단위로 재추천(research) 횟수를 KST 자정까지 카운트하고
  * 한도(기본 3회)를 초과하면 소비를 거부한다. RateLimitService 의 INCR+만료

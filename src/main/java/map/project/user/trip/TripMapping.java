@@ -11,7 +11,7 @@ import map.project.user.trip.dto.HubWeatherResponse;
 import map.project.user.trip.dto.WeatherForecastItem;
 
 /**
- * TripMapping — trip 요청/응답 변환 규칙 모음 (결정 D-6/D-7/D-8, 파생규칙 R-1~R-4)
+ * TripMapping — trip 요청/응답 변환 규칙 모음
  *
  * client 계약과 agent/hub 계약 사이의 모든 값 변환을 한 곳에 격리한다. 순수 함수만
  * 두어 단위 테스트와 규칙 변경이 쉽도록 한다(상태/주입 없음).
@@ -54,7 +54,7 @@ public final class TripMapping {
     }
 
     /**
-     * client transport → agent Mobility (결정 D-7).
+     * client transport → agent Mobility.
      * bus→transit, walk/bicycle/scooter 는 동일. 그 외는 거부(400 유도).
      *
      * scooter 를 BICYCLE 로 치환하던 것을 SCOOTER 로 분리했다. 치환하면 킥보드
@@ -73,7 +73,7 @@ public final class TripMapping {
         };
     }
 
-    /** budget{min,max} → agent 단일 budget. max 사용 (결정 D-7). */
+    /** budget{min,max} → agent 단일 budget. 상한(max)을 쓴다. */
     public static int toAgentBudget(BudgetRange budget) {
         return budget.max();
     }
@@ -92,7 +92,7 @@ public final class TripMapping {
         return java.time.LocalTime.of(hour, 0);
     }
 
-    /** transport_to_next.label — client 원본 transport 기준 한글 라벨 (R-3). */
+    /** transport_to_next.label — client 원본 transport 기준 한글 라벨. */
     public static String transportLabel(String transport) {
         String t = transport == null ? "" : transport.trim().toLowerCase();
         return switch (t) {
@@ -105,7 +105,7 @@ public final class TripMapping {
     }
 
     /**
-     * stop 시각 "HH:mm" — 활동 시간대 [startHour, endHour] 균등 분배 (R-2).
+     * stop 시각 "HH:mm" — 활동 시간대 [startHour, endHour] 균등 분배.
      * total<=1 이면 시작 시각. endHour<=startHour 면 전 stop 시작 시각으로 고정.
      *
      * index/total 은 트립 전체가 아니라 "해당 day 안에서의" 순서·개수여야
@@ -129,7 +129,7 @@ public final class TripMapping {
         return String.format("%02d:%02d", hh, mm);
     }
 
-    /** total_duration_minutes = 이동 구간 합 (R-1). */
+    /** total_duration_minutes = 이동 구간 합. */
     public static int totalDurationMinutes(List<Leg> legs) {
         if (legs == null) {
             return 0;
@@ -141,7 +141,7 @@ public final class TripMapping {
         return sum;
     }
 
-    /** hub sky_condition(한글) → client condition(sunny/cloudy/rainy/snowy) (R-4). */
+    /** hub sky_condition(한글) → client condition(sunny/cloudy/rainy/snowy). */
     public static String skyToCondition(String sky) {
         if (sky == null || sky.isBlank()) {
             return null;
@@ -159,7 +159,7 @@ public final class TripMapping {
     }
 
     /**
-     * hub 날씨 → client weather_forecast (결정 D-6).
+     * hub 날씨 → client weather_forecast.
      * 항목별 결측은 null로 보존하며 알 수 없는 하늘상태를 정상 값으로 만들지 않는다.
      */
     public static List<WeatherForecastItem> toWeatherForecast(HubWeatherResponse hub) {

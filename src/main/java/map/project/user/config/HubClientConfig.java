@@ -12,7 +12,7 @@ import org.springframework.web.client.RestClient;
  * HubClientConfig — hub 호출용 RestClient 빈 설정
  *
  * hub 게이트웨이의 동기 read 엔드포인트(/v1/weather)를 호출하기 위한 RestClient 를
- * 빈으로 등록한다(경계 B3). 구성은 AgentClientConfig 와 동일한 패턴이며, 프레임워크가
+ * 빈으로 등록한다(BFF↔허브 경계). 구성은 AgentClientConfig 와 동일한 패턴이며, 프레임워크가
  * 자동 구성한 RestClient.Builder 를 주입받아 LocalDate ISO 직렬화 컨버터를 재사용한다.
  *
  * 내부 동작:

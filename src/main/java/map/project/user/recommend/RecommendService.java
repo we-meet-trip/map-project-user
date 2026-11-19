@@ -55,7 +55,7 @@ public class RecommendService {
 
     private static final Logger log = LoggerFactory.getLogger(RecommendService.class);
 
-    /** agent B2 계약의 exclude 목록 상한(초과분은 앞에서부터 절단). */
+    /** agent 추천 요청 계약의 exclude 목록 상한(초과분은 앞에서부터 절단). */
     private static final int EXCLUDE_MAX = 50;
 
     /**
@@ -115,7 +115,7 @@ public class RecommendService {
      *
      * 클라이언트가 보낸 stage/exclude 는 신뢰하지 않고 서버측에서
      * stage="init", exclude=[] 로 강제 재구성한다(남용 방지 — exclude 는
-     * Mode 1 재탐색 전용이며 research 가 draft 에서 구성한다). 캐시 해시도
+     * 재탐색 전용이며 research 가 draft 에서 구성한다). 캐시 해시도
      * 정규화된 요청으로 계산한다.
      *
      * 미스: AgentClient.requestRecommend 결과를 그대로 반환하고, job_id 를 hash 에
@@ -599,7 +599,7 @@ public class RecommendService {
     }
 
     /**
-     * 재추천(Mode 1) 요청 처리.
+     * 재탐색(이미 본 장소를 빼고 다시 추천) 요청 처리.
      *
      * 재사용 캐시 조회/저장을 전혀 타지 않는다 — 사용자가 명시적으로 다른 결과를
      * 원해서 호출하는 액션이므로 항상 agent 를 재호출한다.
@@ -710,7 +710,7 @@ public class RecommendService {
     /**
      * draft JSON 의 places[].content_id 를 순서 보존·중복 제거로 수집.
      *
-     * agent B2 계약 상한(EXCLUDE_MAX=50)에 맞춰 절단한다. draft 부재,
+     * agent 추천 요청 계약 상한(EXCLUDE_MAX=50)에 맞춰 절단한다. draft 부재,
      * JSON 파싱 실패, places 비배열 등은 전부 빈 목록으로 처리한다 —
      * exclude 는 best-effort 이며 재추천 자체를 막아선 안 된다.
      *
@@ -766,7 +766,7 @@ public class RecommendService {
      * 같은 요청 타입을 쓰기 때문이다. 초기 추천에서는 places 를 null 로
      * 지워 보내고, 동선 경로에서는 일정 전부를 채운다.
      *
-     * 재탐색(mode1)에서는 "그대로 둘 장소"만 채운다. 받는 쪽이 stage 로
+     * 재탐색에서는 "그대로 둘 장소"만 채운다. 받는 쪽이 stage 로
      * 둘을 구분하므로 exclude 와 함께 와도 모호하지 않다 — 고정할 곳은
      * places, 피할 곳은 exclude 다.
      */

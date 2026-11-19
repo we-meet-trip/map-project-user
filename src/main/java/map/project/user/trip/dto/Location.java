@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 /**
- * Location — trip 생성 요청의 지역 (client Step 5)
+ * Location — trip 생성 요청의 지역 (앱 입력의 지역 단계)
  *
  * TripGenerateRequest 의 location 필드로 중첩되어 사용된다.
  * province/city 는 그대로 agent RecommendRequest 및 hub /v1/weather 로 전달된다.

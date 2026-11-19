@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * PlaceSearchController — 장소 검색 도메인 HTTP 진입점 (경계 B1)
+ * PlaceSearchController — 장소 검색 도메인 HTTP 진입점 (앱↔BFF 경계)
  *
  * client 가 행정구역/검색어로 장소를 직접 조회하는 엔드포인트를 노출한다.
  * 실제 조회는 PlaceSearchClient 를 통해 hub 로 위임하고, 본 클래스는

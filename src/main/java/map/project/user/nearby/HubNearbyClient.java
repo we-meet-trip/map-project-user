@@ -10,7 +10,7 @@ import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientResponseException;
 
 /**
- * hub 의 주변 장소 조회를 부르는 어댑터 (경계 B3).
+ * hub 의 주변 장소 조회를 부르는 어댑터 (BFF↔허브 경계).
  *
  * <p>실패하면 빈 목록이다. 주변 정보는 일정에 곁들이는 것이라, 못 받았다고
  * 일정 화면까지 함께 죽으면 안 된다.

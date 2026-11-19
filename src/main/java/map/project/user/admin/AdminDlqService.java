@@ -24,7 +24,7 @@ import java.util.Map;
 /**
  * AdminDlqService — 운영 콘솔 위임 DLQ 조회/재처리/폐기
  *
- * map-service-admin 이 /internal/admin/dlq* 로 호출한다. DLQ 스트림
+ * map-project-admin 이 /internal/admin/dlq* 로 호출한다. DLQ 스트림
  * (agent:jobs:done:dlq)을 XREVRANGE 로 조회하고, 재처리는 원 소비 로직
  * (DraftStore.save + RecommendJobStore.markFinished)을 재사용한 뒤 XDEL,
  * 폐기는 XDEL 만 수행한다.

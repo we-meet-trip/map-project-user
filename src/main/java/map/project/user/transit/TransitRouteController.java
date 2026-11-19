@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * TransitRouteController — 통합 길찾기 도메인 HTTP 진입점 (경계 B1)
+ * TransitRouteController — 통합 길찾기 도메인 HTTP 진입점 (앱↔BFF 경계)
  *
  * client 가 두 좌표로 대중교통 경로 후보를 조회하는 엔드포인트를 노출한다.
  * SubwayRouteController 와 같은 패턴이며, 실제 조회는 TransitRouteClient 를

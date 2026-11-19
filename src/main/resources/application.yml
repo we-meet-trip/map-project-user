@@ -82,14 +82,14 @@ spring:
 # AgentClientConfig 가 본 섹션을 참조하여 RestClient 빈을 구성한다.
 # - base-url        : agent 서비스 base URL
 # - timeout-seconds : RestClient 의 readTimeout (초)
-# - internal-token  : B2 내부 서비스 인증 토큰. 비우면 헤더 미부착.
+# - internal-token  : 에이전트 호출의 내부 서비스 인증 토큰. 비우면 헤더 미부착.
 #                     agent 의 INTERNAL_SERVICE_TOKEN 과 동일 값이어야 한다.
 agent:
   base-url: ${AGENT_BASE_URL:http://agent:8000}
   timeout-seconds: ${AGENT_TIMEOUT_SECONDS:60}
   internal-token: ${INTERNAL_SERVICE_TOKEN:}
 
-# ---- hub : hub 게이트웨이 호출 설정 (경계 B3) ----
+# ---- hub : hub 게이트웨이 호출 설정 (BFF↔허브 경계) ----
 # HubClientConfig 가 본 섹션을 참조하여 RestClient 빈을 구성한다.
 # trip 응답의 weather_forecast 를 채우기 위해 HubWeatherClient 가 /v1/weather 를 호출한다.
 # - base-url        : hub 서비스 base URL (도커: http://hub:8000, 로컬 BFF: http://localhost:8001)
@@ -102,9 +102,9 @@ hub:
   directions-timeout-seconds: ${HUB_DIRECTIONS_TIMEOUT_SECONDS:20}
   internal-token: ${INTERNAL_SERVICE_TOKEN:}
 
-# ---- internal.admin : /internal/admin/** 위임 가드 (경계 B9) ----
+# ---- internal.admin : /internal/admin/** 위임 가드 (관리 콘솔 내부 API) ----
 # InternalAdminGuardFilter / InternalAdminSecurityConfig 가 본 섹션을 참조한다.
-# map-service-admin(운영 콘솔)이 회원/추천작업/DLQ 를 위임 조회·조작할 때 통과하는
+# map-project-admin(운영 콘솔)이 회원/추천작업/DLQ 를 위임 조회·조작할 때 통과하는
 # CIDR 화이트리스트 + 공유 토큰 가드. hub 의 internal_guard 규약을 미러링한다.
 # - trusted-cidrs : 허용 사설 CIDR 목록(map-net 컨테이너 네트워크 한정)
 # - token         : Admin→User 전용 값. 일반 서비스 토큰 재사용/미설정은 fail-closed.
@@ -145,7 +145,7 @@ trip:
 # ---- recommend : 추천 도메인 설정 ----
 # ResearchLimitService / RecommendCacheKey / RecommendService / RecommendCacheConfig 가
 # 본 섹션을 참조한다. (최상위 키가 하나여야 하므로 재추천 한도와 재사용 캐시 정책을 함께 둔다)
-# - research-daily-limit         : Mode1 재추천 일일 한도(일정/잡 단위). KST 자정 리셋.
+# - research-daily-limit         : 재탐색 일일 한도(일정/잡 단위). KST 자정 리셋.
 # - cache-budget-round-step      : budget 근사 매칭용 내림(floor) 단위(원)
 # - cache-time-round-step-minutes: timeStart/timeEnd 근사 매칭용 반올림 단위(분)
 # - cache-refresh-every-hits     : 이 값의 배수번째 히트마다 백그라운드로 agent 재호출해 캐시 갱신
@@ -235,7 +235,7 @@ streams:
 # - db-ratelimit     : 인증 레이트리밋 전용 (rateLimitRedisTemplate)
 # - db-drafts        : 초안 전용   (draftsConnectionFactory)
 # - db-chat          : 채팅 전용   (chatConnectionFactory) — 프레즌스 키. 발행/구독 채널은 DB 무관
-# - db-cache         : 재사용 캐시 전용 (cacheConnectionFactory). DB5 는 채팅(경계 B8)이
+# - db-cache         : 재사용 캐시 전용 (cacheConnectionFactory). DB5 는 실시간 채팅이
 #                      선점했으므로 충돌 방지를 위해 DB6 을 사용한다.
 # - draft-ttl-seconds       : 초안 키 기본 TTL (초)
 # - cache-ttl-seconds       : 재사용 캐시 본체/히트카운터 TTL (초, 기본 7일)

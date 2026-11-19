@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
 /**
- * HubWeatherClient — hub /v1/weather 호출 어댑터 (경계 B3)
+ * HubWeatherClient — hub /v1/weather 호출 어댑터 (BFF↔허브 경계)
  *
  * trip 응답의 weather_forecast 를 채우기 위해 hub 의 날씨 엔드포인트를 동기 호출한다.
  * 날씨는 추천의 보조 정보이므로 best-effort 다 — 호출이 실패(4xx/5xx/네트워크)하면

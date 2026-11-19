@@ -13,7 +13,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 /**
  * InternalAdminSecurityConfig — /internal/** 전용 SecurityFilterChain
  *
- * map-service-admin(운영 콘솔)이 위임 호출하는 /internal/** 경로를 위한 독립
+ * map-project-admin(운영 콘솔)이 위임 호출하는 /internal/** 경로를 위한 독립
  * 필터체인이다. @Order(0) 로 기존 도메인 체인(SecurityConfig, @Order(1))보다
  * 먼저 평가되며, securityMatcher("/internal/**") 로 해당 경로만 담당한다. 따라서
  * auth.enforced 토글이나 기존 체인의 anyRequest 규칙과 완전히 격리된다.
