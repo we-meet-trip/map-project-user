@@ -21,7 +21,7 @@ import java.util.List;
  * city: 시군구. @NotBlank, 1~20자.
  * scheduleId: user 일정 식별자 패스스루(agent 추천 요청의 확장 필드). nullable.
  *             JSON key "schedule_id". agent 는 추적용으로만 사용한다.
- * stage: 추천 단계("init" | "mode1" | "route"). 클라이언트 입력은 신뢰하지
+ * stage: 추천 단계("init" | "reexplore" | "route"). 클라이언트 입력은 신뢰하지
  *        않으며 RecommendService 가 엔드포인트별로 서버측에서 강제한다.
  * exclude: 재탐색 시 재추천 금지 content_id 목록(최대 50개).
  *          stage 와 동일하게 서버측에서 재구성한다.

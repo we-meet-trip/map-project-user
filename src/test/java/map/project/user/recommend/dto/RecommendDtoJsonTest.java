@@ -126,12 +126,12 @@ class RecommendDtoJsonTest {
                 "서울특별시",
                 "강남구",
                 "sched-1",
-                "mode1",
+                "reexplore",
                 java.util.List.of("kakao:1"),
                 null));
 
         assertThat(json).contains("\"schedule_id\":\"sched-1\"");
-        assertThat(json).contains("\"stage\":\"mode1\"");
+        assertThat(json).contains("\"stage\":\"reexplore\"");
         assertThat(json).contains("\"exclude\":[\"kakao:1\"]");
     }
 }

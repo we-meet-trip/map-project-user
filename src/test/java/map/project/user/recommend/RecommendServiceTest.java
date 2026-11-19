@@ -39,7 +39,7 @@ import org.mockito.ArgumentCaptor;
  *         job_id→hash 연결 + PG in_progress 기록, 히트면 캐시 draft 를 새 job_id 로
  *         즉시 복사하고 PG 에 완료로 기록한다(캐시 히트는 완료 이벤트가 오지 않으므로).
  * research: draft places[].content_id 수집(비-텍스트/공백/중복 제외) 후
- *           mode1 + exclude 로 재구성, draft 폐기 순서 보장. 캐시는 타지 않는다.
+ *           reexplore + exclude 로 재구성, draft 폐기 순서 보장. 캐시는 타지 않는다.
  *
  * 캐시 테스트가 쓰는 cacheRequest 는 stage="init"/exclude=[] 로 만들어 두어
  * 서비스의 서버측 정규화(withStage) 결과와 레코드 동등이 되게 한다 — 덕분에
@@ -138,8 +138,8 @@ class RecommendServiceTest {
 
     @Test
     void createForcesInitStageAndEmptyExclude() {
-        // 클라이언트가 악의적으로 mode1/exclude 를 보내도 서버가 재구성한다.
-        service.createRecommendation(request("mode1", List.of("cheat")));
+        // 클라이언트가 악의적으로 reexplore/exclude 를 보내도 서버가 재구성한다.
+        service.createRecommendation(request("reexplore", List.of("cheat")));
 
         ArgumentCaptor<RecommendRequest> captor =
                 ArgumentCaptor.forClass(RecommendRequest.class);
@@ -184,7 +184,7 @@ class RecommendServiceTest {
                 ArgumentCaptor.forClass(RecommendRequest.class);
         verify(agentClient).requestRecommend(captor.capture());
         RecommendRequest sent = captor.getValue();
-        assertThat(sent.stage()).isEqualTo("mode1");
+        assertThat(sent.stage()).isEqualTo("reexplore");
         // null/부재/공백/중복 content_id 는 제외, 순서 보존
         assertThat(sent.exclude())
                 .containsExactly("kakao:1", "durunubi:7");
@@ -200,7 +200,7 @@ class RecommendServiceTest {
         ArgumentCaptor<RecommendRequest> captor =
                 ArgumentCaptor.forClass(RecommendRequest.class);
         verify(agentClient).requestRecommend(captor.capture());
-        assertThat(captor.getValue().stage()).isEqualTo("mode1");
+        assertThat(captor.getValue().stage()).isEqualTo("reexplore");
         assertThat(captor.getValue().exclude()).isEmpty();
     }
 
@@ -577,7 +577,7 @@ class RecommendServiceTest {
 
     @Test
     void routeJobSkipsReuseCacheEntirely() {
-        service.createRouteJob(routeRequest("mode1"));
+        service.createRouteJob(routeRequest("reexplore"));
 
         // 장소 조합이 결과를 좌우하므로 캐시를 조회하지도 등록하지도 않는다.
         verify(reuseCacheStore, never()).find(anyString());
@@ -785,7 +785,7 @@ class RecommendServiceTest {
 
     @Test
     void freshRecommendationForcesInitStageAndRecordsRegion() {
-        service.createFreshRecommendation(request("mode1", List.of("cheat")));
+        service.createFreshRecommendation(request("reexplore", List.of("cheat")));
 
         ArgumentCaptor<RecommendRequest> captor =
                 ArgumentCaptor.forClass(RecommendRequest.class);

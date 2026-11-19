@@ -606,7 +606,7 @@ public class RecommendService {
      *
      * 기존 draft 의 places[].content_id 를 수집해 exclude 목록을 만들고
      * (실측 근거 없는 항목은 content_id 가 없어 자연 제외), draft 를
-     * DraftStore.delete 로 폐기한 뒤 stage="mode1" + exclude 로 재구성한 요청을
+     * DraftStore.delete 로 폐기한 뒤 stage="reexplore" + exclude 로 재구성한 요청을
      * agent 에 위임한다(재탐색 제외 목록). draft 가 없거나 파싱 불가하면
      * exclude 없이 진행한다(기존 동작 보존).
      *
@@ -696,7 +696,7 @@ public class RecommendService {
                 (keep == null || keep.isEmpty()) ? null : List.copyOf(keep);
         ai.requireCurrent(permit);
         JobAccepted accepted = agentClient.requestRecommend(
-                withStage(request, "mode1", List.copyOf(exclude), pinned));
+                withStage(request, "reexplore", List.copyOf(exclude), pinned));
         // 원본 jobId 를 함께 남긴다. 재탐색은 "앞의 결과를 버렸다" 는 뜻이라,
         // 무엇을 버리고 무엇을 받았는지가 쌍으로 있어야 신호가 된다.
         jobStore.insertInProgress(accepted.jobId(), request.scheduleId(),
