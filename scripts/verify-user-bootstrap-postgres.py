@@ -82,7 +82,7 @@ def operator(filename, expected=0, extra=''):
               +'\\set bootstrap_password '+passwords['map_user_bootstrap']+'\n'
               +'\\set runtime_password '+passwords['map_user_runtime']+'\n'
               +'\\set migrator_password '+passwords['map_user_migrator']+'\n'+extra
-              +(ROOT / 'docs' / filename).read_text())
+              +(ROOT / 'scripts' / 'sql' / filename).read_text())
     env = {**process_environment(), 'PGHOST':'127.0.0.1','PGPORT':'5432','PGDATABASE':database,
            'PGUSER':'postgres','PGPASSWORD':passwords['postgres']}
     run = execute(['psql','-XqAt','-v','ON_ERROR_STOP=1','-v','VERBOSITY=sqlstate'], env=env, text=script)
