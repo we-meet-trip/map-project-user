@@ -34,7 +34,8 @@ class HubDirectionsBudgetTest {
         server.createContext("/v1/directions/batch",exchange->{
             try {
                 requests.incrementAndGet();
-                sizes.add(mapper.readTree(exchange.getRequestBody()).path("legs").size());
+                String loc=mapper.readTree(exchange.getRequestBody()).path("loc").asText();
+                sizes.add(map.project.user.global.crypto.TestLocationSeals.enabled().open(loc).path("legs").size());
                 Thread.sleep(2200);
                 byte[] body="{\"routes\":[]}".getBytes(StandardCharsets.UTF_8);
                 exchange.getResponseHeaders().set("Content-Type","application/json");
@@ -43,7 +44,7 @@ class HubDirectionsBudgetTest {
         }); server.start();
         try {
             var rest=new HubClientConfig().hubDirectionsRestClient(RestClient.builder(),"http://127.0.0.1:"+server.getAddress().getPort(),1,"");
-            LocationSeal seal=mock(LocationSeal.class);
+            LocationSeal seal=map.project.user.global.crypto.TestLocationSeals.enabled();
             var client=new HubDirectionsClient(rest,seal);
             List<LegReq> legs=Collections.nCopies(20,new LegReq(new Point(37.5,127.0),new Point(37.51,127.01),"synthetic start","synthetic goal"));
             long start=System.nanoTime();

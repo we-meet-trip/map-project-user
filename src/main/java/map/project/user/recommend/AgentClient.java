@@ -48,12 +48,11 @@ public class AgentClient {
     /**
      * 보낼 본문을 만든다.
      *
-     * 감싸기가 켜져 있고 고른 장소가 있으면 그 목록을 봉투에 담고 평문 자리를
-     * 비운다. 꺼져 있으면 예전처럼 그대로 보낸다 — 받는 쪽이 아직 봉투를 열 줄
-     * 모르는 동안 넘어가기 위한 자리이고, 양쪽이 준비되면 이 갈래는 지나가지 않는다.
+     * 고른 장소가 있으면 그 목록을 봉투에 담고 평문 자리를 비운다. agent 는
+     * 고른 장소를 봉투로만 받는다.
      */
     private Object body(RecommendRequest request) {
-        if (!seal.isEnabled() || request.places() == null || request.places().isEmpty()) {
+        if (request.places() == null || request.places().isEmpty()) {
             return request;
         }
         Map<String, Object> out = new LinkedHashMap<>(

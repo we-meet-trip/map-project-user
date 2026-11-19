@@ -138,9 +138,8 @@ public class RecommendJobsConsumer
         String recordId = message.getId().getValue();
         Map<String, String> value = message.getValue();
         String jobId = value.get("job_id");
-        // agent 는 본문을 감싸서 넣는다. 감싸지 않은 것도 그대로 받아 준다 —
-        // 양쪽 배포 사이에 스트림에 남아 있던 옛 메시지를 버리지 않기 위해서다.
-        String payloadJson = openIfSealed(value.get("payload"), jobId);
+        // agent 는 본문을 늘 감싸서 넣는다. 감싸지 않은 본문은 받지 않는다.
+        String payloadJson = openSealed(value.get("payload"), jobId);
 
         if (jobId == null || payloadJson == null) {
             // 그룹을 만들려면 스트림이 있어야 해서, 없을 때 자리표시 한 건을
@@ -293,7 +292,7 @@ public class RecommendJobsConsumer
             return;
         }
         if (routeToDlq(rec, value.get("job_id"),
-                openIfSealed(value.get("payload"), value.get("job_id")),
+                openSealed(value.get("payload"), value.get("job_id")),
                 value.get("status"),
                 value.get("training"), (int) deliveries,
                 "max retries exceeded (" + deliveries + " deliveries)")) {
@@ -364,15 +363,20 @@ public class RecommendJobsConsumer
     }
 
     /**
-     * 감싸서 온 본문을 연다. 감싸지 않은 값은 그대로 돌려준다.
+     * 감싸서 온 본문을 연다.
      *
-     * 열지 못하면 null 을 돌려주어 이 메시지를 버린다. 열지 못한 값을 그대로
-     * 저장하면 화면이 알아볼 수 없는 문자열을 일정으로 받게 되는데, 그때는
-     * 사용자에게 빈 일정으로 보여 원인이 드러나지 않는다.
+     * 감싸지 않았거나 열지 못하면 null 을 돌려주어 이 메시지를 버린다. 좌표가
+     * 든 본문은 늘 봉투로만 오가므로 평문 본문은 받지 않는다. 열지 못한 값을
+     * 그대로 저장하면 화면이 알아볼 수 없는 문자열을 일정으로 받게 되는데,
+     * 그때는 사용자에게 빈 일정으로 보여 원인이 드러나지 않는다.
      */
-    private String openIfSealed(String raw, String jobId) {
-        if (raw == null || !seal.isSealed(raw)) {
-            return raw;
+    private String openSealed(String raw, String jobId) {
+        if (raw == null) {
+            return null;
+        }
+        if (!seal.isSealed(raw)) {
+            log.warn("unsealed payload rejected job_id={}", jobId);
+            return null;
         }
         try {
             JsonNode opened = seal.open(raw);

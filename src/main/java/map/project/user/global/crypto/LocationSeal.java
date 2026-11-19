@@ -62,18 +62,16 @@ public class LocationSeal {
     /**
      * 열쇠를 세운다.
      *
-     * 감싸기를 켜 두었는데 열쇠가 없거나 길이가 틀리면 기동을 멈춘다.
-     * 감쌌다고 믿는데 실제로는 평문이 나가는 상태가 가장 나쁘다.
+     * 열쇠가 없거나 길이가 틀리면 기동을 멈춘다. 좌표는 늘 봉투로만 오가므로
+     * 열쇠 없이는 hub·agent 와 주고받을 수 없다. 첫 요청에서 터지기 전에 여기서
+     * 원인을 드러낸다.
      */
     @PostConstruct
     public void init() {
         String raw = properties.getKey();
-        if (!properties.isEnabled()) {
-            return;
-        }
         if (raw == null || raw.isBlank()) {
             throw new IllegalStateException(
-                    "location.wire.enabled=true requires location.wire.key");
+                    "location.wire.key is required (32 random bytes, base64; e.g. openssl rand -base64 32)");
         }
         byte[] decoded;
         try {
@@ -88,11 +86,6 @@ public class LocationSeal {
                             + " bytes, got " + decoded.length);
         }
         key = new SecretKeySpec(decoded, "AES");
-    }
-
-    /** 좌표를 감싸 보낼지 여부. 꺼 두면 예전처럼 값을 그대로 보낸다. */
-    public boolean isEnabled() {
-        return properties.isEnabled();
     }
 
     /** 봉투 모양인지만 본다. 열어 보지는 않는다. */
@@ -166,9 +159,6 @@ public class LocationSeal {
      * 빠뜨릴 여지를 없앤다.
      */
     public String seal(Map<String, Object> payload) {
-        if (!properties.isEnabled()) {
-            throw new IllegalStateException("location.wire is disabled");
-        }
         Map<String, Object> body = new LinkedHashMap<>(payload);
         body.put("iat", Instant.now().getEpochSecond());
         try {

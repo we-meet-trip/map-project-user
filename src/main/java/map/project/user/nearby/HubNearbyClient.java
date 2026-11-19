@@ -52,14 +52,13 @@ public class HubNearbyClient {
             com.fasterxml.jackson.databind.JsonNode body = client.get()
                     .uri(b -> {
                         b.path("/v1/places/nearby");
-                        if (seal.isEnabled()) b.queryParam("loc", seal.seal(lat, lng));
-                        else b.queryParam("lat", lat).queryParam("lng", lng);
+                        b.queryParam("loc", seal.seal(lat, lng));
                         return b.queryParam("category", category)
                                 .queryParam("radius", radiusMeters).queryParam("size", size).build();
                     })
                     .retrieve()
                     .body(com.fasterxml.jackson.databind.JsonNode.class);
-            if (body != null && seal.isEnabled()) body = seal.open(body.path("loc").asText());
+            if (body != null) body = seal.open(body.path("loc").asText());
             Response res = body == null ? null : objectMapper.convertValue(body, Response.class);
             return res == null || res.places() == null ? List.of() : res.places();
         } catch (RestClientResponseException e) {

@@ -18,16 +18,15 @@ import org.junit.jupiter.api.Test;
 
 class LocationSealTest {
 
-    /** 검사에서만 쓰는 고정 열쇠. hub 쪽 검사도 같은 값을 쓴다. */
+    /** 검사에서만 쓰는 고정 열쇠. hub 쪽 호환 검사에는 이 열쇠로 감싼 값을 옮겨 적는다. */
     static final String KEY = "IiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiI=";
 
-    private static LocationSeal seal(boolean enabled, String key) {
-        return seal(enabled, key, new LocationWireProperties().getMaxAgeSeconds());
+    private static LocationSeal seal(String key) {
+        return seal(key, new LocationWireProperties().getMaxAgeSeconds());
     }
 
-    private static LocationSeal seal(boolean enabled, String key, long maxAgeSeconds) {
+    private static LocationSeal seal(String key, long maxAgeSeconds) {
         LocationWireProperties properties = new LocationWireProperties();
-        properties.setEnabled(enabled);
         properties.setKey(key);
         properties.setMaxAgeSeconds(maxAgeSeconds);
         LocationSeal seal = new LocationSeal(properties, new ObjectMapper());
@@ -57,7 +56,7 @@ class LocationSealTest {
     @Test
     @DisplayName("감싼 값에는 좌표가 남지 않는다")
     void sealedValueHidesCoordinates() {
-        String token = seal(true, KEY).seal(35.1587, 129.1604);
+        String token = seal(KEY).seal(35.1587, 129.1604);
 
         assertThat(token).startsWith("v1.").doesNotContain("35.1587", "129.1604");
         assertThat(token.split("\\.")).hasSize(3);
@@ -68,7 +67,7 @@ class LocationSealTest {
     void tokenIsUrlSafe() {
         // 더하기·빗금·채움문자가 섞이면 주소에서 다른 뜻으로 읽혀, 받는 쪽이
         // 다른 값을 열게 된다. 그 어긋남은 복호 실패로만 드러나 원인을 찾기 어렵다.
-        String token = seal(true, KEY).seal(37.5665, 126.9780);
+        String token = seal(KEY).seal(37.5665, 126.9780);
 
         assertThat(token).matches("v1\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+");
     }
@@ -76,7 +75,7 @@ class LocationSealTest {
     @Test
     @DisplayName("같은 좌표를 두 번 감싸도 결과가 다르다")
     void neverRepeats() {
-        LocationSeal s = seal(true, KEY);
+        LocationSeal s = seal(KEY);
 
         assertThat(s.seal(35.1587, 129.1604)).isNotEqualTo(s.seal(35.1587, 129.1604));
     }
@@ -84,7 +83,7 @@ class LocationSealTest {
     @Test
     @DisplayName("두 지점을 담는 봉투도 좌표를 드러내지 않는다")
     void sealsPair() {
-        String token = seal(true, KEY).sealPair(37.5665, 126.9780, 35.1587, 129.1604);
+        String token = seal(KEY).sealPair(37.5665, 126.9780, 35.1587, 129.1604);
 
         assertThat(token).doesNotContain("37.5665", "126.978", "35.1587", "129.1604");
     }
@@ -92,7 +91,7 @@ class LocationSealTest {
     @Test
     @DisplayName("켜 두었는데 열쇠가 없으면 기동을 멈춘다")
     void refusesMissingKey() {
-        assertThatThrownBy(() -> seal(true, ""))
+        assertThatThrownBy(() -> seal(""))
                 .isInstanceOf(IllegalStateException.class);
     }
 
@@ -102,7 +101,7 @@ class LocationSealTest {
         String short24 = Base64.getEncoder()
                 .encodeToString("0123456789012345678901234".getBytes(StandardCharsets.UTF_8));
 
-        assertThatThrownBy(() -> seal(true, short24))
+        assertThatThrownBy(() -> seal(short24))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessageContaining("32 bytes");
     }
@@ -119,7 +118,7 @@ class LocationSealTest {
 
         // 굳혀 둔 봉투라 만든 시각이 과거에 멈춰 있다. 여기서 보려는 것은
         // 형식 호환뿐이므로 나이 검사를 끈다.
-        var opened = seal(true, KEY, 0).open(fromPython);
+        var opened = seal(KEY, 0).open(fromPython);
 
         assertThat(opened.get("payload").asText()).contains("129.1604");
     }
@@ -127,7 +126,7 @@ class LocationSealTest {
     @Test
     @DisplayName("손댄 봉투는 열리지 않는다")
     void refusesTamperedToken() {
-        LocationSeal s = seal(true, KEY);
+        LocationSeal s = seal(KEY);
         String token = s.seal(35.1587, 129.1604);
 
         assertThatThrownBy(() -> s.open(token.substring(0, token.length() - 4) + "AAAA"))
@@ -137,7 +136,7 @@ class LocationSealTest {
     @Test
     @DisplayName("방금 감싼 봉투는 나이 검사를 통과해 열린다")
     void opensFreshToken() {
-        LocationSeal s = seal(true, KEY);
+        LocationSeal s = seal(KEY);
 
         assertThat(s.open(s.seal(35.1587, 129.1604)).get("lat").asDouble())
                 .isEqualTo(35.1587);
@@ -146,7 +145,7 @@ class LocationSealTest {
     @Test
     @DisplayName("상한보다 오래된 봉투는 열리지 않는다")
     void refusesStaleToken() throws Exception {
-        LocationSeal s = seal(true, KEY, 3600);
+        LocationSeal s = seal(KEY, 3600);
         String stale = assemble(Instant.now().getEpochSecond() - 3661);
 
         assertThatThrownBy(() -> s.open(stale))
@@ -157,7 +156,7 @@ class LocationSealTest {
     @Test
     @DisplayName("상한을 0으로 두면 오래된 봉투도 열린다")
     void zeroMaxAgeSkipsAgeCheck() throws Exception {
-        LocationSeal s = seal(true, KEY, 0);
+        LocationSeal s = seal(KEY, 0);
         String stale = assemble(Instant.now().getEpochSecond() - 999_999);
 
         assertThat(s.open(stale).get("lat").asDouble()).isEqualTo(35.1587);
@@ -166,7 +165,7 @@ class LocationSealTest {
     @Test
     @DisplayName("만든 시각이 미래로 61초 어긋난 봉투는 열리지 않는다")
     void refusesFarFutureToken() throws Exception {
-        LocationSeal s = seal(true, KEY, 3600);
+        LocationSeal s = seal(KEY, 3600);
 
         // 조립과 열기 사이에 초가 넘어가면 경계가 한 칸 밀려 열릴 수 있다.
         // 같은 초 안에 끝난 시도만 판정에 쓰고, 넘어간 시도는 다시 한다.
@@ -189,7 +188,7 @@ class LocationSealTest {
     @Test
     @DisplayName("미래 59초까지의 시계 어긋남은 봐준다")
     void allowsSmallClockSkew() throws Exception {
-        LocationSeal s = seal(true, KEY, 3600);
+        LocationSeal s = seal(KEY, 3600);
         String slightlyFuture = assemble(Instant.now().getEpochSecond() + 59);
 
         assertThat(s.open(slightlyFuture).get("lat").asDouble()).isEqualTo(35.1587);

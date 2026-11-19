@@ -13,7 +13,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import map.project.user.global.crypto.LocationSeal;
 import map.project.user.global.crypto.TestPayloadCiphers;
 import map.project.user.policy.AiConsentService;
 import map.project.user.recommend.dto.*;
@@ -67,7 +66,7 @@ class RecommendFollowerIsolationTest {
                 mock(map.project.user.schedule.ScheduleRepository.class), mock(AiConsentService.class));
         consumer = new RecommendJobsConsumer(drafts, store, cache, mock(RedisConnectionFactory.class),
                 "test-completions", "test-group", "test-consumer", "test-dlq", 3, 20, 60000, 8,
-                cipher, mock(LocationSeal.class));
+                cipher, map.project.user.global.crypto.TestLocationSeals.enabled());
         StringRedisTemplate streams = mock(StringRedisTemplate.class, RETURNS_DEEP_STUBS);
         ReflectionTestUtils.setField(consumer, "streamsTemplate", streams);
     }
@@ -84,8 +83,13 @@ class RecommendFollowerIsolationTest {
                 + "\"visit_order\":[0],\"legs\":[]}";
     }
 
+    /** agent 처럼 본문을 봉투에 담는다. */
+    static String sealed(String raw) {
+        return map.project.user.global.crypto.TestLocationSeals.enabled().seal(Map.of("payload", raw));
+    }
+
     void complete(String id, String raw) {
-        consumer.onMessage(StreamRecords.mapBacked(Map.of("job_id", id, "status", "done", "payload", raw))
+        consumer.onMessage(StreamRecords.mapBacked(Map.of("job_id", id, "status", "done", "payload", sealed(raw)))
                 .withStreamKey("test-completions").withId(RecordId.of("1-1")));
         em.flush(); em.clear();
     }
@@ -272,7 +276,7 @@ class RecommendFollowerIsolationTest {
         assertThat(store.findFinishedPayload(ids[0]).orElseThrow()).contains("공통 원본 장소");
         editOwner(ids[0]);
         consumer.onMessage(StreamRecords.mapBacked(Map.of("job_id", ids[0], "status", "failed",
-                "payload", ReuseCacheStore.FAILED_COMPLETION)).withStreamKey("test-completions").withId(RecordId.of("2-1")));
+                "payload", sealed(ReuseCacheStore.FAILED_COMPLETION))).withStreamKey("test-completions").withId(RecordId.of("2-1")));
         assertThat(service.findOwnedDraft(ids[1], 8L)).isEmpty();
         complete(ids[0], original); // Reclaim of the identical original event repairs the snapshot.
         assertThat(service.findOwnedDraft(ids[1], 8L).orElseThrow())

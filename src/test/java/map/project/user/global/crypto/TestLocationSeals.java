@@ -20,7 +20,6 @@ public final class TestLocationSeals {
 
     public static LocationSeal enabled() {
         LocationWireProperties properties = new LocationWireProperties();
-        properties.setEnabled(true);
         properties.setKey(LocationSealTest.KEY);
         LocationSeal seal = new LocationSeal(properties, new ObjectMapper());
         seal.init();

@@ -104,15 +104,9 @@ public class HubDirectionsClient {
      * 사용자의 이동 경로가 그대로 기록된다.
      */
     /**
-     * 구간을 감싼 요청을 만든다.
-     *
-     * 감싸기를 꺼 두었을 때만 구간을 값 그대로 싣는다. 상대가 아직 열 줄
-     * 모르는 동안 넘어가기 위한 길이며, 둘을 함께 싣지는 않는다.
+     * 구간을 감싼 요청을 만든다. hub 는 구간을 봉투로만 받는다.
      */
     private BatchRequest sealedRequest(String mode, List<LegReq> batch) {
-        if (!seal.isEnabled()) {
-            return new BatchRequest(mode, null, batch);
-        }
         return new BatchRequest(mode, seal.seal(Map.of("legs", batch)), List.of());
     }
 

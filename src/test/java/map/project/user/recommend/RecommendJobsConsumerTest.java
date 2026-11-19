@@ -53,6 +53,11 @@ class RecommendJobsConsumerTest {
         ReflectionTestUtils.setField(consumer, "streamsTemplate", streams);
     }
 
+    /** agent 처럼 본문을 봉투에 담는다: {"payload": <본문 JSON 문자열>}. */
+    private static String sealed(String payload) {
+        return TestLocationSeals.enabled().seal(Map.of("payload", payload));
+    }
+
     private MapRecord<String, String, String> record(String jobId, String payload) {
         return record(jobId, payload, "done");
     }
@@ -60,7 +65,7 @@ class RecommendJobsConsumerTest {
     private MapRecord<String, String, String> record(
             String jobId, String payload, String status) {
         return StreamRecords.mapBacked(
-                        Map.of("job_id", jobId, "payload", payload, "status", status))
+                        Map.of("job_id", jobId, "payload", sealed(payload), "status", status))
                 .withStreamKey("agent:jobs:done")
                 .withId(RecordId.of("1-1"));
     }
@@ -95,7 +100,7 @@ class RecommendJobsConsumerTest {
     @Test
     void 학습신호가_영속기록으로_함께_넘어간다() {
         MapRecord<String, String, String> rec = StreamRecords.mapBacked(
-                        Map.of("job_id", "job-t", "payload", "{\"places\":[]}",
+                        Map.of("job_id", "job-t", "payload", sealed("{\"places\":[]}"),
                                 "status", "done",
                                 "training", "{\"schema_version\":1,\"path\":\"select\"}"))
                 .withStreamKey("agent:jobs:done")
@@ -161,6 +166,18 @@ class RecommendJobsConsumerTest {
 
         verify(draftStore).save("job-3", "{\"places\":[]}");
     }
+    @Test
+    void unsealedPayloadIsDroppedWithoutPersisting() {
+        // 좌표가 든 본문은 늘 봉투로만 온다. 평문 본문은 저장하지 않고 버린다.
+        consumer.onMessage(StreamRecords.mapBacked(
+                        Map.of("job_id", "job-plain", "payload", "{\"places\":[]}", "status", "done"))
+                .withStreamKey("agent:jobs:done")
+                .withId(RecordId.of("9-1")));
+
+        verify(jobStore, never()).recordWorkerCompletion(any(), any(), any(), any());
+        verify(draftStore, never()).save(any(), any());
+    }
+
     @Test
     void cancelledProducerNotifiesWaitersWithoutPersistingPayload() {
         when(jobStore.isCancelled("cancelled-job")).thenReturn(true);
