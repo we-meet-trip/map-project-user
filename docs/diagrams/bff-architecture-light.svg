@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Title: bff_architecture Pages: 1 -->
+<svg width="1097pt" height="919pt"
+ viewBox="0.00 0.00 1097.00 919.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(21.6 897.68)">
+<title>bff_architecture</title>
+<polygon fill="#ffffff" stroke="none" points="-21.6,21.6 -21.6,-897.68 1075.05,-897.68 1075.05,21.6 -21.6,21.6"/>
+<g id="clust1" class="cluster">
+<title>cluster_user</title>
+<path fill="#ffffff" stroke="#57606a" stroke-dasharray="5,2" d="M295.79,-665.04C295.79,-665.04 745.66,-665.04 745.66,-665.04 751.66,-665.04 757.66,-671.04 757.66,-677.04 757.66,-677.04 757.66,-779.04 757.66,-779.04 757.66,-785.04 751.66,-791.04 745.66,-791.04 745.66,-791.04 295.79,-791.04 295.79,-791.04 289.79,-791.04 283.79,-785.04 283.79,-779.04 283.79,-779.04 283.79,-677.04 283.79,-677.04 283.79,-671.04 289.79,-665.04 295.79,-665.04"/>
+<text xml:space="preserve" text-anchor="middle" x="403.91" y="-774.69" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="13.00" fill="#1f2328">map&#45;project&#45;user (Spring Boot, :8080)</text>
+</g>
+<!-- app -->
+<g id="node1" class="node">
+<title>app</title>
+<path fill="#ddf4ff" stroke="#0969da" stroke-width="1.2" d="M110.79,-776.08C110.79,-776.08 14.25,-776.08 14.25,-776.08 8.25,-776.08 2.25,-770.08 2.25,-764.08 2.25,-764.08 2.25,-748 2.25,-748 2.25,-742 8.25,-736 14.25,-736 14.25,-736 110.79,-736 110.79,-736 116.79,-736 122.79,-742 122.79,-748 122.79,-748 122.79,-764.08 122.79,-764.08 122.79,-770.08 116.79,-776.08 110.79,-776.08"/>
+<text xml:space="preserve" text-anchor="middle" x="62.52" y="-759.64" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="12.00" fill="#1f2328">앱</text>
+<text xml:space="preserve" text-anchor="middle" x="62.52" y="-744.64" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="12.00" fill="#1f2328">map&#45;project&#45;client</text>
+</g>
+<!-- stomp -->
+<g id="node4" class="node">
+<title>stomp</title>
+<path fill="#ddf4ff" stroke="#0969da" stroke-width="1.2" d="M562.62,-713.08C562.62,-713.08 473.58,-713.08 473.58,-713.08 467.58,-713.08 461.58,-707.08 461.58,-701.08 461.58,-701.08 461.58,-685 461.58,-685 461.58,-679 467.58,-673 473.58,-673 473.58,-673 562.62,-673 562.62,-673 568.62,-673 574.62,-679 574.62,-685 574.62,-685 574.62,-701.08 574.62,-701.08 574.62,-707.08 568.62,-713.08 562.62,-713.08"/>
+<text xml:space="preserve" text-anchor="middle" x="518.1" y="-696.64" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="12.00" fill="#1f2328">STOMP /ws/chat</text>
+<text xml:space="preserve" text-anchor="middle" x="518.1" y="-681.64" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="12.00" fill="#1f2328">채팅</text>
+</g>
+<!-- app&#45;&gt;stomp -->
+<g id="edge1" class="edge">
+<title>app&#45;&gt;stomp</title>
+<path fill="none" stroke="#57606a" d="M123.32,-757.15C192.56,-757.27 309.66,-753.84 407.83,-733.04 413.18,-731.91 433.54,-724.58 455.26,-716.5"/>
+<polygon fill="#57606a" stroke="#57606a" points="455.86,-718.89 461.56,-714.15 454.14,-714.3 455.86,-718.89"/>
+<text xml:space="preserve" text-anchor="middle" x="208.41" y="-759.85" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="10.00" fill="#1f2328">WebSocket</text>
+</g>
+<!-- rest -->
+<g id="node5" class="node">
+<title>rest</title>
+<path fill="#ddf4ff" stroke="#0969da" stroke-width="1.2" d="M395.83,-713.08C395.83,-713.08 303.79,-713.08 303.79,-713.08 297.79,-713.08 291.79,-707.08 291.79,-701.08 291.79,-701.08 291.79,-685 291.79,-685 291.79,-679 297.79,-673 303.79,-673 303.79,-673 395.83,-673 395.83,-673 401.83,-673 407.83,-679 407.83,-685 407.83,-685 407.83,-701.08 407.83,-701.08 407.83,-707.08 401.83,-713.08 395.83,-713.08"/>
+<text xml:space="preserve" text-anchor="middle" x="349.81" y="-696.64" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="12.00" fill="#1f2328">REST /api/v1/**</text>
+<text xml:space="preserve" text-anchor="middle" x="349.81" y="-681.64" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="12.00" fill="#1f2328">인증·일정·추천·동의</text>
+</g>
+<!-- app&#45;&gt;rest -->
+<g id="edge2" class="edge">
+<title>app&#45;&gt;rest</title>
+<path fill="none" stroke="#57606a" d="M108.06,-735.45C127.35,-727.34 150.43,-718.69 172.04,-713.29 208.1,-704.29 249.3,-699.27 282.85,-696.49"/>
+<polygon fill="#57606a" stroke="#57606a" points="282.92,-698.94 289.7,-695.95 282.53,-694.06 282.92,-698.94"/>
+<text xml:space="preserve" text-anchor="middle" x="208.41" y="-716.54" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="10.00" fill="#1f2328">HTTPS + JWT</text>
+</g>
+<!-- yolo -->
+<g id="node2" class="node">
+<title>yolo</title>
+<path fill="#ddf4ff" stroke="#0969da" stroke-width="1.2" d="M107.79,-678.08C107.79,-678.08 17.25,-678.08 17.25,-678.08 11.25,-678.08 5.25,-672.08 5.25,-666.08 5.25,-666.08 5.25,-650 5.25,-650 5.25,-644 11.25,-638 17.25,-638 17.25,-638 107.79,-638 107.79,-638 113.79,-638 119.79,-644 119.79,-650 119.79,-650 119.79,-666.08 119.79,-666.08 119.79,-672.08 113.79,-678.08 107.79,-678.08"/>
+<text xml:space="preserve" text-anchor="middle" x="62.52" y="-661.64" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="12.00" fill="#1f2328">비전 서비스</text>
+<text xml:space="preserve" text-anchor="middle" x="62.52" y="-646.64" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="12.00" fill="#1f2328">map&#45;project&#45;yolo</text>
+</g>
+<!-- yolo&#45;&gt;rest -->
+<g id="edge3" class="edge">
+<title>yolo&#45;&gt;rest</title>
+<path fill="none" stroke="#57606a" d="M120.29,-651.72C156.25,-649.07 203.56,-648.04 244.79,-655.29 261.62,-658.25 279.31,-663.71 295.23,-669.58"/>
+<polygon fill="#57606a" stroke="#57606a" points="294.07,-671.75 301.48,-671.94 295.8,-667.17 294.07,-671.75"/>
+<text xml:space="preserve" text-anchor="middle" x="208.41" y="-658.54" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="10.00" fill="#1f2328">/vision/permit</text>
+</g>
+<!-- admin -->
+<g id="node3" class="node">
+<title>admin</title>
+<path fill="#ddf4ff" stroke="#0969da" stroke-width="1.2" d="M113.04,-876.08C113.04,-876.08 12,-876.08 12,-876.08 6,-876.08 0,-870.08 0,-864.08 0,-864.08 0,-848 0,-848 0,-842 6,-836 12,-836 12,-836 113.04,-836 113.04,-836 119.04,-836 125.04,-842 125.04,-848 125.04,-848 125.04,-864.08 125.04,-864.08 125.04,-870.08 119.04,-876.08 113.04,-876.08"/>
+<text xml:space="preserve" text-anchor="middle" x="62.52" y="-859.64" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="12.00" fill="#1f2328">운영 콘솔</text>
+<text xml:space="preserve" text-anchor="middle" x="62.52" y="-844.64" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="12.00" fill="#1f2328">map&#45;project&#45;admin</text>
+</g>
+<!-- intern -->
+<g id="node7" class="node">
+<title>intern</title>
+<path fill="#ddf4ff" stroke="#0969da" stroke-width="1.2" d="M569.37,-758.08C569.37,-758.08 466.83,-758.08 466.83,-758.08 460.83,-758.08 454.83,-752.08 454.83,-746.08 454.83,-746.08 454.83,-730 454.83,-730 454.83,-724 460.83,-718 466.83,-718 466.83,-718 569.37,-718 569.37,-718 575.37,-718 581.37,-724 581.37,-730 581.37,-730 581.37,-746.08 581.37,-746.08 581.37,-752.08 575.37,-758.08 569.37,-758.08"/>
+<text xml:space="preserve" text-anchor="middle" x="518.1" y="-741.64" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="12.00" fill="#1f2328">/internal/admin/**</text>
+<text xml:space="preserve" text-anchor="middle" x="518.1" y="-726.64" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="12.00" fill="#1f2328">사설 대역 + 전용 토큰</text>
+</g>
+<!-- admin&#45;&gt;intern -->
+<g id="edge4" class="edge">
+<title>admin&#45;&gt;intern</title>
+<path fill="none" stroke="#57606a" d="M125.45,-842.55C194.65,-827.15 309.84,-800.5 407.83,-773.04 420.7,-769.43 434.32,-765.31 447.43,-761.2"/>
+<polygon fill="#57606a" stroke="#57606a" points="448.13,-763.55 454.06,-759.1 446.65,-758.87 448.13,-763.55"/>
+<text xml:space="preserve" text-anchor="middle" x="208.41" y="-835.03" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="10.00" fill="#1f2328">X&#45;Internal&#45;Token</text>
+</g>
+<!-- redis -->
+<g id="node11" class="node">
+<title>redis</title>
+<path fill="#fff8c5" stroke="#9a6700" stroke-width="1.2" d="M1039.95,-639.58C1039.95,-639.58 941.91,-639.58 941.91,-639.58 935.91,-639.58 929.91,-633.58 929.91,-627.58 929.91,-627.58 929.91,-596.5 929.91,-596.5 929.91,-590.5 935.91,-584.5 941.91,-584.5 941.91,-584.5 1039.95,-584.5 1039.95,-584.5 1045.95,-584.5 1051.95,-590.5 1051.95,-596.5 1051.95,-596.5 1051.95,-627.58 1051.95,-627.58 1051.95,-633.58 1045.95,-639.58 1039.95,-639.58"/>
+<text xml:space="preserve" text-anchor="middle" x="990.93" y="-623.14" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="12.00" fill="#1f2328">Redis 7</text>
+<text xml:space="preserve" text-anchor="middle" x="990.93" y="-608.14" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="12.00" fill="#1f2328">논리 DB 0~6</text>
+<text xml:space="preserve" text-anchor="middle" x="990.93" y="-593.14" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="12.00" fill="#1f2328">Streams · Pub/Sub</text>
+</g>
+<!-- stomp&#45;&gt;redis -->
+<g id="edge10" class="edge">
+<title>stomp&#45;&gt;redis</title>
+<path fill="none" stroke="#57606a" d="M574.96,-683.43C661.38,-668.56 827.29,-640.02 921.03,-623.89"/>
+<polygon fill="#57606a" stroke="#57606a" points="921.34,-626.33 927.83,-622.72 920.51,-621.5 921.34,-626.33"/>
+<text xml:space="preserve" text-anchor="middle" x="695.39" y="-677.32" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="10.00" fill="#1f2328">chat:broadcast</text>
+</g>
+<!-- agent -->
+<g id="node8" class="node">
+<title>agent</title>
+<path fill="#ddf4ff" stroke="#0969da" stroke-width="1.2" d="M745.16,-226.08C745.16,-226.08 645.62,-226.08 645.62,-226.08 639.62,-226.08 633.62,-220.08 633.62,-214.08 633.62,-214.08 633.62,-198 633.62,-198 633.62,-192 639.62,-186 645.62,-186 645.62,-186 745.16,-186 745.16,-186 751.16,-186 757.16,-192 757.16,-198 757.16,-198 757.16,-214.08 757.16,-214.08 757.16,-220.08 751.16,-226.08 745.16,-226.08"/>
+<text xml:space="preserve" text-anchor="middle" x="695.39" y="-209.64" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="12.00" fill="#1f2328">추천 에이전트</text>
+<text xml:space="preserve" text-anchor="middle" x="695.39" y="-194.64" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="12.00" fill="#1f2328">map&#45;project&#45;agent</text>
+</g>
+<!-- rest&#45;&gt;agent -->
+<g id="edge5" class="edge">
+<title>rest&#45;&gt;agent</title>
+<path fill="none" stroke="#57606a" d="M353.27,-672.43C362.69,-596.83 398.75,-336.19 454.83,-277.54 498.82,-231.54 571.03,-214.78 624.69,-208.85"/>
+<polygon fill="#57606a" stroke="#57606a" points="624.91,-211.29 631.63,-208.14 624.41,-206.42 624.91,-211.29"/>
+<text xml:space="preserve" text-anchor="middle" x="518.1" y="-293.54" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="10.00" fill="#1f2328">POST /v1/recommend</text>
+<text xml:space="preserve" text-anchor="middle" x="518.1" y="-280.79" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="10.00" fill="#1f2328">(고른 장소는 loc 봉투)</text>
+</g>
+<!-- hub -->
+<g id="node9" class="node">
+<title>hub</title>
+<path fill="#ddf4ff" stroke="#0969da" stroke-width="1.2" d="M750.41,-306.08C750.41,-306.08 640.37,-306.08 640.37,-306.08 634.37,-306.08 628.37,-300.08 628.37,-294.08 628.37,-294.08 628.37,-278 628.37,-278 628.37,-272 634.37,-266 640.37,-266 640.37,-266 750.41,-266 750.41,-266 756.41,-266 762.41,-272 762.41,-278 762.41,-278 762.41,-294.08 762.41,-294.08 762.41,-300.08 756.41,-306.08 750.41,-306.08"/>
+<text xml:space="preserve" text-anchor="middle" x="695.39" y="-289.64" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="12.00" fill="#1f2328">외부 데이터 게이트웨이</text>
+<text xml:space="preserve" text-anchor="middle" x="695.39" y="-274.64" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="12.00" fill="#1f2328">map&#45;project&#45;hub</text>
+</g>
+<!-- rest&#45;&gt;hub -->
+<g id="edge6" class="edge">
+<title>rest&#45;&gt;hub</title>
+<path fill="none" stroke="#57606a" d="M352.17,-672.78C356.81,-619.38 376.38,-473.12 454.83,-388.54 498.43,-341.54 567.18,-315.16 619.86,-300.98"/>
+<polygon fill="#57606a" stroke="#57606a" points="620.23,-303.42 626.38,-299.27 618.99,-298.68 620.23,-303.42"/>
+<text xml:space="preserve" text-anchor="middle" x="518.1" y="-404.54" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="10.00" fill="#1f2328">날씨·장소·경로·이동수단</text>
+<text xml:space="preserve" text-anchor="middle" x="518.1" y="-391.79" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="10.00" fill="#1f2328">(좌표는 loc 봉투)</text>
+</g>
+<!-- login -->
+<g id="node10" class="node">
+<title>login</title>
+<path fill="#f6f8fa" stroke="#57606a" stroke-width="1.2" stroke-dasharray="5,2" d="M748.91,-386.08C748.91,-386.08 641.87,-386.08 641.87,-386.08 635.87,-386.08 629.87,-380.08 629.87,-374.08 629.87,-374.08 629.87,-358 629.87,-358 629.87,-352 635.87,-346 641.87,-346 641.87,-346 748.91,-346 748.91,-346 754.91,-346 760.91,-352 760.91,-358 760.91,-358 760.91,-374.08 760.91,-374.08 760.91,-380.08 754.91,-386.08 748.91,-386.08"/>
+<text xml:space="preserve" text-anchor="middle" x="695.39" y="-369.64" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="12.00" fill="#1f2328">Kakao API · Apple ID</text>
+<text xml:space="preserve" text-anchor="middle" x="695.39" y="-354.64" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="12.00" fill="#1f2328">로그인 토큰 확인</text>
+</g>
+<!-- rest&#45;&gt;login -->
+<g id="edge7" class="edge">
+<title>rest&#45;&gt;login</title>
+<path fill="none" stroke="#57606a" d="M358.89,-672.56C373.65,-637.14 407.84,-563.6 454.83,-515.29 509.05,-459.55 588.11,-415.56 640.37,-390.18"/>
+<polygon fill="#57606a" stroke="#57606a" points="641.27,-392.46 646.52,-387.22 639.15,-388.05 641.27,-392.46"/>
+<text xml:space="preserve" text-anchor="middle" x="518.1" y="-518.54" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="10.00" fill="#1f2328">토큰 확인</text>
+</g>
+<!-- rest&#45;&gt;redis -->
+<g id="edge11" class="edge">
+<title>rest&#45;&gt;redis</title>
+<path fill="none" stroke="#57606a" d="M399.45,-672.42C416.72,-665.62 436.44,-658.42 454.83,-653.04 530.39,-630.95 550.11,-626.06 628.37,-617.54 729.93,-606.48 848.47,-607.26 921.36,-609.29"/>
+<polygon fill="#57606a" stroke="#57606a" points="921,-611.73 928.07,-609.49 921.14,-606.84 921,-611.73"/>
+<text xml:space="preserve" text-anchor="middle" x="695.39" y="-633.54" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="10.00" fill="#1f2328">폐기 목록·한도</text>
+<text xml:space="preserve" text-anchor="middle" x="695.39" y="-620.79" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="10.00" fill="#1f2328">초안·캐시</text>
+</g>
+<!-- pg -->
+<g id="node12" class="node">
+<title>pg</title>
+<path fill="#fff8c5" stroke="#9a6700" stroke-width="1.2" d="M1041.45,-140.08C1041.45,-140.08 940.41,-140.08 940.41,-140.08 934.41,-140.08 928.41,-134.08 928.41,-128.08 928.41,-128.08 928.41,-112 928.41,-112 928.41,-106 934.41,-100 940.41,-100 940.41,-100 1041.45,-100 1041.45,-100 1047.45,-100 1053.45,-106 1053.45,-112 1053.45,-112 1053.45,-128.08 1053.45,-128.08 1053.45,-134.08 1047.45,-140.08 1041.45,-140.08"/>
+<text xml:space="preserve" text-anchor="middle" x="990.93" y="-123.64" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="12.00" fill="#1f2328">PostgreSQL 17</text>
+<text xml:space="preserve" text-anchor="middle" x="990.93" y="-108.64" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="12.00" fill="#1f2328">스키마 user_service</text>
+</g>
+<!-- rest&#45;&gt;pg -->
+<g id="edge12" class="edge">
+<title>rest&#45;&gt;pg</title>
+<path fill="none" stroke="#57606a" d="M352.59,-672.56C360.2,-589.49 392.48,-278.56 454.83,-206.04 569.7,-72.44 802.83,-88.28 919.75,-106.41"/>
+<polygon fill="#57606a" stroke="#57606a" points="919.17,-108.8 926.46,-107.48 919.94,-103.96 919.17,-108.8"/>
+<text xml:space="preserve" text-anchor="middle" x="695.39" y="-124.61" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="10.00" fill="#1f2328">map_user_runtime</text>
+<text xml:space="preserve" text-anchor="middle" x="695.39" y="-111.86" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="10.00" fill="#1f2328">(DML)</text>
+</g>
+<!-- consumer -->
+<g id="node6" class="node">
+<title>consumer</title>
+<path fill="#ddf4ff" stroke="#0969da" stroke-width="1.2" d="M737.66,-758.08C737.66,-758.08 653.12,-758.08 653.12,-758.08 647.12,-758.08 641.12,-752.08 641.12,-746.08 641.12,-746.08 641.12,-730 641.12,-730 641.12,-724 647.12,-718 653.12,-718 653.12,-718 737.66,-718 737.66,-718 743.66,-718 749.66,-724 749.66,-730 749.66,-730 749.66,-746.08 749.66,-746.08 749.66,-752.08 743.66,-758.08 737.66,-758.08"/>
+<text xml:space="preserve" text-anchor="middle" x="695.39" y="-741.64" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="12.00" fill="#1f2328">스트림 소비자</text>
+<text xml:space="preserve" text-anchor="middle" x="695.39" y="-726.64" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="12.00" fill="#1f2328">agent:jobs:done</text>
+</g>
+<!-- consumer&#45;&gt;redis -->
+<g id="edge9" class="edge">
+<title>consumer&#45;&gt;redis</title>
+<path fill="none" stroke="#57606a" d="M750.02,-729.56C787.96,-722.27 839.35,-709.77 881.41,-690.04 906.32,-678.36 931.44,-660.76 951.23,-645.23"/>
+<polygon fill="#57606a" stroke="#57606a" points="952.6,-647.28 956.55,-641 949.54,-643.45 952.6,-647.28"/>
+<text xml:space="preserve" text-anchor="middle" x="845.41" y="-730.93" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="10.00" fill="#1f2328">XREADGROUP</text>
+<text xml:space="preserve" text-anchor="middle" x="845.41" y="-718.18" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="10.00" fill="#1f2328">bff&#45;result</text>
+</g>
+<!-- intern&#45;&gt;pg -->
+<g id="edge13" class="edge">
+<title>intern&#45;&gt;pg</title>
+<path fill="none" stroke="#57606a" d="M578,-717.55C579.19,-716.44 580.32,-715.27 581.37,-714.04 645.74,-638.81 561.62,-569.41 628.37,-496.29 707.83,-409.26 796.15,-498.4 881.41,-417.04 959.39,-342.63 981.59,-207.65 987.7,-148.79"/>
+<polygon fill="#57606a" stroke="#57606a" points="990.1,-149.38 988.34,-142.18 985.23,-148.9 990.1,-149.38"/>
+<text xml:space="preserve" text-anchor="middle" x="695.39" y="-499.54" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="10.00" fill="#1f2328">조회·조치</text>
+</g>
+<!-- agent&#45;&gt;redis -->
+<g id="edge8" class="edge">
+<title>agent&#45;&gt;redis</title>
+<path fill="none" stroke="#57606a" d="M736.98,-226.5C745.94,-232.11 754.98,-238.69 762.41,-246.04 865.9,-348.35 943.47,-506.47 974.77,-576.54"/>
+<polygon fill="#57606a" stroke="#57606a" points="972.49,-577.45 977.56,-582.85 976.97,-575.46 972.49,-577.45"/>
+<text xml:space="preserve" text-anchor="middle" x="845.41" y="-397.51" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="10.00" fill="#1f2328">결과 XADD(봉투)</text>
+</g>
+<!-- export -->
+<g id="node13" class="node">
+<title>export</title>
+<path fill="#fbefff" stroke="#8250df" stroke-width="1.2" stroke-dasharray="5,2" d="M745.16,-40.08C745.16,-40.08 645.62,-40.08 645.62,-40.08 639.62,-40.08 633.62,-34.08 633.62,-28.08 633.62,-28.08 633.62,-12 633.62,-12 633.62,-6 639.62,0 645.62,0 645.62,0 745.16,0 745.16,0 751.16,0 757.16,-6 757.16,-12 757.16,-12 757.16,-28.08 757.16,-28.08 757.16,-34.08 751.16,-40.08 745.16,-40.08"/>
+<text xml:space="preserve" text-anchor="middle" x="695.39" y="-23.64" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="12.00" fill="#1f2328">학습 내보내기 진입점</text>
+<text xml:space="preserve" text-anchor="middle" x="695.39" y="-8.64" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="12.00" fill="#1f2328">(기본 꺼짐)</text>
+</g>
+<!-- export&#45;&gt;pg -->
+<g id="edge14" class="edge">
+<title>export&#45;&gt;pg</title>
+<path fill="none" stroke="#8250df" stroke-dasharray="5,2" d="M757.66,-37.2C793.91,-47.71 840.57,-61.88 881.41,-76.29 898.6,-82.36 917.08,-89.55 933.83,-96.33"/>
+<polygon fill="#8250df" stroke="#8250df" points="932.58,-98.46 939.99,-98.84 934.43,-93.93 932.58,-98.46"/>
+<text xml:space="preserve" text-anchor="middle" x="845.41" y="-79.54" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="10.00" fill="#1f2328">읽기 전용</text>
+</g>
+</g>
+</svg>

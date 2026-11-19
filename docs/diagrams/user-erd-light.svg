@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Title: user_erd Pages: 1 -->
+<svg width="1086pt" height="1570pt"
+ viewBox="0.00 0.00 1086.00 1570.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(21.6 1548.1)">
+<title>user_erd</title>
+<polygon fill="#ffffff" stroke="none" points="-21.6,21.6 -21.6,-1548.1 1064.25,-1548.1 1064.25,21.6 -21.6,21.6"/>
+<text xml:space="preserve" text-anchor="middle" x="521.32" y="-1510.15" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="13.00" fill="#1f2328">스키마 user_service — 화살표는 외래 키(자식 → 부모)</text>
+<g id="clust1" class="cluster">
+<title>cluster_account</title>
+<path fill="#ffffff" stroke="#57606a" d="M813.37,-1245C813.37,-1245 1022.65,-1245 1022.65,-1245 1028.65,-1245 1034.65,-1251 1034.65,-1257 1034.65,-1257 1034.65,-1482 1034.65,-1482 1034.65,-1488 1028.65,-1494 1022.65,-1494 1022.65,-1494 813.37,-1494 813.37,-1494 807.37,-1494 801.37,-1488 801.37,-1482 801.37,-1482 801.37,-1257 801.37,-1257 801.37,-1251 807.37,-1245 813.37,-1245"/>
+<text xml:space="preserve" text-anchor="middle" x="831.87" y="-1478.6" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="12.00" fill="#1f2328">계정·인증</text>
+</g>
+<g id="clust2" class="cluster">
+<title>cluster_consent</title>
+<path fill="#ffffff" stroke="#57606a" d="M591.59,-1107C591.59,-1107 736.62,-1107 736.62,-1107 742.62,-1107 748.62,-1113 748.62,-1119 748.62,-1119 748.62,-1286 748.62,-1286 748.62,-1292 742.62,-1298 736.62,-1298 736.62,-1298 591.59,-1298 591.59,-1298 585.59,-1298 579.59,-1292 579.59,-1286 579.59,-1286 579.59,-1119 579.59,-1119 579.59,-1113 585.59,-1107 591.59,-1107"/>
+<text xml:space="preserve" text-anchor="middle" x="598.09" y="-1282.6" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="12.00" fill="#1f2328">동의</text>
+</g>
+<g id="clust3" class="cluster">
+<title>cluster_trip</title>
+<path fill="#ffffff" stroke="#57606a" d="M594.96,-696C594.96,-696 903.65,-696 903.65,-696 909.65,-696 915.65,-702 915.65,-708 915.65,-708 915.65,-1049 915.65,-1049 915.65,-1055 909.65,-1061 903.65,-1061 903.65,-1061 594.96,-1061 594.96,-1061 588.96,-1061 582.96,-1055 582.96,-1049 582.96,-1049 582.96,-708 582.96,-708 582.96,-702 588.96,-696 594.96,-696"/>
+<text xml:space="preserve" text-anchor="middle" x="613.46" y="-1045.6" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="12.00" fill="#1f2328">일정·추천</text>
+</g>
+<g id="clust4" class="cluster">
+<title>cluster_chat</title>
+<path fill="#ffffff" stroke="#57606a" d="M375.81,-355C375.81,-355 697.24,-355 697.24,-355 703.24,-355 709.24,-361 709.24,-367 709.24,-367 709.24,-592 709.24,-592 709.24,-598 703.24,-604 697.24,-604 697.24,-604 375.81,-604 375.81,-604 369.81,-604 363.81,-598 363.81,-592 363.81,-592 363.81,-367 363.81,-367 363.81,-361 369.81,-355 375.81,-355"/>
+<text xml:space="preserve" text-anchor="middle" x="382.31" y="-588.6" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="12.00" fill="#1f2328">채팅</text>
+</g>
+<g id="clust5" class="cluster">
+<title>cluster_mod</title>
+<path fill="#ffffff" stroke="#57606a" d="M20,-546C20,-546 302.81,-546 302.81,-546 308.81,-546 314.81,-552 314.81,-558 314.81,-558 314.81,-667 314.81,-667 314.81,-673 308.81,-679 302.81,-679 302.81,-679 20,-679 20,-679 14,-679 8,-673 8,-667 8,-667 8,-558 8,-558 8,-552 14,-546 20,-546"/>
+<text xml:space="preserve" text-anchor="middle" x="38.5" y="-663.6" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="12.00" fill="#1f2328">신고·차단</text>
+</g>
+<g id="clust6" class="cluster">
+<title>cluster_unused</title>
+<path fill="#ffffff" stroke="#8250df" stroke-dasharray="5,2" d="M605.09,-8C605.09,-8 897.65,-8 897.65,-8 903.65,-8 909.65,-14 909.65,-20 909.65,-20 909.65,-303 909.65,-303 909.65,-309 903.65,-315 897.65,-315 897.65,-315 605.09,-315 605.09,-315 599.09,-315 593.09,-309 593.09,-303 593.09,-303 593.09,-20 593.09,-20 593.09,-14 599.09,-8 605.09,-8"/>
+<text xml:space="preserve" text-anchor="middle" x="663.34" y="-299.6" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="12.00" fill="#1f2328">초기 설계의 미사용 테이블</text>
+</g>
+<!-- users -->
+<g id="node1" class="node">
+<title>users</title>
+<path fill="#fff8c5" stroke="#9a6700" stroke-width="1.1" d="M1014.65,-1289C1014.65,-1289 984.65,-1289 984.65,-1289 978.65,-1289 972.65,-1283 972.65,-1277 972.65,-1277 972.65,-1265 972.65,-1265 972.65,-1259 978.65,-1253 984.65,-1253 984.65,-1253 1014.65,-1253 1014.65,-1253 1020.65,-1253 1026.65,-1259 1026.65,-1265 1026.65,-1265 1026.65,-1277 1026.65,-1277 1026.65,-1283 1020.65,-1289 1014.65,-1289"/>
+<text xml:space="preserve" text-anchor="middle" x="999.65" y="-1267.3" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="11.00" fill="#1f2328">users</text>
+</g>
+<!-- oauth_accounts -->
+<g id="node2" class="node">
+<title>oauth_accounts</title>
+<path fill="#fff8c5" stroke="#9a6700" stroke-width="1.1" d="M891.9,-1289C891.9,-1289 821.37,-1289 821.37,-1289 815.37,-1289 809.37,-1283 809.37,-1277 809.37,-1277 809.37,-1265 809.37,-1265 809.37,-1259 815.37,-1253 821.37,-1253 821.37,-1253 891.9,-1253 891.9,-1253 897.9,-1253 903.9,-1259 903.9,-1265 903.9,-1265 903.9,-1277 903.9,-1277 903.9,-1283 897.9,-1289 891.9,-1289"/>
+<text xml:space="preserve" text-anchor="middle" x="856.63" y="-1267.3" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="11.00" fill="#1f2328">oauth_accounts</text>
+</g>
+<!-- oauth_accounts&#45;&gt;users -->
+<g id="edge1" class="edge">
+<title>oauth_accounts&#45;&gt;users</title>
+<path fill="none" stroke="#57606a" d="M904.2,-1271C923.99,-1271 946.65,-1271 964.8,-1271"/>
+<polygon fill="#57606a" stroke="#57606a" points="964.78,-1273.1 970.78,-1271 964.78,-1268.9 964.78,-1273.1"/>
+</g>
+<!-- apple_accounts -->
+<g id="node3" class="node">
+<title>apple_accounts</title>
+<path fill="#fff8c5" stroke="#9a6700" stroke-width="1.1" d="M891.15,-1347C891.15,-1347 822.12,-1347 822.12,-1347 816.12,-1347 810.12,-1341 810.12,-1335 810.12,-1335 810.12,-1323 810.12,-1323 810.12,-1317 816.12,-1311 822.12,-1311 822.12,-1311 891.15,-1311 891.15,-1311 897.15,-1311 903.15,-1317 903.15,-1323 903.15,-1323 903.15,-1335 903.15,-1335 903.15,-1341 897.15,-1347 891.15,-1347"/>
+<text xml:space="preserve" text-anchor="middle" x="856.63" y="-1325.3" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="11.00" fill="#1f2328">apple_accounts</text>
+</g>
+<!-- apple_accounts&#45;&gt;users -->
+<g id="edge2" class="edge">
+<title>apple_accounts&#45;&gt;users</title>
+<path fill="none" stroke="#57606a" d="M902.64,-1310.49C923.03,-1302.1 946.7,-1292.37 965.44,-1284.66"/>
+<polygon fill="#57606a" stroke="#57606a" points="965.96,-1286.72 970.71,-1282.49 964.36,-1282.83 965.96,-1286.72"/>
+</g>
+<!-- refresh_tokens -->
+<g id="node4" class="node">
+<title>refresh_tokens</title>
+<path fill="#fff8c5" stroke="#9a6700" stroke-width="1.1" d="M888.9,-1405C888.9,-1405 824.37,-1405 824.37,-1405 818.37,-1405 812.37,-1399 812.37,-1393 812.37,-1393 812.37,-1381 812.37,-1381 812.37,-1375 818.37,-1369 824.37,-1369 824.37,-1369 888.9,-1369 888.9,-1369 894.9,-1369 900.9,-1375 900.9,-1381 900.9,-1381 900.9,-1393 900.9,-1393 900.9,-1399 894.9,-1405 888.9,-1405"/>
+<text xml:space="preserve" text-anchor="middle" x="856.63" y="-1383.3" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="11.00" fill="#1f2328">refresh_tokens</text>
+</g>
+<!-- refresh_tokens&#45;&gt;users -->
+<g id="edge3" class="edge">
+<title>refresh_tokens&#45;&gt;users</title>
+<path fill="none" stroke="#57606a" d="M898.94,-1368.59C904.75,-1365.37 910.49,-1361.81 915.65,-1358 940.3,-1339.79 963.98,-1313.85 979.69,-1295.04"/>
+<polygon fill="#57606a" stroke="#57606a" points="981.14,-1296.58 983.34,-1290.62 977.9,-1293.91 981.14,-1296.58"/>
+</g>
+<!-- user_devices -->
+<g id="node5" class="node">
+<title>user_devices</title>
+<path fill="#fff8c5" stroke="#9a6700" stroke-width="1.1" d="M885.15,-1463C885.15,-1463 828.12,-1463 828.12,-1463 822.12,-1463 816.12,-1457 816.12,-1451 816.12,-1451 816.12,-1439 816.12,-1439 816.12,-1433 822.12,-1427 828.12,-1427 828.12,-1427 885.15,-1427 885.15,-1427 891.15,-1427 897.15,-1433 897.15,-1439 897.15,-1439 897.15,-1451 897.15,-1451 897.15,-1457 891.15,-1463 885.15,-1463"/>
+<text xml:space="preserve" text-anchor="middle" x="856.63" y="-1441.3" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="11.00" fill="#1f2328">user_devices</text>
+</g>
+<!-- user_devices&#45;&gt;users -->
+<g id="edge4" class="edge">
+<title>user_devices&#45;&gt;users</title>
+<path fill="none" stroke="#57606a" d="M897.45,-1429.06C903.97,-1425.37 910.33,-1421.03 915.65,-1416 952.1,-1381.55 977.18,-1327.48 989.62,-1296.02"/>
+<polygon fill="#57606a" stroke="#57606a" points="991.47,-1297.05 991.68,-1290.69 987.55,-1295.53 991.47,-1297.05"/>
+</g>
+<!-- service_policy_acceptances -->
+<g id="node6" class="node">
+<title>service_policy_acceptances</title>
+<path fill="#fff8c5" stroke="#9a6700" stroke-width="1.1" d="M728.62,-1267C728.62,-1267 599.59,-1267 599.59,-1267 593.59,-1267 587.59,-1261 587.59,-1255 587.59,-1255 587.59,-1243 587.59,-1243 587.59,-1237 593.59,-1231 599.59,-1231 599.59,-1231 728.62,-1231 728.62,-1231 734.62,-1231 740.62,-1237 740.62,-1243 740.62,-1243 740.62,-1255 740.62,-1255 740.62,-1261 734.62,-1267 728.62,-1267"/>
+<text xml:space="preserve" text-anchor="middle" x="664.1" y="-1245.3" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="11.00" fill="#1f2328">service_policy_acceptances</text>
+</g>
+<!-- service_policy_acceptances&#45;&gt;users -->
+<g id="edge5" class="edge">
+<title>service_policy_acceptances&#45;&gt;users</title>
+<path fill="none" stroke="#57606a" d="M741.02,-1239.23C790.98,-1234.67 857.63,-1232.16 915.65,-1242 932.62,-1244.88 950.73,-1250.85 965.7,-1256.62"/>
+<polygon fill="#57606a" stroke="#57606a" points="964.58,-1258.44 970.93,-1258.69 966.13,-1254.53 964.58,-1258.44"/>
+</g>
+<!-- external_ai_consents -->
+<g id="node7" class="node">
+<title>external_ai_consents</title>
+<path fill="#fff8c5" stroke="#9a6700" stroke-width="1.1" d="M712.12,-1209C712.12,-1209 616.09,-1209 616.09,-1209 610.09,-1209 604.09,-1203 604.09,-1197 604.09,-1197 604.09,-1185 604.09,-1185 604.09,-1179 610.09,-1173 616.09,-1173 616.09,-1173 712.12,-1173 712.12,-1173 718.12,-1173 724.12,-1179 724.12,-1185 724.12,-1185 724.12,-1197 724.12,-1197 724.12,-1203 718.12,-1209 712.12,-1209"/>
+<text xml:space="preserve" text-anchor="middle" x="664.1" y="-1187.3" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="11.00" fill="#1f2328">external_ai_consents</text>
+</g>
+<!-- external_ai_consents&#45;&gt;users -->
+<g id="edge6" class="edge">
+<title>external_ai_consents&#45;&gt;users</title>
+<path fill="none" stroke="#57606a" d="M724.48,-1195.13C775.99,-1199.91 852.07,-1209.87 915.65,-1230 932.79,-1235.43 950.8,-1243.94 965.65,-1251.81"/>
+<polygon fill="#57606a" stroke="#57606a" points="964.62,-1253.64 970.9,-1254.64 966.62,-1249.94 964.62,-1253.64"/>
+</g>
+<!-- external_ai_job_consents -->
+<g id="node8" class="node">
+<title>external_ai_job_consents</title>
+<path fill="#fff8c5" stroke="#9a6700" stroke-width="1.1" d="M722.62,-1151C722.62,-1151 605.59,-1151 605.59,-1151 599.59,-1151 593.59,-1145 593.59,-1139 593.59,-1139 593.59,-1127 593.59,-1127 593.59,-1121 599.59,-1115 605.59,-1115 605.59,-1115 722.62,-1115 722.62,-1115 728.62,-1115 734.62,-1121 734.62,-1127 734.62,-1127 734.62,-1139 734.62,-1139 734.62,-1145 728.62,-1151 722.62,-1151"/>
+<text xml:space="preserve" text-anchor="middle" x="664.1" y="-1129.3" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="11.00" fill="#1f2328">external_ai_job_consents</text>
+</g>
+<!-- external_ai_job_consents&#45;&gt;users -->
+<g id="edge7" class="edge">
+<title>external_ai_job_consents&#45;&gt;users</title>
+<path fill="none" stroke="#57606a" d="M735.15,-1143.11C787.17,-1152.62 858.67,-1170.01 915.65,-1200 938.87,-1212.22 961.23,-1231.97 976.89,-1247.54"/>
+<polygon fill="#57606a" stroke="#57606a" points="975.15,-1248.78 980.86,-1251.57 978.14,-1245.82 975.15,-1248.78"/>
+</g>
+<!-- recommend_jobs -->
+<g id="node12" class="node">
+<title>recommend_jobs</title>
+<path fill="#fff8c5" stroke="#9a6700" stroke-width="1.1" d="M895.65,-856C895.65,-856 817.62,-856 817.62,-856 811.62,-856 805.62,-850 805.62,-844 805.62,-844 805.62,-832 805.62,-832 805.62,-826 811.62,-820 817.62,-820 817.62,-820 895.65,-820 895.65,-820 901.65,-820 907.65,-826 907.65,-832 907.65,-832 907.65,-844 907.65,-844 907.65,-850 901.65,-856 895.65,-856"/>
+<text xml:space="preserve" text-anchor="middle" x="856.63" y="-834.3" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="11.00" fill="#1f2328">recommend_jobs</text>
+</g>
+<!-- external_ai_job_consents&#45;&gt;recommend_jobs -->
+<g id="edge8" class="edge">
+<title>external_ai_job_consents&#45;&gt;recommend_jobs</title>
+<path fill="none" stroke="#57606a" d="M694.23,-1114.64C711.72,-1102.49 733.45,-1085.28 748.62,-1066 799.72,-1001.06 833.7,-907.75 847.98,-863.35"/>
+<polygon fill="#57606a" stroke="#57606a" points="849.91,-864.19 849.72,-857.84 845.91,-862.93 849.91,-864.19"/>
+</g>
+<!-- schedules -->
+<g id="node9" class="node">
+<title>schedules</title>
+<path fill="#fff8c5" stroke="#9a6700" stroke-width="1.1" d="M878.02,-740C878.02,-740 835.24,-740 835.24,-740 829.24,-740 823.24,-734 823.24,-728 823.24,-728 823.24,-716 823.24,-716 823.24,-710 829.24,-704 835.24,-704 835.24,-704 878.02,-704 878.02,-704 884.02,-704 890.02,-710 890.02,-716 890.02,-716 890.02,-728 890.02,-728 890.02,-734 884.02,-740 878.02,-740"/>
+<text xml:space="preserve" text-anchor="middle" x="856.63" y="-718.3" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="11.00" fill="#1f2328">schedules</text>
+</g>
+<!-- schedules&#45;&gt;users -->
+<g id="edge9" class="edge">
+<title>schedules&#45;&gt;users</title>
+<path fill="none" stroke="#57606a" d="M873.21,-740.41C886.58,-757.19 905.27,-783.24 915.65,-809 979.11,-966.53 994.25,-1173.76 997.69,-1245.37"/>
+<polygon fill="#57606a" stroke="#57606a" points="995.58,-1245.24 997.95,-1251.13 999.78,-1245.04 995.58,-1245.24"/>
+</g>
+<!-- schedule_arrivals -->
+<g id="node10" class="node">
+<title>schedule_arrivals</title>
+<path fill="#fff8c5" stroke="#9a6700" stroke-width="1.1" d="M702.74,-740C702.74,-740 625.46,-740 625.46,-740 619.46,-740 613.46,-734 613.46,-728 613.46,-728 613.46,-716 613.46,-716 613.46,-710 619.46,-704 625.46,-704 625.46,-704 702.74,-704 702.74,-704 708.74,-704 714.74,-710 714.74,-716 714.74,-716 714.74,-728 714.74,-728 714.74,-734 708.74,-740 702.74,-740"/>
+<text xml:space="preserve" text-anchor="middle" x="664.1" y="-718.3" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="11.00" fill="#1f2328">schedule_arrivals</text>
+</g>
+<!-- schedule_arrivals&#45;&gt;schedules -->
+<g id="edge10" class="edge">
+<title>schedule_arrivals&#45;&gt;schedules</title>
+<path fill="none" stroke="#57606a" d="M715.16,-722C746.57,-722 786.51,-722 815.77,-722"/>
+<polygon fill="#57606a" stroke="#57606a" points="815.45,-724.1 821.45,-722 815.45,-719.9 815.45,-724.1"/>
+</g>
+<!-- nearby_impressions -->
+<g id="node11" class="node">
+<title>nearby_impressions</title>
+<path fill="#fff8c5" stroke="#9a6700" stroke-width="1.1" d="M708.37,-798C708.37,-798 619.84,-798 619.84,-798 613.84,-798 607.84,-792 607.84,-786 607.84,-786 607.84,-774 607.84,-774 607.84,-768 613.84,-762 619.84,-762 619.84,-762 708.37,-762 708.37,-762 714.37,-762 720.37,-768 720.37,-774 720.37,-774 720.37,-786 720.37,-786 720.37,-792 714.37,-798 708.37,-798"/>
+<text xml:space="preserve" text-anchor="middle" x="664.1" y="-776.3" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="11.00" fill="#1f2328">nearby_impressions</text>
+</g>
+<!-- nearby_impressions&#45;&gt;schedules -->
+<g id="edge11" class="edge">
+<title>nearby_impressions&#45;&gt;schedules</title>
+<path fill="none" stroke="#57606a" d="M720.73,-763.07C751.18,-753.8 788.2,-742.53 815.76,-734.14"/>
+<polygon fill="#57606a" stroke="#57606a" points="816.33,-736.16 821.46,-732.4 815.11,-732.14 816.33,-736.16"/>
+</g>
+<!-- recommend_edit_requests -->
+<g id="node13" class="node">
+<title>recommend_edit_requests</title>
+<path fill="#fff8c5" stroke="#9a6700" stroke-width="1.1" d="M725.24,-856C725.24,-856 602.96,-856 602.96,-856 596.96,-856 590.96,-850 590.96,-844 590.96,-844 590.96,-832 590.96,-832 590.96,-826 596.96,-820 602.96,-820 602.96,-820 725.24,-820 725.24,-820 731.24,-820 737.24,-826 737.24,-832 737.24,-832 737.24,-844 737.24,-844 737.24,-850 731.24,-856 725.24,-856"/>
+<text xml:space="preserve" text-anchor="middle" x="664.1" y="-834.3" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="11.00" fill="#1f2328">recommend_edit_requests</text>
+</g>
+<!-- recommend_edit_requests&#45;&gt;recommend_jobs -->
+<g id="edge12" class="edge">
+<title>recommend_edit_requests&#45;&gt;recommend_jobs</title>
+<path fill="none" stroke="#57606a" d="M737.68,-838C757.55,-838 778.81,-838 797.74,-838"/>
+<polygon fill="#57606a" stroke="#57606a" points="797.63,-840.1 803.63,-838 797.63,-835.9 797.63,-840.1"/>
+</g>
+<!-- recommend_edits -->
+<g id="node14" class="node">
+<title>recommend_edits</title>
+<path fill="#fff8c5" stroke="#9a6700" stroke-width="1.1" d="M704.24,-914C704.24,-914 623.96,-914 623.96,-914 617.96,-914 611.96,-908 611.96,-902 611.96,-902 611.96,-890 611.96,-890 611.96,-884 617.96,-878 623.96,-878 623.96,-878 704.24,-878 704.24,-878 710.24,-878 716.24,-884 716.24,-890 716.24,-890 716.24,-902 716.24,-902 716.24,-908 710.24,-914 704.24,-914"/>
+<text xml:space="preserve" text-anchor="middle" x="664.1" y="-892.3" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="11.00" fill="#1f2328">recommend_edits</text>
+</g>
+<!-- recommend_training -->
+<g id="node15" class="node">
+<title>recommend_training</title>
+<path fill="#fff8c5" stroke="#9a6700" stroke-width="1.1" d="M710.24,-972C710.24,-972 617.96,-972 617.96,-972 611.96,-972 605.96,-966 605.96,-960 605.96,-960 605.96,-948 605.96,-948 605.96,-942 611.96,-936 617.96,-936 617.96,-936 710.24,-936 710.24,-936 716.24,-936 722.24,-942 722.24,-948 722.24,-948 722.24,-960 722.24,-960 722.24,-966 716.24,-972 710.24,-972"/>
+<text xml:space="preserve" text-anchor="middle" x="664.1" y="-950.3" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="11.00" fill="#1f2328">recommend_training</text>
+</g>
+<!-- recommend_cancellations -->
+<g id="node16" class="node">
+<title>recommend_cancellations</title>
+<path fill="#fff8c5" stroke="#9a6700" stroke-width="1.1" d="M724.12,-1030C724.12,-1030 604.09,-1030 604.09,-1030 598.09,-1030 592.09,-1024 592.09,-1018 592.09,-1018 592.09,-1006 592.09,-1006 592.09,-1000 598.09,-994 604.09,-994 604.09,-994 724.12,-994 724.12,-994 730.12,-994 736.12,-1000 736.12,-1006 736.12,-1006 736.12,-1018 736.12,-1018 736.12,-1024 730.12,-1030 724.12,-1030"/>
+<text xml:space="preserve" text-anchor="middle" x="664.1" y="-1008.3" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="11.00" fill="#1f2328">recommend_cancellations</text>
+</g>
+<!-- chat_rooms -->
+<g id="node17" class="node">
+<title>chat_rooms</title>
+<path fill="#fff8c5" stroke="#9a6700" stroke-width="1.1" d="M689.24,-573C689.24,-573 638.96,-573 638.96,-573 632.96,-573 626.96,-567 626.96,-561 626.96,-561 626.96,-549 626.96,-549 626.96,-543 632.96,-537 638.96,-537 638.96,-537 689.24,-537 689.24,-537 695.24,-537 701.24,-543 701.24,-549 701.24,-549 701.24,-561 701.24,-561 701.24,-567 695.24,-573 689.24,-573"/>
+<text xml:space="preserve" text-anchor="middle" x="664.1" y="-551.3" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="11.00" fill="#1f2328">chat_rooms</text>
+</g>
+<!-- chat_rooms&#45;&gt;schedules -->
+<g id="edge13" class="edge">
+<title>chat_rooms&#45;&gt;schedules</title>
+<path fill="none" stroke="#57606a" d="M699,-573.34C714.75,-582.54 733.33,-594.4 748.62,-607 782.72,-635.1 816.52,-673.69 836.74,-698.24"/>
+<polygon fill="#57606a" stroke="#57606a" points="834.96,-699.37 840.38,-702.69 838.21,-696.71 834.96,-699.37"/>
+</g>
+<!-- chat_participants -->
+<g id="node18" class="node">
+<title>chat_participants</title>
+<path fill="#fff8c5" stroke="#9a6700" stroke-width="1.1" d="M486.21,-457C486.21,-457 408.18,-457 408.18,-457 402.18,-457 396.18,-451 396.18,-445 396.18,-445 396.18,-433 396.18,-433 396.18,-427 402.18,-421 408.18,-421 408.18,-421 486.21,-421 486.21,-421 492.21,-421 498.21,-427 498.21,-433 498.21,-433 498.21,-445 498.21,-445 498.21,-451 492.21,-457 486.21,-457"/>
+<text xml:space="preserve" text-anchor="middle" x="447.2" y="-435.3" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="11.00" fill="#1f2328">chat_participants</text>
+</g>
+<!-- chat_participants&#45;&gt;users -->
+<g id="edge15" class="edge">
+<title>chat_participants&#45;&gt;users</title>
+<path fill="none" stroke="#57606a" d="M498.57,-432.98C597.48,-424.34 816.09,-421.65 915.65,-550 1002.18,-661.56 1000.82,-1130.31 999.14,-1245.4"/>
+<polygon fill="#57606a" stroke="#57606a" points="997.04,-1245.22 999.04,-1251.25 1001.24,-1245.29 997.04,-1245.22"/>
+</g>
+<!-- chat_participants&#45;&gt;chat_rooms -->
+<g id="edge14" class="edge">
+<title>chat_participants&#45;&gt;chat_rooms</title>
+<path fill="none" stroke="#57606a" d="M498.76,-457.27C506.84,-460.6 515.02,-464.22 522.59,-468 561.01,-487.18 602.54,-513.68 630.41,-532.37"/>
+<polygon fill="#57606a" stroke="#57606a" points="629.09,-534.01 635.24,-535.63 631.44,-530.53 629.09,-534.01"/>
+</g>
+<!-- chat_messages -->
+<g id="node19" class="node">
+<title>chat_messages</title>
+<path fill="#fff8c5" stroke="#9a6700" stroke-width="1.1" d="M481.71,-573C481.71,-573 412.68,-573 412.68,-573 406.68,-573 400.68,-567 400.68,-561 400.68,-561 400.68,-549 400.68,-549 400.68,-543 406.68,-537 412.68,-537 412.68,-537 481.71,-537 481.71,-537 487.71,-537 493.71,-543 493.71,-549 493.71,-549 493.71,-561 493.71,-561 493.71,-567 487.71,-573 481.71,-573"/>
+<text xml:space="preserve" text-anchor="middle" x="447.2" y="-551.3" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="11.00" fill="#1f2328">chat_messages</text>
+</g>
+<!-- chat_messages&#45;&gt;chat_rooms -->
+<g id="edge16" class="edge">
+<title>chat_messages&#45;&gt;chat_rooms</title>
+<path fill="none" stroke="#57606a" d="M494.04,-555C531.14,-555 583.03,-555 619.51,-555"/>
+<polygon fill="#57606a" stroke="#57606a" points="619.08,-557.1 625.08,-555 619.08,-552.9 619.08,-557.1"/>
+</g>
+<!-- chat_membership_intervals -->
+<g id="node20" class="node">
+<title>chat_membership_intervals</title>
+<path fill="#fff8c5" stroke="#9a6700" stroke-width="1.1" d="M510.59,-515C510.59,-515 383.81,-515 383.81,-515 377.81,-515 371.81,-509 371.81,-503 371.81,-503 371.81,-491 371.81,-491 371.81,-485 377.81,-479 383.81,-479 383.81,-479 510.59,-479 510.59,-479 516.59,-479 522.59,-485 522.59,-491 522.59,-491 522.59,-503 522.59,-503 522.59,-509 516.59,-515 510.59,-515"/>
+<text xml:space="preserve" text-anchor="middle" x="447.2" y="-493.3" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="11.00" fill="#1f2328">chat_membership_intervals</text>
+</g>
+<!-- chat_membership_intervals&#45;&gt;users -->
+<g id="edge18" class="edge">
+<title>chat_membership_intervals&#45;&gt;users</title>
+<path fill="none" stroke="#57606a" d="M523.14,-490.67C586.22,-488.44 677.31,-492.63 748.62,-526 843.13,-570.23 868.69,-597.82 915.65,-691 965.91,-790.72 991.01,-1146 997.14,-1245.14"/>
+<polygon fill="#57606a" stroke="#57606a" points="995.04,-1245.25 997.5,-1251.11 999.23,-1245 995.04,-1245.25"/>
+</g>
+<!-- chat_membership_intervals&#45;&gt;chat_rooms -->
+<g id="edge17" class="edge">
+<title>chat_membership_intervals&#45;&gt;chat_rooms</title>
+<path fill="none" stroke="#57606a" d="M516.79,-515.51C550.56,-524.63 590.26,-535.34 619.78,-543.31"/>
+<polygon fill="#57606a" stroke="#57606a" points="618.87,-545.24 625.21,-544.77 619.96,-541.18 618.87,-545.24"/>
+</g>
+<!-- chat_restrictions -->
+<g id="node21" class="node">
+<title>chat_restrictions</title>
+<path fill="#fff8c5" stroke="#9a6700" stroke-width="1.1" d="M484.34,-399C484.34,-399 410.06,-399 410.06,-399 404.06,-399 398.06,-393 398.06,-387 398.06,-387 398.06,-375 398.06,-375 398.06,-369 404.06,-363 410.06,-363 410.06,-363 484.34,-363 484.34,-363 490.34,-363 496.34,-369 496.34,-375 496.34,-375 496.34,-387 496.34,-387 496.34,-393 490.34,-399 484.34,-399"/>
+<text xml:space="preserve" text-anchor="middle" x="447.2" y="-377.3" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="11.00" fill="#1f2328">chat_restrictions</text>
+</g>
+<!-- chat_restrictions&#45;&gt;users -->
+<g id="edge19" class="edge">
+<title>chat_restrictions&#45;&gt;users</title>
+<path fill="none" stroke="#57606a" d="M496.82,-372.43C593.56,-358.51 809.94,-343.58 915.65,-465 968.18,-525.33 992.89,-1114.8 997.74,-1245.45"/>
+<polygon fill="#57606a" stroke="#57606a" points="995.64,-1245.27 997.96,-1251.19 999.83,-1245.11 995.64,-1245.27"/>
+</g>
+<!-- moderation_reports -->
+<g id="node22" class="node">
+<title>moderation_reports</title>
+<path fill="#fff8c5" stroke="#9a6700" stroke-width="1.1" d="M294.81,-648C294.81,-648 205.53,-648 205.53,-648 199.53,-648 193.53,-642 193.53,-636 193.53,-636 193.53,-624 193.53,-624 193.53,-618 199.53,-612 205.53,-612 205.53,-612 294.81,-612 294.81,-612 300.81,-612 306.81,-618 306.81,-624 306.81,-624 306.81,-636 306.81,-636 306.81,-642 300.81,-648 294.81,-648"/>
+<text xml:space="preserve" text-anchor="middle" x="250.17" y="-626.3" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="11.00" fill="#1f2328">moderation_reports</text>
+</g>
+<!-- moderation_reports&#45;&gt;users -->
+<g id="edge20" class="edge">
+<title>moderation_reports&#45;&gt;users</title>
+<path fill="none" stroke="#57606a" d="M259.04,-648.09C289.34,-715.43 405.5,-953.46 579.59,-1065 644.34,-1106.49 674.22,-1082.53 748.62,-1102 823.71,-1121.65 852.8,-1107.46 915.65,-1153 949.12,-1177.25 973.93,-1219.27 987.33,-1246.07"/>
+<polygon fill="#57606a" stroke="#57606a" points="985.31,-1246.71 989.83,-1251.18 989.08,-1244.86 985.31,-1246.71"/>
+</g>
+<!-- moderation_reports&#45;&gt;schedules -->
+<g id="edge23" class="edge">
+<title>moderation_reports&#45;&gt;schedules</title>
+<path fill="none" stroke="#57606a" d="M307.3,-623.31C401.22,-614.13 595.04,-603.9 748.62,-653 778.71,-662.62 808.55,-683 829.04,-699.13"/>
+<polygon fill="#57606a" stroke="#57606a" points="827.66,-700.71 833.65,-702.82 830.28,-697.43 827.66,-700.71"/>
+</g>
+<!-- moderation_reports&#45;&gt;recommend_jobs -->
+<g id="edge24" class="edge">
+<title>moderation_reports&#45;&gt;recommend_jobs</title>
+<path fill="none" stroke="#57606a" d="M307.23,-634.6C429.28,-644.98 711.12,-671.01 748.62,-693 773.43,-707.55 817.8,-776 840.84,-813.42"/>
+<polygon fill="#57606a" stroke="#57606a" points="838.9,-814.27 843.83,-818.29 842.48,-812.08 838.9,-814.27"/>
+</g>
+<!-- moderation_reports&#45;&gt;chat_rooms -->
+<g id="edge22" class="edge">
+<title>moderation_reports&#45;&gt;chat_rooms</title>
+<path fill="none" stroke="#57606a" d="M307.15,-621.11C362.11,-612.24 448.26,-597.96 522.59,-584 555.06,-577.9 591.61,-570.33 619.29,-564.46"/>
+<polygon fill="#57606a" stroke="#57606a" points="619.58,-566.55 625.01,-563.24 618.7,-562.44 619.58,-566.55"/>
+</g>
+<!-- moderation_reports&#45;&gt;chat_messages -->
+<g id="edge21" class="edge">
+<title>moderation_reports&#45;&gt;chat_messages</title>
+<path fill="none" stroke="#57606a" d="M299.38,-611.46C327.89,-600.5 364.03,-586.6 393.32,-575.34"/>
+<polygon fill="#57606a" stroke="#57606a" points="393.96,-577.34 398.81,-573.22 392.46,-573.42 393.96,-577.34"/>
+</g>
+<!-- moderation_actions -->
+<g id="node23" class="node">
+<title>moderation_actions</title>
+<path fill="#fff8c5" stroke="#9a6700" stroke-width="1.1" d="M116.53,-648C116.53,-648 28,-648 28,-648 22,-648 16,-642 16,-636 16,-636 16,-624 16,-624 16,-618 22,-612 28,-612 28,-612 116.53,-612 116.53,-612 122.53,-612 128.53,-618 128.53,-624 128.53,-624 128.53,-636 128.53,-636 128.53,-642 122.53,-648 116.53,-648"/>
+<text xml:space="preserve" text-anchor="middle" x="72.26" y="-626.3" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="11.00" fill="#1f2328">moderation_actions</text>
+</g>
+<!-- moderation_actions&#45;&gt;moderation_reports -->
+<g id="edge25" class="edge">
+<title>moderation_actions&#45;&gt;moderation_reports</title>
+<path fill="none" stroke="#57606a" d="M128.92,-630C147.05,-630 167.3,-630 185.94,-630"/>
+<polygon fill="#57606a" stroke="#57606a" points="185.76,-632.1 191.76,-630 185.76,-627.9 185.76,-632.1"/>
+</g>
+<!-- user_blocks -->
+<g id="node24" class="node">
+<title>user_blocks</title>
+<path fill="#fff8c5" stroke="#9a6700" stroke-width="1.1" d="M97.78,-590C97.78,-590 46.75,-590 46.75,-590 40.75,-590 34.75,-584 34.75,-578 34.75,-578 34.75,-566 34.75,-566 34.75,-560 40.75,-554 46.75,-554 46.75,-554 97.78,-554 97.78,-554 103.78,-554 109.78,-560 109.78,-566 109.78,-566 109.78,-578 109.78,-578 109.78,-584 103.78,-590 97.78,-590"/>
+<text xml:space="preserve" text-anchor="middle" x="72.26" y="-568.3" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="11.00" fill="#1f2328">user_blocks</text>
+</g>
+<!-- user_blocks&#45;&gt;users -->
+<g id="edge26" class="edge">
+<title>user_blocks&#45;&gt;users</title>
+<path fill="none" stroke="#57606a" d="M88.88,-553.71C128.93,-508.4 240.84,-391.6 363.81,-350 422.02,-330.31 874.85,-341.05 915.65,-387 974.16,-452.9 994.37,-1106.44 998.01,-1245.19"/>
+<polygon fill="#57606a" stroke="#57606a" points="995.91,-1245.04 998.16,-1250.99 1000.11,-1244.94 995.91,-1245.04"/>
+</g>
+<!-- friends -->
+<g id="node25" class="node">
+<title>friends</title>
+<path fill="#fbefff" stroke="#8250df" stroke-width="1.1" stroke-dasharray="5,2" d="M679.1,-52C679.1,-52 649.1,-52 649.1,-52 643.1,-52 637.1,-46 637.1,-40 637.1,-40 637.1,-28 637.1,-28 637.1,-22 643.1,-16 649.1,-16 649.1,-16 679.1,-16 679.1,-16 685.1,-16 691.1,-22 691.1,-28 691.1,-28 691.1,-40 691.1,-40 691.1,-46 685.1,-52 679.1,-52"/>
+<text xml:space="preserve" text-anchor="middle" x="664.1" y="-30.3" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="11.00" fill="#1f2328">friends</text>
+</g>
+<!-- friends&#45;&gt;users -->
+<g id="edge27" class="edge">
+<title>friends&#45;&gt;users</title>
+<path fill="none" stroke="#57606a" d="M691.55,-29.11C743.32,-21.24 858,-12.48 915.65,-76 997,-165.63 999.03,-1080.5 998.73,-1245.55"/>
+<polygon fill="#57606a" stroke="#57606a" points="996.63,-1245.32 998.72,-1251.33 1000.83,-1245.33 996.63,-1245.32"/>
+</g>
+<!-- share_sessions -->
+<g id="node26" class="node">
+<title>share_sessions</title>
+<path fill="#fbefff" stroke="#8250df" stroke-width="1.1" stroke-dasharray="5,2" d="M889.65,-223C889.65,-223 823.62,-223 823.62,-223 817.62,-223 811.62,-217 811.62,-211 811.62,-211 811.62,-199 811.62,-199 811.62,-193 817.62,-187 823.62,-187 823.62,-187 889.65,-187 889.65,-187 895.65,-187 901.65,-193 901.65,-199 901.65,-199 901.65,-211 901.65,-211 901.65,-217 895.65,-223 889.65,-223"/>
+<text xml:space="preserve" text-anchor="middle" x="856.63" y="-201.3" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="11.00" fill="#1f2328">share_sessions</text>
+</g>
+<!-- share_sessions&#45;&gt;users -->
+<g id="edge28" class="edge">
+<title>share_sessions&#45;&gt;users</title>
+<path fill="none" stroke="#57606a" d="M902.14,-223.17C907.41,-227.01 912.16,-231.59 915.65,-237 972.04,-324.31 994.22,-1094.99 998.04,-1245.56"/>
+<polygon fill="#57606a" stroke="#57606a" points="995.93,-1245.19 998.18,-1251.13 1000.13,-1245.08 995.93,-1245.19"/>
+</g>
+<!-- share_members -->
+<g id="node27" class="node">
+<title>share_members</title>
+<path fill="#fbefff" stroke="#8250df" stroke-width="1.1" stroke-dasharray="5,2" d="M699.74,-168C699.74,-168 628.46,-168 628.46,-168 622.46,-168 616.46,-162 616.46,-156 616.46,-156 616.46,-144 616.46,-144 616.46,-138 622.46,-132 628.46,-132 628.46,-132 699.74,-132 699.74,-132 705.74,-132 711.74,-138 711.74,-144 711.74,-144 711.74,-156 711.74,-156 711.74,-162 705.74,-168 699.74,-168"/>
+<text xml:space="preserve" text-anchor="middle" x="664.1" y="-146.3" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="11.00" fill="#1f2328">share_members</text>
+</g>
+<!-- share_members&#45;&gt;users -->
+<g id="edge30" class="edge">
+<title>share_members&#45;&gt;users</title>
+<path fill="none" stroke="#57606a" d="M711.88,-139.06C768.69,-128.84 863.36,-122.24 915.65,-176 992.61,-255.13 998.25,-1087.23 998.63,-1245.19"/>
+<polygon fill="#57606a" stroke="#57606a" points="996.53,-1245.1 998.64,-1251.09 1000.73,-1245.09 996.53,-1245.1"/>
+</g>
+<!-- share_members&#45;&gt;share_sessions -->
+<g id="edge29" class="edge">
+<title>share_members&#45;&gt;share_sessions</title>
+<path fill="none" stroke="#57606a" d="M712.2,-163.6C740.14,-171.66 775.58,-181.89 804.24,-190.16"/>
+<polygon fill="#57606a" stroke="#57606a" points="803.57,-192.16 809.91,-191.8 804.73,-188.12 803.57,-192.16"/>
+</g>
+<!-- trips -->
+<g id="node28" class="node">
+<title>trips</title>
+<path fill="#fbefff" stroke="#8250df" stroke-width="1.1" stroke-dasharray="5,2" d="M871.63,-284C871.63,-284 841.63,-284 841.63,-284 835.63,-284 829.63,-278 829.63,-272 829.63,-272 829.63,-260 829.63,-260 829.63,-254 835.63,-248 841.63,-248 841.63,-248 871.63,-248 871.63,-248 877.63,-248 883.63,-254 883.63,-260 883.63,-260 883.63,-272 883.63,-272 883.63,-278 877.63,-284 871.63,-284"/>
+<text xml:space="preserve" text-anchor="middle" x="856.63" y="-262.3" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="11.00" fill="#1f2328">trips</text>
+</g>
+<!-- trips&#45;&gt;users -->
+<g id="edge31" class="edge">
+<title>trips&#45;&gt;users</title>
+<path fill="none" stroke="#57606a" d="M884.12,-282.82C895.85,-291.77 908.58,-303.84 915.65,-318 1000.27,-487.33 1000,-1110.75 998.93,-1245.3"/>
+<polygon fill="#57606a" stroke="#57606a" points="996.83,-1245.22 998.88,-1251.23 1001.03,-1245.25 996.83,-1245.22"/>
+</g>
+<!-- trip_recommendations -->
+<g id="node29" class="node">
+<title>trip_recommendations</title>
+<path fill="#fbefff" stroke="#8250df" stroke-width="1.1" stroke-dasharray="5,2" d="M715.12,-226C715.12,-226 613.09,-226 613.09,-226 607.09,-226 601.09,-220 601.09,-214 601.09,-214 601.09,-202 601.09,-202 601.09,-196 607.09,-190 613.09,-190 613.09,-190 715.12,-190 715.12,-190 721.12,-190 727.12,-196 727.12,-202 727.12,-202 727.12,-214 727.12,-214 727.12,-220 721.12,-226 715.12,-226"/>
+<text xml:space="preserve" text-anchor="middle" x="664.1" y="-204.3" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="11.00" fill="#1f2328">trip_recommendations</text>
+</g>
+<!-- trip_recommendations&#45;&gt;trips -->
+<g id="edge32" class="edge">
+<title>trip_recommendations&#45;&gt;trips</title>
+<path fill="none" stroke="#57606a" d="M725.91,-226.51C757.77,-236.21 795.56,-247.71 822.12,-255.8"/>
+<polygon fill="#57606a" stroke="#57606a" points="821.49,-257.8 827.84,-257.54 822.72,-253.78 821.49,-257.8"/>
+</g>
+<!-- trip_segments -->
+<g id="node30" class="node">
+<title>trip_segments</title>
+<path fill="#fbefff" stroke="#8250df" stroke-width="1.1" stroke-dasharray="5,2" d="M694.49,-284C694.49,-284 633.71,-284 633.71,-284 627.71,-284 621.71,-278 621.71,-272 621.71,-272 621.71,-260 621.71,-260 621.71,-254 627.71,-248 633.71,-248 633.71,-248 694.49,-248 694.49,-248 700.49,-248 706.49,-254 706.49,-260 706.49,-260 706.49,-272 706.49,-272 706.49,-278 700.49,-284 694.49,-284"/>
+<text xml:space="preserve" text-anchor="middle" x="664.1" y="-262.3" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="11.00" fill="#1f2328">trip_segments</text>
+</g>
+<!-- trip_segments&#45;&gt;trips -->
+<g id="edge33" class="edge">
+<title>trip_segments&#45;&gt;trips</title>
+<path fill="none" stroke="#57606a" d="M706.92,-266C741.4,-266 789.69,-266 821.78,-266"/>
+<polygon fill="#57606a" stroke="#57606a" points="821.66,-268.1 827.66,-266 821.66,-263.9 821.66,-268.1"/>
+</g>
+<!-- media_objects -->
+<g id="node31" class="node">
+<title>media_objects</title>
+<path fill="#fbefff" stroke="#8250df" stroke-width="1.1" stroke-dasharray="5,2" d="M695.99,-110C695.99,-110 632.21,-110 632.21,-110 626.21,-110 620.21,-104 620.21,-98 620.21,-98 620.21,-86 620.21,-86 620.21,-80 626.21,-74 632.21,-74 632.21,-74 695.99,-74 695.99,-74 701.99,-74 707.99,-80 707.99,-86 707.99,-86 707.99,-98 707.99,-98 707.99,-104 701.99,-110 695.99,-110"/>
+<text xml:space="preserve" text-anchor="middle" x="664.1" y="-88.3" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="11.00" fill="#1f2328">media_objects</text>
+</g>
+<!-- media_objects&#45;&gt;users -->
+<g id="edge34" class="edge">
+<title>media_objects&#45;&gt;users</title>
+<path fill="none" stroke="#57606a" d="M708.25,-83.71C764.83,-75.6 863.06,-71.59 915.65,-128 994.44,-212.53 998.58,-1084.91 998.67,-1245.62"/>
+<polygon fill="#57606a" stroke="#57606a" points="996.57,-1245.22 998.67,-1251.22 1000.77,-1245.22 996.57,-1245.22"/>
+</g>
+</g>
+</svg>

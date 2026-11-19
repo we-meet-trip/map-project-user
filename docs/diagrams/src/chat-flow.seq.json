@@ -1,0 +1,23 @@
+{
+  "title": "채팅 메시지 흐름 — STOMP 와 인스턴스 사이 팬아웃",
+  "lanes": [{"id": "a", "label": "보내는 앱", "sub": "STOMP"},
+            {"id": "u1", "label": "user 인스턴스 1", "sub": "BFF"},
+            {"id": "db", "label": "PostgreSQL", "sub": "user_service"},
+            {"id": "redis", "label": "Redis", "sub": "chat:broadcast"},
+            {"id": "u2", "label": "user 인스턴스 2", "sub": "BFF"},
+            {"id": "b", "label": "받는 앱", "sub": "STOMP"}],
+  "steps": [
+    {"kind": "band", "text": "접속·구독"},
+    {"kind": "call", "from": "b", "to": "u2", "text": "CONNECT /ws/chat (JWT)"},
+    {"kind": "call", "from": "b", "to": "u2", "text": "SUBSCRIBE /topic/rooms/{roomId}"},
+    {"kind": "self", "from": "u2", "text": "참가 구간·약관·연령 확인, 패턴 목적지 거부"},
+    {"kind": "band", "text": "보내기"},
+    {"kind": "call", "from": "a", "to": "u1", "text": "SEND /app/rooms/{roomId}/send"},
+    {"kind": "self", "from": "u1", "text": "전송 한도·길이·차단 확인"},
+    {"kind": "call", "from": "u1", "to": "db", "text": "방별 순번으로 저장"},
+    {"kind": "call", "from": "u1", "to": "redis", "text": "PUBLISH chat:broadcast"},
+    {"kind": "call", "from": "redis", "to": "u2", "text": "다른 인스턴스로 전달"},
+    {"kind": "call", "from": "u2", "to": "b", "text": "MESSAGE /topic/rooms/{roomId}"},
+    {"kind": "ret",  "from": "u1", "to": "a", "text": "거절되면 /user/queue/errors"}
+  ]
+}

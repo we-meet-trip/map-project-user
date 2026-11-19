@@ -1,0 +1,36 @@
+digraph user_erd {
+  graph [rankdir=LR, bgcolor="@BG@", fontname="Pretendard, Noto Sans KR, sans-serif", fontcolor="@FG@",
+         nodesep=0.3, ranksep=0.9, pad=0.3, label="스키마 user_service — 화살표는 외래 키(자식 → 부모)", labelloc=t, fontsize=13];
+  node  [shape=box, style="rounded,filled", fontname="Pretendard, Noto Sans KR, sans-serif", fontsize=11,
+         fontcolor="@FG@", color="@DB_EDGE@", fillcolor="@DB_FILL@", penwidth=1.1, margin="0.12,0.05"];
+  edge  [color="@LINE@", arrowsize=0.6];
+
+  subgraph cluster_account { label="계정·인증"; labeljust=l; fontsize=12; color="@LINE@"; style=rounded;
+    users; oauth_accounts; apple_accounts; refresh_tokens; user_devices; }
+  subgraph cluster_consent { label="동의"; labeljust=l; fontsize=12; color="@LINE@"; style=rounded;
+    service_policy_acceptances; external_ai_consents; external_ai_job_consents; }
+  subgraph cluster_trip { label="일정·추천"; labeljust=l; fontsize=12; color="@LINE@"; style=rounded;
+    schedules; schedule_arrivals; nearby_impressions; recommend_jobs; recommend_edit_requests;
+    recommend_edits; recommend_training; recommend_cancellations; }
+  subgraph cluster_chat { label="채팅"; labeljust=l; fontsize=12; color="@LINE@"; style=rounded;
+    chat_rooms; chat_participants; chat_messages; chat_membership_intervals; chat_restrictions; }
+  subgraph cluster_mod { label="신고·차단"; labeljust=l; fontsize=12; color="@LINE@"; style=rounded;
+    moderation_reports; moderation_actions; user_blocks; }
+  subgraph cluster_unused { label="초기 설계의 미사용 테이블"; labeljust=l; fontsize=12; color="@OPT_EDGE@"; style="rounded,dashed";
+    node [fillcolor="@OPT_FILL@", color="@OPT_EDGE@", style="rounded,filled,dashed"];
+    friends; share_sessions; share_members; trips; trip_recommendations; trip_segments; media_objects; }
+
+  oauth_accounts -> users; apple_accounts -> users; refresh_tokens -> users; user_devices -> users;
+  service_policy_acceptances -> users; external_ai_consents -> users;
+  external_ai_job_consents -> users; external_ai_job_consents -> recommend_jobs;
+  schedules -> users; schedule_arrivals -> schedules; nearby_impressions -> schedules;
+  recommend_edit_requests -> recommend_jobs;
+  chat_rooms -> schedules; chat_participants -> chat_rooms; chat_participants -> users;
+  chat_messages -> chat_rooms; chat_membership_intervals -> chat_rooms; chat_membership_intervals -> users;
+  chat_restrictions -> users;
+  moderation_reports -> users; moderation_reports -> chat_messages; moderation_reports -> chat_rooms;
+  moderation_reports -> schedules; moderation_reports -> recommend_jobs; moderation_actions -> moderation_reports;
+  user_blocks -> users;
+  friends -> users; share_sessions -> users; share_members -> share_sessions; share_members -> users;
+  trips -> users; trip_recommendations -> trips; trip_segments -> trips; media_objects -> users;
+}

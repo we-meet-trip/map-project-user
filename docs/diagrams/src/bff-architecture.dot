@@ -1,0 +1,45 @@
+digraph bff_architecture {
+  graph [rankdir=LR, bgcolor="@BG@", fontname="Pretendard, Noto Sans KR, sans-serif", fontcolor="@FG@",
+         nodesep=0.55, ranksep=1.3, newrank=true, pad=0.3];
+  node  [shape=box, style="rounded,filled", fontname="Pretendard, Noto Sans KR, sans-serif", fontsize=12,
+         fontcolor="@FG@", color="@SVC_EDGE@", fillcolor="@SVC_FILL@", penwidth=1.2, margin="0.16,0.07"];
+  edge  [color="@LINE@", fontname="Pretendard, Noto Sans KR, sans-serif", fontsize=10, fontcolor="@FG@", arrowsize=0.7];
+
+  app   [label="앱\nmap-project-client"];
+  yolo  [label="비전 서비스\nmap-project-yolo"];
+  admin [label="운영 콘솔\nmap-project-admin"];
+
+  subgraph cluster_user {
+    label="map-project-user (Spring Boot, :8080)"; labeljust=l; fontsize=13; color="@LINE@"; style="rounded,dashed";
+    stomp  [label="STOMP /ws/chat\n채팅"];
+    rest   [label="REST /api/v1/**\n인증·일정·추천·동의"];
+    consumer [label="스트림 소비자\nagent:jobs:done"];
+    intern [label="/internal/admin/**\n사설 대역 + 전용 토큰"];
+  }
+
+  agent [label="추천 에이전트\nmap-project-agent"];
+  hub   [label="외부 데이터 게이트웨이\nmap-project-hub"];
+  login [label="Kakao API · Apple ID\n로그인 토큰 확인", style="rounded,filled,dashed", fillcolor="@EXT_FILL@", color="@EXT_EDGE@"];
+  redis [label="Redis 7\n논리 DB 0~6\nStreams · Pub/Sub", fillcolor="@DB_FILL@", color="@DB_EDGE@"];
+  pg    [label="PostgreSQL 17\n스키마 user_service", fillcolor="@DB_FILL@", color="@DB_EDGE@"];
+  export [label="학습 내보내기 진입점\n(기본 꺼짐)", style="rounded,filled,dashed", fillcolor="@OPT_FILL@", color="@OPT_EDGE@"];
+
+  { rank=same; app; admin; yolo; }
+  { rank=same; agent; hub; login; }
+  { rank=same; redis; pg; }
+
+  app -> stomp    [label="WebSocket"];
+  app -> rest     [label="HTTPS + JWT"];
+  yolo -> rest    [label="/vision/permit"];
+  admin -> intern [label="X-Internal-Token"];
+  rest -> agent   [label="POST /v1/recommend\n(고른 장소는 loc 봉투)"];
+  rest -> hub     [label="날씨·장소·경로·이동수단\n(좌표는 loc 봉투)"];
+  rest -> login   [label="토큰 확인"];
+  agent -> redis  [label="결과 XADD(봉투)"];
+  consumer -> redis [label="XREADGROUP\nbff-result"];
+  stomp -> redis  [label="chat:broadcast"];
+  rest -> redis   [label="폐기 목록·한도\n초안·캐시"];
+  rest -> pg      [label="map_user_runtime\n(DML)"];
+  intern -> pg    [label="조회·조치"];
+  export -> pg    [style=dashed, color="@OPT_EDGE@", label="읽기 전용"];
+}

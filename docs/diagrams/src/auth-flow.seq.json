@@ -1,0 +1,32 @@
+{
+  "title": "로그인 흐름 — 이메일·카카오·Apple",
+  "lanes": [{"id": "app", "label": "앱", "sub": "map-project-client"},
+            {"id": "user", "label": "user", "sub": "BFF"},
+            {"id": "kakao", "label": "Kakao API", "sub": "외부"},
+            {"id": "apple", "label": "Apple ID", "sub": "외부"},
+            {"id": "store", "label": "저장소", "sub": "PostgreSQL·Redis"}],
+  "steps": [
+    {"kind": "band", "text": "이메일"},
+    {"kind": "call", "from": "app", "to": "user", "text": "POST /auth/signup · /auth/login"},
+    {"kind": "call", "from": "user", "to": "store", "text": "BCrypt 확인, refresh 해시 저장"},
+    {"kind": "ret",  "from": "user", "to": "app", "text": "access(1시간) + refresh(30일)"},
+    {"kind": "band", "text": "카카오 — 앱 SDK 가 받은 액세스 토큰"},
+    {"kind": "call", "from": "app", "to": "user", "text": "POST /auth/kakao/callback (액세스 토큰)"},
+    {"kind": "call", "from": "user", "to": "kakao", "text": "토큰 정보: 앱 번호가 설정값과 같은가"},
+    {"kind": "call", "from": "user", "to": "kakao", "text": "사용자 정보"},
+    {"kind": "call", "from": "user", "to": "store", "text": "연결된 계정 찾기·만들기(토큰은 저장 안 함)"},
+    {"kind": "ret",  "from": "user", "to": "app", "text": "access + refresh"},
+    {"kind": "band", "text": "Apple"},
+    {"kind": "call", "from": "app", "to": "user", "text": "GET /auth/apple/nonce"},
+    {"kind": "call", "from": "app", "to": "user", "text": "POST /auth/apple/callback (identity token, 인가 코드)"},
+    {"kind": "self", "from": "user", "text": "발급자·대상·nonce·만료 검증"},
+    {"kind": "call", "from": "user", "to": "apple", "text": "인가 코드 교환"},
+    {"kind": "call", "from": "user", "to": "store", "text": "Apple refresh 토큰을 암호화해 저장"},
+    {"kind": "ret",  "from": "user", "to": "app", "text": "access + refresh"},
+    {"kind": "band", "text": "갱신·로그아웃"},
+    {"kind": "call", "from": "app", "to": "user", "text": "POST /auth/token/refresh"},
+    {"kind": "self", "from": "user", "text": "세션 계열 안에서 회전, 재사용되면 계열 폐기"},
+    {"kind": "call", "from": "app", "to": "user", "text": "POST /auth/logout"},
+    {"kind": "call", "from": "user", "to": "store", "text": "access 를 Redis 폐기 목록에"}
+  ]
+}
