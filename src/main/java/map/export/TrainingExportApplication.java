@@ -1,10 +1,10 @@
 package map.export;
 
-import map.service.user.global.config.LocationCryptoProperties;
-import map.service.user.global.crypto.PayloadCipher;
-import map.service.user.recommend.RecommendCacheKey;
-import map.service.user.recommend.TrainingExportRunner;
-import map.service.user.recommend.TrainingExportService;
+import map.project.user.global.config.LocationCryptoProperties;
+import map.project.user.global.crypto.PayloadCipher;
+import map.project.user.recommend.RecommendCacheKey;
+import map.project.user.recommend.TrainingExportRunner;
+import map.project.user.recommend.TrainingExportService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -24,9 +24,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @Configuration(proxyBeanMethods = false)
 @EnableAutoConfiguration(exclude = {RedisAutoConfiguration.class, RedisRepositoriesAutoConfiguration.class,
         FlywayAutoConfiguration.class, SqlInitializationAutoConfiguration.class, TaskSchedulingAutoConfiguration.class})
-@EntityScan("map.service.user")
-@EnableJpaRepositories(basePackages = {"map.service.user.schedule", "map.service.user.recommend",
-        "map.service.user.nearby", "map.service.user.domain.user.repository"})
+@EntityScan("map.project.user")
+@EnableJpaRepositories(basePackages = {"map.project.user.schedule", "map.project.user.recommend",
+        "map.project.user.nearby", "map.project.user.domain.user.repository"})
 @EnableConfigurationProperties(LocationCryptoProperties.class)
 @Import({PayloadCipher.class, RecommendCacheKey.class, TrainingExportService.class, TrainingExportRunner.class})
 public class TrainingExportApplication {

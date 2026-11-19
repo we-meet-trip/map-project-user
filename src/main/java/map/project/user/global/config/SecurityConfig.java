@@ -1,0 +1,154 @@
+package map.project.user.global.config;
+
+import map.project.user.global.ratelimit.RateLimitFilter;
+import map.project.user.global.security.JwtAuthenticationFilter;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
+
+/**
+ * SecurityConfig — 단일 SecurityFilterChain 구성
+ *
+ * 인증 공개 엔드포인트(signup/login/kakao/refresh/logout)와 actuator(health/info)는
+ * 항상 공개로 둔다. 그 외 도메인 엔드포인트의 인가 여부는 auth.enforced 플래그로
+ * 전환한다.
+ *
+ * 필터체인 우선순위: 내부위임(@Order(0)) → 채팅(@Order(1)) → 본 도메인 체인(@Order(2)).
+ * 앞선 체인들이 securityMatcher 로 각자 경로(/internal/**, /api/v1/chat/** 및 핸드셰이크)
+ * 만 담당하므로, 본 체인은 그 외 모든 경로를 맡는 폴백(catch-all) 역할을 한다.
+ *
+ * jwtAuthenticationFilter : 토큰이 있을 때만 SecurityContext 를 채우는 필터(요청 차단 안 함).
+ * rateLimitFilter         : 인증 라우트 레이트리밋 필터.
+ * corsProperties          : CORS 허용 출처 정책.
+ * authEnforced            : auth.enforced 플래그. 기본 false.
+ *   - false(기본): 현행 동작 보존 — .anyRequest().permitAll() 로 전 엔드포인트 공개.
+ *   - true       : recommend/schedules/trip/places/reviews 및 나머지 전부 인증 필수.
+ */
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final RateLimitFilter         rateLimitFilter;
+    private final CorsProperties          corsProperties;
+    private final boolean                 authEnforced;
+
+    public SecurityConfig(
+            JwtAuthenticationFilter jwtAuthenticationFilter,
+            RateLimitFilter rateLimitFilter,
+            CorsProperties corsProperties,
+            @Value("${auth.enforced:false}") boolean authEnforced
+    ) {
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+        this.rateLimitFilter = rateLimitFilter;
+        this.corsProperties = corsProperties;
+        this.authEnforced = authEnforced;
+    }
+
+    @Bean
+    @Order(2)
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        return http
+                .csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .authorizeHttpRequests(auth -> {
+                    // 인증 공개 엔드포인트 6종 + actuator(health/info)는 플래그와 무관하게 공개.
+                    auth
+                            .requestMatchers(HttpMethod.POST, "/api/v1/auth/signup").permitAll()
+                            .requestMatchers(HttpMethod.POST, "/api/v1/auth/login").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/api/v1/auth/apple/nonce").permitAll()
+                            .requestMatchers(HttpMethod.POST, "/api/v1/auth/apple/callback").permitAll()
+                            .requestMatchers(HttpMethod.POST, "/api/v1/auth/kakao/callback").permitAll()
+                            .requestMatchers(HttpMethod.POST, "/api/v1/auth/token/refresh").permitAll()
+                            .requestMatchers(HttpMethod.POST, "/api/v1/auth/logout").permitAll()
+                            // actuator: health/info + prometheus 메트릭(map-net 내부 스크레이프).
+                            .requestMatchers("/actuator/health", "/actuator/info",
+                                    "/actuator/prometheus").permitAll()
+                            // 내 정보는 플래그와 무관하게 항상 토큰이 있어야 한다.
+                            // '누구의' 정보인지가 정해지지 않으면 무엇을 돌려줘도
+                            // 틀리고, 공개로 두면 만료된 토큰이 401 을 못 받아
+                            // 클라이언트의 토큰 갱신 흐름이 이 화면에서만 멈춘다.
+                            // 아래 시행 분기보다 먼저 두어야 매처가 우선한다.
+                            .requestMatchers("/api/v1/users/me", "/api/v1/moderation/**", "/api/v1/consents", "/api/v1/consents/**").authenticated();
+                    if (authEnforced) {
+                        // 인가 시행: 도메인 엔드포인트와 나머지 전부 인증 필수.
+                        // JWT 필터가 채운 SecurityContext 가 없으면 401(HttpStatusEntryPoint).
+                        auth
+                                .requestMatchers(
+                                        "/api/v1/recommend/**",
+                                        "/api/v1/schedules/**",
+                                        "/api/v1/trip/**",
+                                        "/api/v1/places/**",
+                                        "/api/v1/reviews/**",
+                                        // 아래 둘은 발급처 하루 호출 한도를
+                                        // 나눠 쓰므로 시행 시 인증을 받는다.
+                                        "/api/v1/transit/**",
+                                        "/api/v1/mobility/**").authenticated()
+                                .anyRequest().authenticated();
+                    } else {
+                        // 현행(기본) 동작 보존: 전 엔드포인트 공개. JWT 필터는 토큰이 있을 때만
+                        // SecurityContext 를 채우고 요청을 차단하지 않는다(향후 인가 도입용 인프라).
+                        auth.anyRequest().permitAll();
+                    }
+                })
+                .exceptionHandling(e -> e.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(rateLimitFilter, JwtAuthenticationFilter.class)
+                .build();
+    }
+
+    @Bean
+    public FilterRegistrationBean<RateLimitFilter> rateLimitFilterRegistration(RateLimitFilter filter) {
+        FilterRegistrationBean<RateLimitFilter> bean = new FilterRegistrationBean<>(filter);
+        bean.setEnabled(false);
+        return bean;
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration config = new CorsConfiguration();
+
+        List<String> origins = corsProperties.getAllowedOrigins();
+        boolean isWildcard = origins.size() == 1 && "*".equals(origins.get(0));
+
+        if (isWildcard) {
+            config.setAllowedOriginPatterns(List.of("*"));
+            // allowCredentials(true)와 wildcard origin 조합 금지 (CORS 스펙 위반 + 보안 취약)
+            config.setAllowCredentials(false);
+        } else {
+            config.setAllowedOrigins(origins);
+            config.setAllowCredentials(true);
+        }
+
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+        config.setAllowedHeaders(List.of("*"));
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+        return source;
+    }
+}

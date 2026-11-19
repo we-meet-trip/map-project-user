@@ -18,7 +18,7 @@ with zipfile.ZipFile(jar) as archive:
         "standalone_main_packaged": "BOOT-INF/classes/map/migration/UserMigrationApplication.class" in names,
         "postgresql_driver_packaged": any(name.startswith("BOOT-INF/lib/postgresql-") for name in names),
         "test_h2_driver_absent": not any(name.startswith("BOOT-INF/lib/h2-") for name in names),
-        "normal_entrypoint_preserved": "Start-Class: map.service.user.ServiceUserApplication" in archive.read("META-INF/MANIFEST.MF").decode(),
+        "normal_entrypoint_preserved": "Start-Class: map.project.user.ServiceUserApplication" in archive.read("META-INF/MANIFEST.MF").decode(),
     }
 
 environment = {key: os.environ[key] for key in ("PATH", "JAVA_HOME", "HOME") if key in os.environ}

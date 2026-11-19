@@ -1,6 +1,6 @@
 package map.database;
 
-import map.service.user.global.config.RuntimeDatabaseGuard;
+import map.project.user.global.config.RuntimeDatabaseGuard;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.env.MockEnvironment;
 import static org.assertj.core.api.Assertions.*;
