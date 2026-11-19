@@ -70,8 +70,8 @@ class TesterAccountSeedRunnerTest {
         verify(seeder, times(5))
                 .ensureAccount(emails.capture(), nicknames.capture(), eq(PASSWORD));
         assertThat(emails.getAllValues()).containsExactly(
-                "maptester1@admin.map", "maptester2@admin.map", "maptester3@admin.map",
-                "maptester4@admin.map", "maptester5@admin.map");
+                "maptester1@example.com", "maptester2@example.com", "maptester3@example.com",
+                "maptester4@example.com", "maptester5@example.com");
         assertThat(nicknames.getAllValues()).containsExactly(
                 "maptester1", "maptester2", "maptester3", "maptester4", "maptester5");
     }
@@ -81,7 +81,7 @@ class TesterAccountSeedRunnerTest {
     void keepsGoingAfterFailure() {
         when(seeder.ensureAccount(anyString(), anyString(), eq(PASSWORD)))
                 .thenReturn(Outcome.CREATED);
-        when(seeder.ensureAccount(eq("maptester2@admin.map"), anyString(), eq(PASSWORD)))
+        when(seeder.ensureAccount(eq("maptester2@example.com"), anyString(), eq(PASSWORD)))
                 .thenThrow(new IllegalStateException("boom"));
         TesterAccountSeedRunner runner = new TesterAccountSeedRunner(seeder, true, PASSWORD);
 

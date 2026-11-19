@@ -409,14 +409,14 @@ training:
     enabled: ${TRAINING_EXPORT_ENABLED:false}
     user-ref-salt: ${TRAINING_EXPORT_USER_REF_SALT:}
     exclude-test-accounts: ${TRAINING_EXPORT_EXCLUDE_TEST_ACCOUNTS:true}
-    test-email-domains: ${TRAINING_EXPORT_TEST_EMAIL_DOMAINS:admin.map,test.com,map.test}
+    test-email-domains: ${TRAINING_EXPORT_TEST_EMAIL_DOMAINS:example.com,test.com,map.test}
     output-dir: ${TRAINING_EXPORT_OUTPUT_DIR:}
     batch-size: ${TRAINING_EXPORT_BATCH_SIZE:500}
 
 # ---- tester : 테스터 계정 시더 ----
 # TesterAccountSeedRunner / TesterAccountSeeder 가 본 섹션을 참조한다.
 # - enabled=false(기본): 아무 것도 하지 않는다(현행 동작 보존).
-# - enabled=true       : 부팅할 때마다 maptester1@admin.map ~ maptester5@admin.map
+# - enabled=true       : 부팅할 때마다 maptester1@example.com ~ maptester5@example.com
 #                        5개 계정을 보장한다. 없으면 만들고, 비밀번호가 어긋나 있으면
 #                        되돌린다. 닉네임과 나머지 프로필은 만들 때만 넣고 이후 건드리지
 #                        않는다. 데이터 볼륨을 지워도 다시 띄우면 그대로 되살아난다.

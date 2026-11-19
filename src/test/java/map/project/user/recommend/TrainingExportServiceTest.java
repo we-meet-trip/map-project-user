@@ -52,7 +52,7 @@ import org.springframework.test.context.ActiveProfiles;
 class TrainingExportServiceTest {
 
     private static final String SALT = "소금";
-    private static final List<String> TEST_DOMAINS = List.of("admin.map", "test.com");
+    private static final List<String> TEST_DOMAINS = List.of("example.com", "test.com");
 
     @Autowired
     private ScheduleExportRepository scheduleExportRepository;
@@ -360,7 +360,7 @@ class TrainingExportServiceTest {
         UUID origin = job("refresh", "agent", null, null);
         signal(origin, true);
         UUID copy = job("init", "cache_hit", origin, null);
-        schedule(user("maptester1@admin.map"), copy, "kakao:0");
+        schedule(user("maptester1@example.com"), copy, "kakao:0");
         schedule(user("real@example.org"), copy, "kakao:1");
 
         assertThat(run(true)).hasSize(1);

@@ -47,7 +47,7 @@ class TesterAccountSeederIntegrationTest {
     @DisplayName("부팅만으로 maptester1..5 가 로그인 가능한 상태로 준비된다")
     void seedsFiveAccountsOnStartup() {
         for (int index = 1; index <= 5; index++) {
-            String email = "maptester%d@admin.map".formatted(index);
+            String email = "maptester%d@example.com".formatted(index);
             Optional<User> found = userRepository.findByEmail(email);
 
             assertThat(found).as("계정 %s", email).isPresent();

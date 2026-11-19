@@ -39,7 +39,7 @@ public class TrainingExportRunner implements ApplicationRunner, ExitCodeGenerato
             @Value("${training.export.enabled:false}") boolean enabled,
             @Value("${training.export.user-ref-salt:}") String salt,
             @Value("${training.export.exclude-test-accounts:true}") boolean excludeTestAccounts,
-            @Value("${training.export.test-email-domains:admin.map,test.com,map.test}") String testEmailDomains,
+            @Value("${training.export.test-email-domains:example.com,test.com,map.test}") String testEmailDomains,
             @Value("${training.export.output-dir:}") String outputDir) {
         this.service = service;
         this.objectMapper = objectMapper;

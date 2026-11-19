@@ -32,7 +32,7 @@ import static org.mockito.Mockito.when;
 @DisplayName("TesterAccountSeeder 단위 테스트")
 class TesterAccountSeederTest {
 
-    private static final String EMAIL = "maptester1@admin.map";
+    private static final String EMAIL = "maptester1@example.com";
     private static final String NICKNAME = "maptester1";
     private static final String RAW_PASSWORD = "seeder-unit-pw!";
     private static final String ENCODED = "$2a$10$encoded-by-the-encoder-stub";

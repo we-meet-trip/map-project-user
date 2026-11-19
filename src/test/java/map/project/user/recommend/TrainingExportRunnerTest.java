@@ -48,7 +48,7 @@ class TrainingExportRunnerTest {
                                         boolean enabled, String salt) {
         // 문맥을 주지 않는다 — 주면 뽑고 나서 이 시험 프로세스를 내려 버린다.
         TrainingExportRunner runner = new TrainingExportRunner(service, new ObjectMapper(), enabled, salt,
-                true, "admin.map,test.com", dir.toString());
+                true, "example.com,test.com", dir.toString());
         org.springframework.test.util.ReflectionTestUtils.setField(runner, "exportApproved", true);
         return runner;
     }

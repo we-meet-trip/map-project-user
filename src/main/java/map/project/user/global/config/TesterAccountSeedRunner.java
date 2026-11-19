@@ -33,7 +33,7 @@ import org.springframework.stereotype.Component;
 public class TesterAccountSeedRunner implements ApplicationRunner {
 
     private static final int ACCOUNT_COUNT = 5;
-    private static final String EMAIL_FORMAT = "maptester%d@admin.map";
+    private static final String EMAIL_FORMAT = "maptester%d@example.com";
     private static final String NICKNAME_FORMAT = "maptester%d";
 
     private final TesterAccountSeeder seeder;
