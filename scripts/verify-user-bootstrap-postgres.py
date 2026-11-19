@@ -102,6 +102,13 @@ def stop_blocker(proc):
         os.killpg(proc.pid,signal.SIGTERM); proc.wait(timeout=5)
 
 
+def forward_migration_count(jar_path):
+    """Migrations the normal migrator applies after bootstrap (V005 and later), counted in the jar under test."""
+    with zipfile.ZipFile(jar_path) as archive:
+        versions = [int(m.group(1)) for name in archive.namelist()
+                    if (m := re.match(r'BOOT-INF/classes/db/migration/V(\d+)__[^/]+\.sql$', name))]
+    return sum(1 for version in versions if version >= 5)
+
 def bootstrap_environment():
     return {**process_environment(), 'USER_BOOTSTRAP_URL':f'jdbc:postgresql://127.0.0.1:5432/{database}',
             'USER_BOOTSTRAP_EXPECTED_DATABASE':database, 'USER_BOOTSTRAP_USERNAME':'map_user_bootstrap',
@@ -233,7 +240,8 @@ try:
     check('activation_cannot_repeat',sql("SELECT md5(string_agg(row_to_json(t)::text,',' ORDER BY installed_rank)) FROM user_service.flyway_schema_history t")==history)
     env={**process_environment(),'USER_MIGRATION_URL':f'jdbc:postgresql://127.0.0.1:5432/{database}',
          'USER_MIGRATION_USERNAME':'map_user_migrator','USER_MIGRATION_PASSWORD':passwords['map_user_migrator']}
-    check('normal_forward_migrations_v005_v030',launch('migrate',env=env,main='map.migration.UserMigrationApplication')['migrations_executed']==26)
+    forward=forward_migration_count(jar); require(forward>0,'forward_migrations_packaged'); report['forward_migrations_expected']=forward
+    check('normal_forward_migrations',launch('migrate',env=env,main='map.migration.UserMigrationApplication')['migrations_executed']==forward)
     check('normal_validate',launch('validate',env=env,main='map.migration.UserMigrationApplication')['status']=='complete')
     check('normal_repeat_zero',launch('migrate',env=env,main='map.migration.UserMigrationApplication')['migrations_executed']==0)
     runtime_guard(); check('unchanged_runtime_guard_pass')
