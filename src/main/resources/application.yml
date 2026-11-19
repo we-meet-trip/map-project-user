@@ -1,7 +1,7 @@
 # =============================================================================
 # application.yml — user-BFF 서비스 환경설정
 #
-# 본 파일은 user-BFF (service-user) 의 모든 런타임 설정을 모은다.
+# 본 파일은 user-BFF (map-project-user) 의 모든 런타임 설정을 모은다.
 # 각 섹션이 어떤 빈/컴포넌트에서 참조되는지 함께 표기한다.
 #
 # 섹션 개요:
@@ -31,7 +31,7 @@
 # ---- spring.application : 서비스 이름 (액추에이터/로그 등에서 표시) ----
 spring:
   application:
-    name: service-user
+    name: map-project-user
   # ---- spring.datasource : PostgreSQL JDBC 연결 ----
   # currentSchema=user_service 로 본 BFF 전용 스키마를 지정한다.
   # 호스트/포트/DB/계정/비밀번호는 모두 환경변수에서 주입한다.

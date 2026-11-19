@@ -1,5 +1,5 @@
 # =============================================================================
-# Dockerfile — user-BFF (service-user) 멀티 스테이지 빌드
+# Dockerfile — user-BFF (map-project-user) 멀티 스테이지 빌드
 #
 # 책임:
 # - builder 스테이지에서 bootJar 를 빌드
@@ -7,13 +7,13 @@
 # - 액추에이터 health 엔드포인트를 헬스체크로 사용
 #
 # 빌드:
-#   docker build -t map-service-user .
+#   docker build -t map-project-user .
 # 실행:
-#   docker run -p 8080:8080 map-service-user
+#   docker run -p 8080:8080 map-project-user
 # =============================================================================
 
 # syntax=docker/dockerfile:1.7
-# map-service-user — user-BFF 컨테이너 이미지
+# map-project-user — user-BFF 컨테이너 이미지
 
 # ---- builder : 소스 → bootJar ----
 # - gradle 이미지 위에서 워크스페이스를 복사하고 bootJar 만 빌드한다.
