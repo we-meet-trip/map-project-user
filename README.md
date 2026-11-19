@@ -1,67 +1,153 @@
-# map-service-user
+# map-project-user
 
-MAP 서비스의 BFF(Backend For Frontend). Spring Boot 3.4.2 + JDK 17. 클라이언트의 모든 요청이 통과하는 단일 진입점이며 인증·일정 도메인·재탐색 정책을 단독 보유한다.
+앱이 부르는 유일한 백엔드(BFF). 인증·일정·채팅·동의를 맡고, 추천은 agent 에, 외부 데이터는 hub 에 중계한다. Spring Boot 3.5 · Java 17.
 
-## 역할
+## 저장소 지도
 
-- 인증: 자체 이메일/비밀번호(BCrypt) + Kakao OAuth (검증 후 토큰 폐기, DB 미보관)
-- JWT 발급: Access 1h / Refresh 30d (SHA-256 해시 저장), RS256 (JWT_PRIVATE_KEY/JWT_PUBLIC_KEY, 미설정 시 임시 키+경고)
-- 인가 시행 토글: `AUTH_ENFORCED`(기본 false=현행 전 엔드포인트 공개). true 시 recommend/schedules/trip/places/reviews 인증 필수이며, 부팅 시 JWT 키 미설정·CORS 와일드카드를 거부한다.
-- 일정(Schedule) 도메인: 생성·조회·삭제, 일별 일정·장소 스냅샷·구간 경로·추천 결과 영속화
-- 재탐색 정책 강제:
-  - Mode 1 (동일 장소 금지 재생성): agent에 제외 장소 전달 + Redis 카운터로 일정당 3회 + KST 익일 자정까지 제한(EXPIREAT). 키 형태 `recommend:research:sched:{id}`(또는 scheduleId 부재 시 `job:{jobId}`), 초과 시 409 `RECOMMEND_001`. 카운터 장애 시 fail-open.
-  - Mode 2 (부분 편집): 경로 재계산을 hub에 위임, LLM 호출 없음
-  - Mode 3 (전체 수동 입력): 경로 산출을 hub에 위임, LLM 호출 없음
-- 날씨 변화 감지 → 1클릭 재추천:
-  - 일정을 저장할 때 그 시점 예보를 `schedules.weather_baseline`(V011)에 기준선으로 굳힌다. 지역(광역시도·시군구)은 추천 요청에만 실려 있어 `recommend_jobs`(V011)에 먼저 남기고 저장 시 일정으로 옮긴다.
-  - `ScheduleWeatherWatcher` 가 주기적으로(기본 30분, `WEATHER_WATCH_INTERVAL_MS`) 끝나지 않은 일정의 예보를 다시 받아 기준선과 견준다. 강수확률 50% 경계를 넘나들거나 하늘 상태가 비·눈으로 바뀌면 `schedules.weather_alert` 에 알림을 건다(`rain_appeared` / `rain_cleared`). 감시 자체는 `WEATHER_WATCH_ENABLED=false` 로 끌 수 있다.
-  - 걸린 알림은 일정 목록·상세 응답의 `weather_alert` 로 나간다(없으면 필드 자체가 없음). **종료일이 지난 일정은 감시도, 알림 노출도, 재추천도 하지 않는다** — 다녀온 여행에 배너가 남으면 사용자가 할 일이 없다.
-  - `POST /api/v1/schedules/{id}/weather-alert/dismiss` — "알고 있고 그대로 갈래". 알림을 지우고 기준선을 지금 예보로 옮긴다(204). 기준선을 옮기지 않으면 다음 순회에서 같은 변화가 다시 잡힌다. 이후 예보가 **또** 달라지면 새 기준선 대비로 다시 알린다. 지금 예보를 못 받으면 기준선은 그대로 두고 알림만 지운다(기준선을 비우면 감시 대상에서 영영 빠진다).
-  - `POST /api/v1/trip/replan` (본문 `{schedule_id}`) — **앱이 쓰는 동기 경로.** 저장된 지역·기간·이동수단으로 다시 짜서 완성된 `TripGenerateResponse`(stops·weather_forecast 포함)를 200 으로 돌려준다. generate/route 와 응답이 같아 결과 화면을 그대로 재사용한다. 성공한 뒤에만 일정의 기준선을 갱신한다 — 실패한 재추천으로 알림을 지우면 사용자가 바뀐 날씨를 모른 채 옛 코스를 들고 간다.
-  - `POST /api/v1/schedules/{id}/replan` — 비동기 경로(job_id 반환, 폴링 필요). 저장된 지역·기간·이동수단으로 새 추천 작업을 띄우고 202 + `job_id`. 결과는 기존 `GET /api/v1/recommend/{jobId}` 로 받는다. 일반 추천 경로라 **재탐색 1일 3회 한도를 깎지 않는다**(날씨 악화는 사용자 변심이 아니라 외부 변수). 지역을 모르는 옛 일정과 이미 지나간 일정은 409 `replan_unavailable`.
-    - **재사용 캐시를 타지 않는다.** 캐시 키(지역·기간·테마·이동수단·예산·시간대)에 날씨가 없어 조건이 그대로인 재추천은 반드시 캐시에 맞고, 맞으면 agent 가 아예 돌지 않아 `fetch_weather` 도 돌지 않는다 — 비 오기 전 코스가 그대로 돌아온다. 결과를 캐시에 등록하지도 않는다(반대 방향 오염 방지).
-    - 날씨는 요청에 싣지 않는다. agent 의 `fetch_weather` 노드가 지역·기간으로 hub 에 직접 물으므로 **추천이 실제로 도는 시점**의 예보가 반영된다.
-- 클라이언트용 Long-poll 엔드포인트: `GET /api/v1/recommend/{jobId}` — 준비 전 202 + `Retry-After: 3`, 완료 시 200 + JSON
-- 추천 작업 내구성 영속화: 완료 결과를 PostgreSQL `recommend_jobs`(V005)에 write-through 하여, 휘발성 Redis draft 만료/유실 시 폴백 조회한다(응답 형식 불변).
-- 리뷰 검색 프록시: `GET /api/v1/reviews?query=&display=` → hub `/v1/reviews` 위임(상류 오류 502 `review_search_upstream_error`).
-- 자체 schema `user_service` 단독 쓰기, 다른 schema cross-write 금지
+MAP 는 일곱 저장소로 이루어져 있다. 전체 구조와 한 번에 실행하는 방법은 [map-project-infra](https://github.com/we-meet-trip/map-project-infra) 에서 시작한다.
+
+| 저장소 | 역할 |
+|---|---|
+| [map-project-infra](https://github.com/we-meet-trip/map-project-infra) | 전체 안내, 로컬 실행 구성(Docker Compose), DB 초기화 |
+| [map-project-client](https://github.com/we-meet-trip/map-project-client) | 모바일 앱(Flutter, iOS·Android) |
+| **[map-project-user](https://github.com/we-meet-trip/map-project-user)** | **사용자 BFF(Spring Boot): 인증·일정·채팅·동의, 다른 서비스 중계** |
+| [map-project-agent](https://github.com/we-meet-trip/map-project-agent) | 추천 에이전트(FastAPI·LangGraph): 장소·경로·일정 생성 |
+| [map-project-hub](https://github.com/we-meet-trip/map-project-hub) | 외부 데이터 게이트웨이(FastAPI·PostGIS): 관광·날씨·장소·경로 |
+| [map-project-yolo](https://github.com/we-meet-trip/map-project-yolo) | 비전 서비스(WebSocket, 객체 탐지 + LLM 식별) |
+| [map-project-admin](https://github.com/we-meet-trip/map-project-admin) | 운영 콘솔(FastAPI·React) |
+
+## 이름의 뜻
+
+- `map-project` 는 MAP 프로젝트의 공개 저장소 묶음 이름이다. 일곱 저장소가 같은 접두를 쓴다.
+- `user` 는 사용자 쪽 요청을 받는 서비스라는 뜻이다. 앱은 이 서비스 하나만 부르고, 계정·일정·대화처럼 사용자에게 딸린 데이터는 여기에만 있다.
+
+## 개요
+
+- 앱의 모든 요청이 이 서비스를 지난다. 다른 서비스(agent·hub)는 앱에 직접 열지 않는다.
+- 사용자 데이터(계정·일정·추천 결과·채팅·동의)는 PostgreSQL 스키마 `user_service` 에만 쓴다.
+- 서비스 사이로 나가는 좌표는 늘 봉투로 감싸고, 저장하는 본문은 따로 암호화한다.
+- 서빙은 데이터베이스를 바꾸지 않는다. 마이그레이션과 빈 데이터베이스 준비는 같은 이미지의 다른 진입점이 한다.
+
+## 구조
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/diagrams/bff-architecture-dark.svg">
+  <img alt="앱·운영 콘솔·비전 서비스가 user 를 부르고, user 는 agent·hub·로그인 API·PostgreSQL·Redis 와 주고받는 구성도" src="docs/diagrams/bff-architecture-light.svg">
+</picture>
+
+처리 순서·모듈·시간 제한은 [docs/architecture.md](docs/architecture.md), 로그인과 채팅 흐름 그림은 [docs/diagrams](docs/diagrams/) 에 있다.
+
+## 기능
+
+- **인증**: 이메일·비밀번호, 카카오(앱 SDK 가 받은 액세스 토큰 검증), Apple. RS256 JWT, refresh 는 세션 계열 단위로 회전하고 재사용되면 계열을 폐기한다. 인증 경로마다 요청 한도.
+- **추천 중계**: 비동기 추천(`/api/v1/recommend`)과 결과까지 기다리는 동기 일정 생성(`/api/v1/trip/*`). 같은 조건 결과의 재사용과 동시 요청 공유, 계정당 하루 3회 재탐색.
+- **일정**: 저장·시작·도착 기록, 저장 시점 예보를 기준선으로 두고 날씨가 바뀌면 알림, 한 번에 다시 짜기.
+- **채팅**: 일정마다 대화방(STOMP), 초대 링크, 읽음·입력 중 표시, 신고·차단.
+- **동의**: 서비스 약관·개인정보 처리방침·18세 이상, 외부 AI 사용 범위별 동의(`trip`·`vision`·`review_summary`).
+- **중계**: 장소 검색·사진·리뷰 요약, 주변 장소, 대중교통·지하철, 공공자전거·공유 킥보드, 날씨(hub 경유).
+- **운영 콘솔용 내부 API**: 회원·추천 작업 조회, DLQ 재처리, 신고 처리.
+
+## 빠른 시작 (외부 키·비용 없이)
+
+전체 서비스를 함께 띄우는 방법은 [map-project-infra](https://github.com/we-meet-trip/map-project-infra) 의 빠른 시작을 따른다. 그 순서가 이 서비스의 데이터베이스 준비(부트스트랩 → 마이그레이션)와 봉투 열쇠 생성까지 한다. 상태 확인: `http://127.0.0.1:8080/actuator/health`.
+
+이 저장소만으로는 빌드와 테스트를 돌린다.
+
+```sh
+git clone https://github.com/we-meet-trip/map-project-user
+cd map-project-user
+docker compose up -d redis          # 테스트가 쓰는 Redis(로컬 6379)
+./gradlew test                      # 외부 서비스·키 없이 도는 단위·통합 테스트(H2)
+./gradlew bootJar trainingExportJar # build/libs/map-project-user-1.0.0.jar 등
+```
+
+- 6379 를 다른 프로세스가 쓰고 있으면 다른 포트로 띄우고 테스트에 알려 준다: `docker run --rm -d -p 6380:6379 redis:7-alpine` 뒤 `SPRING_DATA_REDIS_PORT=6380 ./gradlew test`.
+- 이 저장소의 `docker-compose.yml` 은 로컬 개발용 PostgreSQL 17·Redis 만 띄운다. 빈 데이터베이스를 직접 세우려면 [docs/architecture.md](docs/architecture.md) 의 '데이터베이스 준비' 순서를 따른다.
+
+## 설정
+
+[.env.example](.env.example) 에 이 서비스가 읽는 환경변수가 빈 값으로 있다. 이 서비스만 읽는 값은 `USER_`, 다른 서비스와 같은 값을 함께 읽는 값은 `MAP_PROJECT_` 로 시작한다.
+
+> **기본값은 로컬 실행용이다. 외부에 열기 전에 반드시 `USER_AUTH_ENFORCED=true` 로 켜고 JWT 키·내부 서비스 토큰·CORS 출처를 설정한다.** 자세한 표는 [SECURITY.md](SECURITY.md) 에 있다.
+
+- 비우면 기동하지 않는 값: `MAP_PROJECT_LOCATION_WIRE_KEY`(좌표 봉투, hub·agent 와 같은 값), `USER_LOCATION_ENC_KEYS`·`USER_LOCATION_ENC_ACTIVE_KID`(저장 암호화).
+- 비우면 꺼지는 기능: 카카오 로그인(`USER_KAKAO_APP_ID`), https 초대 링크(`USER_CHAT_INVITE_BASE_URL` — 비면 응답 `url` 이 null 이고 앱이 앱 전용 주소를 만든다), Apple 로그인(`USER_APPLE_ENABLED`).
+- 기본 꺼짐: 학습 수집·내보내기, 리뷰 요약 선작성, 시험 계정 시더, 도보 연결선(미완성 실험 기능). 표는 [docs/architecture.md](docs/architecture.md) '기본 꺼짐 기능'.
+
+## 데이터
+
+이 저장소에는 외부 데이터셋이나 실제 사용자 데이터가 없다. 테스트는 합성 값만 쓴다. 이 서비스가 쌓는 데이터와 학습 수집 조건은 [docs/data.md](docs/data.md) 에 있다.
+
+## API와 계약
+
+경로·필드·오류 형식·한도·스트림·좌표 봉투 형식은 [docs/contracts.md](docs/contracts.md) 에 있다. 요약:
+
+- 앱: `/api/v1/**`(REST, JWT), `/ws/chat`(STOMP). 오류는 `{timestamp, status, code, message}`.
+- agent: `POST /v1/recommend` 로 접수, 결과는 Redis Streams `agent:jobs:done`(봉투)으로 받는다.
+- hub: 날씨·장소·경로·이동수단, 좌표는 `loc` 봉투.
+- 운영 콘솔: `/internal/admin/**`(사설 대역 + 전용 토큰).
 
 ## 폴더 구조
 
 ```
-map-service-user/
-├── Dockerfile                    gradle:8.10-jdk17 builder + eclipse-temurin:17-jre runtime
-├── build.gradle                  Spring Boot 3.4.2, Java 17 toolchain
-├── settings.gradle, gradlew, gradle/
-└── src/main/
-    ├── java/map/service/user/
-    │   ├── ServiceUserApplication.java   Spring Boot 진입점
-    │   ├── auth/                         인증·JWT 도메인
-    │   ├── schedule/                     일정 도메인
-    │   ├── recommend/                    추천 결과 영속화 + 재탐색 카운터
-    │   ├── common/                       공통 유틸·예외 처리
-    │   └── config/                       Spring 설정 빈
-    └── resources/
-        ├── application.yml               datasource · JPA · Flyway · Redis · JWT
-        └── db/migration/                 Flyway V001~ SQL
+map-project-user/
+├── src/main/java/map/project/user/   서빙 애플리케이션(UserApplication)
+│   ├── domain/{auth,user}            로그인·JWT·회원
+│   ├── recommend/ · trip/            추천 중계·동기 일정 생성
+│   ├── schedule/ · weather/          일정·날씨 감시
+│   ├── chat/ · moderation/           채팅·신고·차단
+│   ├── policy/                       약관·AI 동의
+│   ├── places/ nearby/ transit/ mobility/ vision/   hub 중계·비전 허가
+│   ├── admin/                        운영 콘솔용 내부 API
+│   └── global/                       보안·암호화·예외·요청 한도
+├── src/main/java/map/{migration,bootstrap,database,export}/   서빙 밖 진입점
+├── src/main/resources/
+│   ├── application.yml               설정(환경변수 이름과 기본값)
+│   └── db/migration/                 Flyway V001~
+├── scripts/
+│   ├── sql/                          빈 데이터베이스 준비 SQL(psql)
+│   ├── verify-*.py                   부트 jar 기동 검사(CI)
+│   ├── render_diagrams.sh · seq.py   그림 다시 그리기
+├── docs/                             구조·계약·데이터·트러블슈팅·결정 기록·그림
+├── Dockerfile · Dockerfile.training-export
+└── docker-compose.yml                로컬 개발용 PostgreSQL·Redis
 ```
 
-## 실행 (단독 빌드 — 통합 실행은 map-service-infra 사용 권장)
+## 테스트
 
-```bash
-docker build -t map-service-user:dev .
-docker run --rm -p 8080:8080 --env-file ../map-service-infra/.env map-service-user:dev
-curl http://127.0.0.1:8080/actuator/health
+```sh
+./gradlew test                                   # 전체(Redis 필요, 데이터베이스는 H2)
+./gradlew test --tests '*ChatServiceTest'        # 일부만
+python3 scripts/verify-user-migration-launch.py  # bootJar 뒤: 마이그레이션 진입점 검사(DB 연결 없음)
 ```
 
-## 의존성
+- CI(`.github/workflows/ci.yml`)는 전체 테스트, 부트 jar 검사 세 가지, 빈 PostgreSQL 17 에서 부트스트랩 순서 검증을 돈다.
+- 테스트는 외부 서비스를 부르지 않는다(모의 서버·합성 열쇠).
 
-- Java 17, Gradle 8.x
-- Spring Boot 3.4.2
-- PostgreSQL (Flyway 마이그레이션)
-- Redis (세션·JWT 블랙리스트·재탐색 카운터)
-- agent · hub 서비스 (내부 HTTP)
+## 트러블슈팅과 교훈
 
-## License
+개발 중 실제로 겪은 문제 15건을 [docs/troubleshooting.md](docs/troubleshooting.md) 에 적었다. 예: 패턴 목적지로 남의 방 대화를 받던 구독 인가, 기록 실패를 삼키고 ack 해 사라지던 학습 신호, 앞단 프록시가 먼저 끊어 사유 없이 실패하던 일정 생성. 설계 결정은 [docs/decisions](docs/decisions/) 에 있다.
 
-MIT — see [LICENSE](LICENSE).
+## 한계
+
+- 운영 중인 서비스가 아니다. 공개본은 로컬·학습용으로 검증했다.
+- 학습 수집·내보내기는 합성 데이터로만 시험했다.
+- 도보 연결선은 미완성 실험 기능이다.
+- 이전 판으로 V011·V015 를 적용한 데이터베이스는 체크섬을 한 번 맞춰야 한다([docs/architecture.md](docs/architecture.md)).
+- V004 에는 쓰지 않는 초기 설계 테이블 7개가 남아 있다.
+
+## 감사 표시
+
+- 그림은 [Graphviz](https://graphviz.org/) 와 표준 라이브러리 스크립트로 그렸고, 글꼴은 [Pretendard](https://github.com/orioncactus/pretendard)(SIL Open Font License 1.1)를 쓴다. 글꼴 파일은 저장소에 넣지 않았다.
+- 라이브러리: Spring Boot, Spring Security, Spring Data JPA·Redis, Flyway, jjwt, Lombok, H2(테스트) 등. 각 라이브러리는 자기 라이선스를 따른다.
+
+## 고지
+
+- 이 저장소는 교육·학습 목적으로 공개한 코드다. 운영 중인 서비스가 아니며 지원을 약속하지 않는다.
+- 이 프로젝트는 코드가 연동하는 외부 서비스·데이터 제공자(한국관광공사, 기상청, 공공데이터포털, 국토교통부, 서울특별시, 한국환경공단, 카카오, 네이버, Google, Apple, LangChain, ODsay, OpenStreetMap, Ultralytics, Wikimedia 등)와 관련이 없으며, 그들로부터 승인이나 후원을 받지 않았다. 언급한 상표와 서비스 이름은 각 소유자에게 있다.
+- 저장소에는 제3자 데이터·이미지·본문을 넣지 않는다. 예외로, 이용조건을 원문으로 확인한 공공·개방 자료만 출처와 이용조건을 밝혀 담는다(`docs/data.md`). 그 밖의 외부 데이터는 각 제공자의 약관에 따라 직접 받아야 한다.
+- MIT 라이선스는 이 저장소의 코드에만 적용된다. 저장소에 담은 공공·개방 자료와 외부 데이터, 모델 가중치, 폰트, 라이브러리는 각자의 이용조건·라이선스를 따른다.
+
+## 라이선스
+
+코드는 [MIT 라이선스](LICENSE)를 따른다. Copyright (c) The MAP Contributors. 만든 사람들은 [AUTHORS.md](AUTHORS.md) 에 있다.
